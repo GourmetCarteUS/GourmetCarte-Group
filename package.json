@@ -1,20 +1,18 @@
 {
-  "name": "Group",
+  "name": "group",
   "private": true,
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "dev:group-uni": "yarn workspace group-uni run dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
-    "prettier": "^3.1.0",
+    "eslint": "^8.47.0",
+    "prettier": "^3.0.2",
+    "tsconfig": "*",
     "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=18"
   },
   "packageManager": "yarn@1.22.21",
   "workspaces": [
