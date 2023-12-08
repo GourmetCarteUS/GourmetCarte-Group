@@ -1,6 +1,12 @@
 {
   "pages": [
-
+    {
+      "name": "post-detail",
+      "path": "pages/post/detail",
+      "style": {
+        "navigationBarTitleText": "活动详情"
+      }
+    },
     {
       "name": "main",
       "path": "pages/index/index",
@@ -16,6 +22,7 @@
         "navigationBarTitleText": "我的"
       }
     },
+
     {
       "name": "login",
       "path": "pages/login/login",

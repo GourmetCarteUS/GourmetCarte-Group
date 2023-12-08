@@ -12,7 +12,7 @@ import TabBar from "@/components/tab-bar/tab-bar.vue";
 // const userInfo = computed<UserInfo | null>(() => useUserInfoStore().user)
 const dataList = ref([]), pagingRef = ref(),
     settingUserRef = ref(),
-    orderTotal = ref(0)
+    scrollTop = ref(0);
 
 const tabBarList = [
   {
@@ -55,16 +55,31 @@ const navHeight = computed(() => {
   const navStyle = uni.getStorageSync("navStyle")
   return navStyle.statusBarHeight_ + navStyle.navBarHeight_ + 5
 })
+
+function onScroll(env: Event) {
+  scrollTop.value = env?.target?.scrollTop
+  if (scrollTop.value > 100) {
+    uni.setNavigationBarColor({
+      frontColor: '#000000',//黑
+      backgroundColor: '#000000',
+    })
+  } else {
+    uni.setNavigationBarColor({
+      frontColor: '#ffffff',//白
+      backgroundColor: '#ffffff'
+    })
+  }
+}
 </script>
 
 <template>
   <Layout>
     <template #header>
-      <NavBar title="我的"/>
+      <NavBar title="我的" :backgroundColor="scrollTop>=100 ? 'white':undefined"/>
     </template>
 
     <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder
-              :show-scrollbar="false" v-model="dataList">
+              :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
       <view class="user-info h-230 flex center justify-between pl-40 pr-50" :style="{'margin-top': navHeight+'px'}">
         <view>
           <view class="text-40 font-700 ml-30">小鳄鱼</view>
@@ -72,7 +87,7 @@ const navHeight = computed(() => {
             <text class="pl-20 pr-20">已经连续参加18期</text>
           </view>
         </view>
-        <view>
+        <view @click="onSetting">
           <view>
             <image class="w-160 h-160 b-rd-120" src="/static/avatar.png"/>
           </view>
