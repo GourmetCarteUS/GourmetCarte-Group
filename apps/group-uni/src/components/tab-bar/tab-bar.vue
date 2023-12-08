@@ -13,12 +13,11 @@
         </view>
       </view>
     </view>
-    <!--    <view :style="`height: ${safeAreaInsets?.bottom}rpx`"></view>-->
   </view>
 </template>
 
 <script lang="ts" setup>
-import {ref} from "vue";
+const emits = defineEmits(['update:modelValue'])
 
 interface TabItemType {
   index: number
@@ -28,7 +27,7 @@ interface TabItemType {
   handleClick?: Function
 }
 
-defineProps({
+const props = defineProps({
   float: {
     type: Boolean,
     value: false
@@ -36,17 +35,18 @@ defineProps({
   tabBarList: {
     type: Array<TabItemType>,
     default: []
+  },
+  modelValue: {
+    type: Number,
+    default: 1
   }
 });
 
-const modelValue = ref<number>(1)
-const {safeAreaInsets} = uni.getSystemInfoSync();
-
 function onClick(tabItem: TabItemType) {
-  if (modelValue.value == tabItem.index) return;
+  if (props.modelValue == tabItem.index) return;
   tabItem.handleClick && tabItem?.handleClick()
   if (tabItem.index === 2) return
-  modelValue.value = tabItem.index
+  emits('update:modelValue', tabItem.index)
 }
 
 </script>

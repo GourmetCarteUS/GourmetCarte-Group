@@ -3,7 +3,10 @@
     <view class="navbar-fixed" :style="{'background-color': backgroundColor}">
       <!-- 状态栏小程序撑起高度 -->
       <view :style="{height:statusBarHeight+'px'}"></view>
-      <view class="navbar-content" :style="{height:navBarHeight+'px',width:windowWidth+'px'}">
+      <view v-if="title" class="navbar-content">
+        <view class="font-500 text-32 text-center w-full">{{ title }}</view>
+      </view>
+      <view v-else class="navbar-content" :style="{height:navBarHeight+'px',width:windowWidth+'px'}">
         <view class="navbar-search" :class="{border: backgroundColor==='white'}">
           <view class="navbar-search_icon">
             <uni-icons type="search" size="16" color="#999"></uni-icons>
@@ -12,6 +15,7 @@
             <input class="navbar-search_text" type="text" v-model="val" placeholder="请输入您要搜索的内容"/>
           </view>
         </view>
+
       </view>
     </view>
     <!-- 需要添加占位符高度  状态栏高度+导航栏高度（否则下面tab会塌陷）-->
@@ -26,7 +30,8 @@ defineProps({
   backgroundColor: {
     default: 'transparent',
     type: String
-  }
+  },
+  title: String
 })
 
 const statusBarHeight = ref(20),/* 状态栏高度 */
