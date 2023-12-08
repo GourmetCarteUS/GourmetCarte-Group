@@ -3,10 +3,9 @@
     <template #header>
       <NavBar :backgroundColor="scrollTop>=150 ? 'white':undefined"/>
     </template>
-
-    <z-paging ref="pagingRef" @query="queryList" auto-show-back-to-top
+    <z-paging ref="pagingRef" @query="queryList"
               :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
-      <view class="bg-amber w-full" :style="{'margin-top': navHeight}">
+      <view class="w-full" :style="{'margin-top': navHeight+'px'}">
         <swiper :current="current" @transition="swiperTransition" @animationfinish="swiperAnimationfinish">
           <swiper-item class="swiper-item bg-red" v-for="(item, index) in tabList" :key="index">
             xxx
@@ -14,27 +13,18 @@
         </swiper>
       </view>
 
-      <view style="position: sticky; top: 170rpx">
+      <view class="sticky pb-20 bg-white" :style="{top: (navHeight-5)+'px'}">
         <z-tabs ref="tabsRef" :list="tabList" :current="current" @change="tabsChange"/>
+        <view class="flex mt-20 ml-20">
+          <view class="capsule-button bg-grey-sub">重庆市</view>
+          <view class="capsule-button bg-grey-sub ml-20">全部时间</view>
+        </view>
       </view>
 
-      <view class="item h-800" v-for="(item,index) in dataList" :key="index">
-        <view class="item-title">{{ item }}</view>
+      <view class="item" v-for="(item,index) in dataList" :key="index">
+        <PostItem/>
       </view>
     </z-paging>
-
-    <!--<template #bottom>-->
-    <!--  <view class="flex flex-justify-between safe-margin-bottom text-32 m-20">-->
-    <!--    <view class="h-100 bg-primary b-rd-20 text-white center" style="flex: 3" @click="openScanCode">-->
-    <!--      <uni-icons type="scan" color="white" size="30" class="mr-10"/>-->
-    <!--      扫码充电-->
-    <!--    </view>-->
-    <!--    &lt;!&ndash;          <view class="h-100 flex-1 ml-10 bg-primary b-rd-20 text-white center" @click="onGoPage({name: 'mine'})">&ndash;&gt;-->
-    <!--    &lt;!&ndash;            房间续费&ndash;&gt;-->
-    <!--    &lt;!&ndash;          </view>&ndash;&gt;-->
-    <!--  </view>-->
-    <!--</template>-->
-    <!--</z-paging>-->
   </Layout>
 </template>
 
@@ -47,15 +37,14 @@ import {onShareAppMessage, onShareTimeline} from "@dcloudio/uni-app";
 import LogoUrl from "@/static/logo-2.png";
 import NavBar from "@/components/nav-bar/nav-bar.vue";
 import Layout from "@/components/layout/layout.vue";
-import {getUrlParams, onGoPage} from "@/utils/business";
+import PostItem from "@/components/item/post.vue";
 
 const navHeight = computed(() => {
   const navStyle = uni.getStorageSync("navStyle")
-  return navStyle.statusBarHeight_ + navStyle.navBarHeight_ + 5 + 'px'
+  return navStyle.statusBarHeight_ + navStyle.navBarHeight_ + 5
 })
-const location = computed(() => useUserInfoStore().location)
 
-const tabsRef = ref();
+const location = computed(() => useUserInfoStore().location)
 
 const tabList = [
       {
@@ -78,9 +67,9 @@ const tabList = [
       }
     ],
     current = ref(0),
-    scrollTop = ref(0);
-
-const dataList = ref([]);
+    scrollTop = ref(0),
+    tabsRef = ref(),
+    dataList = ref([]);
 
 function tabsChange(index: number) {
   current.value = index;
@@ -97,7 +86,6 @@ function swiperAnimationfinish(e: Event) {
 
 function onScroll(env: Event) {
   scrollTop.value = env?.target?.scrollTop
-  console.log("sc滚动", scrollTop.value)
 }
 
 const pagingRef = ref(),
@@ -115,22 +103,6 @@ const pagingRef = ref(),
       pagingRef.value.complete([1, 2, 3, 4]);
       hideLoading()
     };
-
-function openScanCode() {
-  uni.scanCode({
-    success: function (res) {
-      if (res.result) {
-        const id = getUrlParams(res.result, "id")
-        if (id) onGoPage({name: "room", params: {id}}, true);
-        else toast("扫码失败")
-      }
-    },
-    fail: function (result) {
-      toast("扫码失败")
-      console.log(result)
-    }
-  });
-}
 
 onShareAppMessage(() => {
   return {

@@ -12,6 +12,27 @@
   background: $uni-color-primary;
 }
 
+.text-primary-sub {
+  color: $uni-color-primary-sub;
+}
+
+.bg-primary-sub {
+  background: $uni-color-primary-sub;
+}
+.bg-grey-sub{
+  background: $uni-bg-color-grey;
+}
+.text-color{
+  color: $uni-text-color;
+}
+
+.capsule-button{
+  border-radius: 174rpx;
+  font-weight: 500;
+  padding: 10rpx 30rpx;
+  font-size: 24rpx;
+}
+
 .tag {
   font-size: 20rpx;
   padding: 2.5rpx 10rpx;

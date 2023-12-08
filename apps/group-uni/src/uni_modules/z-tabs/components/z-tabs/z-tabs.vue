@@ -231,7 +231,7 @@ export default {
     //z-tabs背景色
     bgColor: {
       type: String,
-      default: _gc('bgColor', 'white')
+      default: _gc('bgColor', 'transparent')
     },
     //徽标数最大数字限制，超过这个数字将变成badgeMaxCount+
     badgeMaxCount: {
