@@ -4,11 +4,11 @@
       <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png" class="h-full w-full"/>
     </view>
     <view class="h-140 p-20 pb-0">
-      <view>活动报名小程序设计</view>
+      <view class="font-500">活动报名小程序设计{{data}}</view>
       <view class="flex justify-between mt-20">
         <view class="flex">
           <view class="capsule-button bg-primary-sub mr-20">进行中</view>
-          <view class="capsule-button bg-primary mr-20">活动时间：</view>
+          <view class="capsule-button bg-primary-sec mr-20">活动时间：</view>
         </view>
         <view class="capsule-button bg-black text-white">上车</view>
       </view>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-
+defineProps<{ data: number }>()
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,5 @@
 <template>
-  <view class="page-container" :style="{background}" :class="{isHeader, styles}">
+  <view class="page-container" :style="{background}" :class="{styles}">
     <slot name="header"/>
     <view class="page-wrapper flex-1 flex flex-col">
       <template v-if="mode === 'scroll-y'">
@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import {ref, useSlots} from 'vue'
 
-const isHeader = !!useSlots().header;
+// const isHeader = !!useSlots().header;
 
 const props = defineProps({
   mode: String,
@@ -33,11 +33,6 @@ const mode = ref(props['mode'] || 'scroll-y')
 .page-container {
   min-height: 100vh;
   background: linear-gradient(180deg, rgba(180, 245, 106, 1) 0%, rgba(255, 255, 255, 0) 70%);
-
-  &.isHeader {
-    height: calc(100vh - 45px) !important;
-    margin-top: 45px !important;
-  }
 
   .page-wrapper {
     width: 100%;

@@ -3,10 +3,10 @@
     <template #header>
       <NavBar :backgroundColor="scrollTop>=150 ? 'white':undefined"/>
     </template>
-    <z-paging ref="pagingRef" @query="queryList"
+    <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder
               :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
       <view class="w-full" :style="{'margin-top': navHeight+'px'}">
-        <swiper :current="current" @transition="swiperTransition" @animationfinish="swiperAnimationfinish">
+        <swiper :current="current" @transition="swiperTransition" @animationfinish="swiperAnimationFinish">
           <swiper-item class="swiper-item bg-red" v-for="(item, index) in tabList" :key="index">
             xxx
           </swiper-item>
@@ -21,30 +21,57 @@
         </view>
       </view>
 
-      <view class="item" v-for="(item,index) in dataList" :key="index">
-        <PostItem/>
+      <view class="item" v-for="item in dataList" :key="item">
+        <PostItem :data="item"/>
       </view>
+      <template #bottom>
+        <view style="z-index: 99" class="h-150">
+          <TabBar :tab-bar-list="tabBarList"/>
+        </view>
+      </template>
     </z-paging>
   </Layout>
 </template>
 
 <script lang="ts" setup>
 import {computed, ref} from "vue";
-import {useUserInfoStore} from "@/state/modules/user-info";
-import {hideLoading, loading, toast} from "@/utils/uniapi/prompt";
+import {hideLoading, loading} from "@/utils/uniapi/prompt";
 import {onShareAppMessage, onShareTimeline} from "@dcloudio/uni-app";
 
 import LogoUrl from "@/static/logo-2.png";
 import NavBar from "@/components/nav-bar/nav-bar.vue";
 import Layout from "@/components/layout/layout.vue";
 import PostItem from "@/components/item/post.vue";
+import TabBar from "@/components/tab-bar/tab-bar.vue";
+import {onGoPage, onGoReplace} from "@/utils/business";
 
 const navHeight = computed(() => {
   const navStyle = uni.getStorageSync("navStyle")
   return navStyle.statusBarHeight_ + navStyle.navBarHeight_ + 5
 })
 
-const location = computed(() => useUserInfoStore().location)
+const tabBarList = [
+  {
+    index: 1,
+    title: "首页",
+    icon: "home",
+    handleClick: () => {
+    }
+  },
+  {
+    index: 2,
+    title: "",
+    icon: "plusempty",
+    float: true,
+    handleClick: () => onGoPage({name: "scan"}, false)
+  },
+  {
+    index: 3,
+    title: "我的",
+    icon: "person",
+    handleClick: () => onGoReplace({name: "mine"}, false)
+  }
+]
 
 const tabList = [
       {
@@ -69,7 +96,7 @@ const tabList = [
     current = ref(0),
     scrollTop = ref(0),
     tabsRef = ref(),
-    dataList = ref([]);
+    dataList = ref([1, 2, 3, 4, 5]);
 
 function tabsChange(index: number) {
   current.value = index;
@@ -79,20 +106,31 @@ function swiperTransition(e: Event) {
   tabsRef.value.setDx(e.detail.dx);
 }
 
-function swiperAnimationfinish(e: Event) {
+function swiperAnimationFinish(e: Event) {
   current.value = e.detail.current;
   tabsRef.value.unlockDx();
 }
 
 function onScroll(env: Event) {
   scrollTop.value = env?.target?.scrollTop
+  if (scrollTop.value > 150) {
+    uni.setNavigationBarColor({
+      frontColor: '#000000',//黑
+      backgroundColor: '#000000',
+    })
+  } else {
+    uni.setNavigationBarColor({
+      frontColor: '#ffffff',//白
+      backgroundColor: '#ffffff'
+    })
+  }
 }
 
 const pagingRef = ref(),
     queryList = async (pageNo?: number, pageSize?: number) => {
-      if (!location.value?.latitude) {
-        await useUserInfoStore().getLocation()
-      }
+      // if (!location.value?.latitude) {
+      //   await useUserInfoStore().getLocation()
+      // }
       loading()
       // const res = await view_shop_list({
       //   latitude: location.value?.latitude,

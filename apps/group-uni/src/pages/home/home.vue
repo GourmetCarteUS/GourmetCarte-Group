@@ -4,7 +4,7 @@
 
     <Mine v-else-if="tabActiveIndex === 2" class="flex-1 flex flex-col"/>
 
-    <TabBar v-model="tabActiveIndex" :tab-bar-list="tabBarList" float/>
+<!--    <TabBar v-model="tabActiveIndex" :tab-bar-list="tabBarList"/>-->
   </Layout>
 </template>
 
