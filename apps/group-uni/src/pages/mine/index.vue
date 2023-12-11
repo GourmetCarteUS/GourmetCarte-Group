@@ -76,7 +76,7 @@ uni.hideTabBar()
 <template>
   <Layout>
     <template #header>
-      <NavBar title="我的" :backgroundColor="scrollTop>=100 ? 'white':undefined"/>
+      <NavBar :is-back="false" title="我的" :backgroundColor="scrollTop>=100 ? 'white':undefined"/>
     </template>
 
     <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder

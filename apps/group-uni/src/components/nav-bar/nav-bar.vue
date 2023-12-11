@@ -3,8 +3,8 @@
     <view class="navbar-fixed" :style="{'background-color': backgroundColor}">
       <!-- 状态栏小程序撑起高度 -->
       <view :style="{height:statusBarHeight+'px'}"></view>
-      <view v-if="title" class="navbar-content">
-        <view v-if="isBack">
+      <view v-if="title" class="navbar-content relative">
+        <view v-if="isBack" class="absolute">
           <uni-icons type="back" @click.stop="onBack"/>
         </view>
         <view class="font-500 text-32 text-center w-full">{{ title }}</view>
