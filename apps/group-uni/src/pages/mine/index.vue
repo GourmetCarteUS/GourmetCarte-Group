@@ -2,7 +2,7 @@
 import {computed, ref} from "vue";
 import Layout from "@/components/layout/layout.vue";
 import CincoreIcon from "@/components/cincore-icon/index.vue";
-import {onGoPage, onGoReplace} from "@/utils/business";
+import {onGoPage, onGoReplace, onGoTab} from "@/utils/business";
 import {useUserInfoStore} from "@/state/modules/user-info";
 import type {UserInfo} from '@/api/user-info/user-info.types'
 import Settings from "@/pages/mine/settings.vue";
@@ -19,7 +19,7 @@ const tabBarList = [
     index: 1,
     title: "首页",
     icon: "home",
-    handleClick: () => onGoReplace({name: "main"}, false)
+    handleClick: () => onGoTab({name: "main"}, false)
   },
   {
     index: 2,
@@ -70,6 +70,7 @@ function onScroll(env: Event) {
     })
   }
 }
+uni.hideTabBar()
 </script>
 
 <template>

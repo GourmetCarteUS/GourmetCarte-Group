@@ -1,8 +1,8 @@
-import type { RouteLocationRaw } from "uni-mini-router";
+import type {RouteLocationRaw} from "uni-mini-router";
 import useTokenStorage from "@/storage/token";
-import { router } from "@/router";
-import { useUserInfoStore } from "@/state/modules/user-info";
-import { serializeToGetRequestString } from "@sky-serein/js-utils";
+import {router} from "@/router";
+import {useUserInfoStore} from "@/state/modules/user-info";
+import {serializeToGetRequestString} from "@sky-serein/js-utils";
 
 export function onGoPage(params: RouteLocationRaw, needLogged = true) {
   if (!needLogged) return router.push(params);
@@ -10,8 +10,10 @@ export function onGoPage(params: RouteLocationRaw, needLogged = true) {
   if (!useTokenStorage.getToken())
     return router.push({
       name: "login",
-      params: { redirect: JSON.stringify(params) },
+      params: {redirect: JSON.stringify(params)},
     });
+
+  debugger
 
   return router.push(params);
 }
@@ -21,7 +23,7 @@ export function onGoReplace(params: RouteLocationRaw, needLogged = true) {
   if (!useTokenStorage.getToken())
     return router.push({
       name: "login",
-      params: { redirect: JSON.stringify(params) },
+      params: {redirect: JSON.stringify(params)},
     });
   return router.replace(params);
 }
@@ -32,17 +34,29 @@ export async function isLogged(isGoLogin = true, redirectUrl: string) {
     !(await useUserInfoStore().getUserInfo())
   ) {
     isGoLogin &&
-      router.replace({
-        name: "login",
-        params: { redirect: encodeURIComponent(redirectUrl) },
-      });
+    router.replace({
+      name: "login",
+      params: {redirect: encodeURIComponent(redirectUrl)},
+    });
     return false;
   }
   return true;
 }
 
 export function onBack() {
+  let pages = getCurrentPages()
+  let currPage = pages[pages.length - 1];   //当前页面
+  let prevPage = pages[pages.length - 2];  //上一个页面
+  //判断上一页是否为首页，如果是就直接返回首页
+  if (!prevPage) {
+    router.pushTab({name: "main"});
+    return;
+  }
   return router.back();
+}
+
+export function onGoTab(params: RouteLocationRaw, needLogged = true) {
+  router.pushTab(params);
 }
 
 export function getCurrentPageUrl() {

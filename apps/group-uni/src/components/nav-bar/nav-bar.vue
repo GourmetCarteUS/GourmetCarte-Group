@@ -4,6 +4,9 @@
       <!-- 状态栏小程序撑起高度 -->
       <view :style="{height:statusBarHeight+'px'}"></view>
       <view v-if="title" class="navbar-content">
+        <view v-if="isBack">
+          <uni-icons type="back" @click.stop="onBack"/>
+        </view>
         <view class="font-500 text-32 text-center w-full">{{ title }}</view>
       </view>
       <view v-else class="navbar-content" :style="{height:navBarHeight+'px',width:windowWidth+'px'}">
@@ -25,13 +28,19 @@
 
 <script lang="ts" setup>
 import {ref} from 'vue';
+import UniIcons from "@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
+import {onBack} from "@/utils/business";
 
 defineProps({
   backgroundColor: {
     default: 'transparent',
     type: String
   },
-  title: String
+  title: String,
+  isBack: {
+    default: true,
+    type: Boolean
+  }
 })
 
 const statusBarHeight = ref(20),/* 状态栏高度 */

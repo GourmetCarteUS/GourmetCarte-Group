@@ -43,7 +43,7 @@ import NavBar from "@/components/nav-bar/nav-bar.vue";
 import Layout from "@/components/layout/layout.vue";
 import PostItem from "@/components/item/post.vue";
 import TabBar from "@/components/tab-bar/tab-bar.vue";
-import {onGoPage, onGoReplace} from "@/utils/business";
+import {onGoPage, onGoReplace, onGoTab} from "@/utils/business";
 
 const navHeight = computed(() => {
   const navStyle = uni.getStorageSync("navStyle")
@@ -69,7 +69,7 @@ const tabBarList = [
     index: 3,
     title: "我的",
     icon: "person",
-    handleClick: () => onGoReplace({name: "mine"}, false)
+    handleClick: () => onGoTab({name: "mine"}, false)
   }
 ]
 
@@ -161,6 +161,7 @@ onShareTimeline(() => {
 })
 
 // useUserInfoStore().initUserInfo()
+uni.hideTabBar()
 </script>
 
 <style lang="scss" scoped>

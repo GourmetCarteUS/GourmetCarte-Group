@@ -100,3 +100,39 @@
   margin-bottom: constant(safe-area-inset-bottom);
   margin-bottom: env(safe-area-inset-bottom);
 }
+
+
+.info-item {
+  height: 94rpx;
+  border-radius: 20rpx;
+  background: rgba(165, 214, 63, .1);
+  display: flex;
+  align-items: center;
+  padding-left: 20rpx;
+  margin-bottom: 20rpx;
+  font-size: 28rpx;
+  color: $uni-text-color;
+  font-weight: 500;
+}
+
+.gc-title {
+  display: flex;
+  font-size: 28rpx;
+  color: $uni-text-color;
+  font-weight: 500;
+  align-items: center;
+  position: relative;
+  transform-style: preserve-3d;
+
+
+  &:after {
+    display: block;
+    content: " ";
+    width: 62rpx;
+    height: 62rpx;
+    background: linear-gradient(122.54deg, rgba(193, 247, 213, 1) 0%, rgba(220, 248, 166, 0) 100%);
+    border-radius: 50%;
+    position: absolute;
+    transform: translateX(-10%) translateZ(-1px);
+  }
+}
