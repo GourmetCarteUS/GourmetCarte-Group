@@ -8,7 +8,7 @@ import {ref} from "vue";
 const scrollTop = ref(0)
 onPageScroll((e) => {
   scrollTop.value = e.scrollTop
-  if (scrollTop.value > 100) {
+  if (scrollTop.value > 80) {
     uni.setNavigationBarColor({
       frontColor: '#000000',//黑
       backgroundColor: '#000000',
@@ -26,7 +26,7 @@ onPageScroll((e) => {
 <template>
   <Layout>
     <template #header>
-      <NavBar title="活动报名小程序设计" :backgroundColor="scrollTop>=100 ? 'white':undefined"/>
+      <NavBar title="活动报名小程序设计" :backgroundColor="scrollTop>=80 ? 'white':undefined"/>
     </template>
     <view class="m-40 mb-160">
       <view class="flex justify-between center mb-30">

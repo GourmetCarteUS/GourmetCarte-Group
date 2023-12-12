@@ -32,7 +32,7 @@ const mode = ref(props['mode'] || 'scroll-y')
 <style lang="scss" scoped>
 .page-container {
   min-height: 100vh;
-  background: linear-gradient(180deg, rgba(180, 245, 106, 1) 0%, rgba(255, 255, 255, 0) 70%);
+  background: linear-gradient(180deg, $uni-color-primary 0%, rgba(255, 255, 255, 0) 70%);
 
   .page-wrapper {
     width: 100%;
