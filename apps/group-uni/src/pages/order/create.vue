@@ -70,7 +70,7 @@
           </view>
         </label>
       </view>
-      <view class="bg-black text-white p-20 b-rd-50 pl-60 pr-60">
+      <view class="bg-black text-white p-20 b-rd-50 pl-60 pr-60" @click="onGoReplace({name: 'order-success'}, false)">
         <text class="text-32">确认支付 ${{ totalPrice }}</text>
       </view>
     </view>
@@ -82,6 +82,7 @@ import Layout from "@/components/layout/layout.vue";
 import NavBar from "@/components/nav-bar/nav-bar.vue";
 import UniIcons from "@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 import {computed, reactive} from "vue";
+import {onGoReplace} from "@/utils/business";
 
 const orderData = reactive({
   unitPrice: 10,

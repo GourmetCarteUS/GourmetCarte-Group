@@ -161,7 +161,7 @@ onShareTimeline(() => {
 })
 
 // useUserInfoStore().initUserInfo()
-uni.hideTabBar()
+uni?.hideTabBar()
 </script>
 
 <style lang="scss" scoped>

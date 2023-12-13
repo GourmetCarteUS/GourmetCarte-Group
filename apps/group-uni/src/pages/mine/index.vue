@@ -67,7 +67,7 @@ function onScroll(env: Event) {
   }
 }
 
-uni.hideTabBar()
+uni?.hideTabBar()
 </script>
 
 <template>
