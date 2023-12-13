@@ -7,7 +7,7 @@
               @click="onClick(tabItem)">
           <view class="tabBar-item-icon">
             <uni-icons :type="tabItem.icon" :size="tabItem?.float?48:28"
-                       :color="modelValue === tabItem.index ? '#FBDA41': ''"/>
+                       :color="tabItem?.float?'white':modelValue === tabItem.index ? '#8BE5B0': ''"/>
           </view>
           <view class="tab-bar-text">{{ tabItem.title }}</view>
         </view>

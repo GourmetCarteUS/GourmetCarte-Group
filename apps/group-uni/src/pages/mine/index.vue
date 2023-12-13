@@ -93,14 +93,14 @@ uni?.hideTabBar()
       </view>
 
       <view class="m-25 p-35 pb-0 b-rd-20 bg-white">
-        <view class="title">资料信息</view>
+        <view class="gc-title text-28 font-500">资料信息</view>
         <view class="mt-30">
-          <view class="user-info-item">报名参赛者：小鳄鱼1</view>
-          <view class="user-info-item">手机号码：187010789087</view>
+          <view class="gc-item">报名参赛者：小鳄鱼1</view>
+          <view class="gc-item">手机号码：187010789087</view>
         </view>
-        <view class="title mt-30">我的活动</view>
+        <view class="gc-title mt-60 text-28 font-500">我的活动</view>
         <view class="mt-30">
-          <view class="group-item mb-20 flex" v-for="i in 10">
+          <view class="group-item b-rd-20 p-20 mb-20 flex" v-for="i in 10">
             <view class="w-150 h-170 b-rd-20">
               <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png" class="h-full w-full b-rd-20"
                      mode="aspectFill"/>
@@ -135,60 +135,7 @@ uni?.hideTabBar()
 <style scoped lang="scss">
 @import "@/static/styles/common.scss";
 
-.header {
-  background: $uni-color-primary url("@/static/logo.png") no-repeat 120%/45%;
-  padding: 50rpx 0 130rpx 60rpx;
-}
-
-.balance {
-  border-right: 1px dashed #C7C7C7;
-}
-
-.tab {
-  width: calc(100% - 100px);
-  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.3);
-  padding: 15rpx 50rpx 10rpx;
-}
-
-.title {
-  display: flex;
-  font-size: 28rpx;
-  color: $uni-text-color;
-  font-weight: 500;
-  align-items: center;
-  position: relative;
-  transform-style: preserve-3d;
-
-
-  &:after {
-    display: block;
-    content: " ";
-    width: 62rpx;
-    height: 62rpx;
-    background: linear-gradient(122.54deg, rgba(193, 247, 213, 1) 0%, rgba(220, 248, 166, 0) 100%);
-    border-radius: 50%;
-    position: absolute;
-    transform: translateX(-10%) translateZ(-1px);
-  }
-}
-
-.user-info-item {
-  height: 94rpx;
-  border-radius: 20rpx;
-  background: rgba(165, 214, 63, .1);
-  display: flex;
-  align-items: center;
-  padding-left: 20rpx;
-  margin-bottom: 20rpx;
-  font-size: 28rpx;
-  color: $uni-text-color;
-  font-weight: 500;
-}
-
 .group-item {
-  border-radius: 20rpx;
-  background: linear-gradient(180deg, rgba(243, 250, 230, 1) 0%, rgba(243, 250, 231, 0) 100%);
-  padding: 20rpx;
-
+  background: linear-gradient(180deg, rgba($uni-color-primary, .2) 0%, rgba(243, 250, 231, 0) 100%);
 }
 </style>
