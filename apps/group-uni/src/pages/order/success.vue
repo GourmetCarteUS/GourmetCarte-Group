@@ -11,14 +11,14 @@
           <view class="text-36 font-500">恭喜您成功报名活动</view>
         </view>
         <view>
-          <view class="gc-item text-28 font-500">报名参赛者：小鳄鱼1</view>
-          <!--          <view class="gc-item text-28 font-500">手机号码：187010789087</view>-->
-          <view class="gc-item text-28 font-500">活动：活动报名小程序设计</view>
-          <view class="gc-item text-28 font-500">购买票数：5票</view>
+          <view class="gc-item-before text-28 font-500">报名参赛者：小鳄鱼1</view>
+          <!--          <view class="gc-item-before text-28 font-500">手机号码：187010789087</view>-->
+          <view class="gc-item-before text-28 font-500">活动：活动报名小程序设计</view>
+          <view class="gc-item-before text-28 font-500">购买票数：5票</view>
         </view>
       </view>
       <view class="m-30">
-        <view class="gc-title mb-30 text-36 font-500">活动答疑</view>
+        <view class="gc-title mb-30 text-32 font-500">活动答疑</view>
         <view class="bg-green-4 bg-opacity-20 b-rd-20 p-60">
           <view class="center flex-col">
             <image show-menu-by-longpress src="https://img.js.design/assets/img/6419450a30374b2d6e59a179.png"

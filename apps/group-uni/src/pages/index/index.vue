@@ -16,8 +16,8 @@
       <view class="sticky pb-20 bg-white" :style="{top: (navHeight-5)+'px'}">
         <z-tabs ref="tabsRef" :list="tabList" :current="current" @change="tabsChange"/>
         <view class="flex mt-20 ml-20">
-          <view class="capsule-button bg-grey-sub">重庆市</view>
-          <view class="capsule-button bg-grey-sub ml-20">全部时间</view>
+          <view class="capsule-button text-24 bg-grey-sub">重庆市</view>
+          <view class="capsule-button text-24 bg-grey-sub ml-20">全部时间</view>
         </view>
       </view>
 

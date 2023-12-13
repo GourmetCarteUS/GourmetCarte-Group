@@ -95,8 +95,8 @@ uni?.hideTabBar()
       <view class="m-25 p-35 pb-0 b-rd-20 bg-white">
         <view class="gc-title text-28 font-500">资料信息</view>
         <view class="mt-30">
-          <view class="gc-item">报名参赛者：小鳄鱼1</view>
-          <view class="gc-item">手机号码：187010789087</view>
+          <view class="gc-item-before">报名参赛者：小鳄鱼1</view>
+          <view class="gc-item-before">手机号码：187010789087</view>
         </view>
         <view class="gc-title mt-60 text-28 font-500">我的活动</view>
         <view class="mt-30">

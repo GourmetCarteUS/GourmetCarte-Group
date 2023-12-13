@@ -3,23 +3,29 @@
     <template #header>
       <NavBar title="创建活动"/>
     </template>
-    <view class="bg-white m-40 p-40 b-rd-50">
+    <view class="bg-white m-40 p-40 b-rd-50 pb-800">
       <view class="gc-title text-28 font-900 mb-30">发布新活动</view>
       <view class="mt-20">
-        <view class="info-item">
+        <view class="gc-item-before">
           <view>活动名称</view>
           <view class="ml-20"><input type="text" placeholder="请输入活动名称"></view>
         </view>
-        <view class="info-item">
+        <view class="gc-item-before">
           <view>活动地址</view>
           <view class="ml-20">请输入选择活动地址</view>
         </view>
-        <view class="info-item">
+        <view class="gc-item-before">
           <view>活动时间</view>
           <view class="ml-20">
             <uni-datetime-picker :border="false">
               请选择活动开始时间
             </uni-datetime-picker>
+          </view>
+        </view>
+        <view class="gc-item-before justify-between pr-20">
+          <view>活动人数</view>
+          <view class="ml-20">
+            <uni-number-box min="2"/>
           </view>
         </view>
       </view>
@@ -55,6 +61,7 @@
 
 import Layout from "@/components/layout/layout.vue";
 import NavBar from "@/components/nav-bar/nav-bar.vue";
+import UniNumberBox from "@/uni_modules/uni-number-box/components/uni-number-box/uni-number-box.vue";
 </script>
 <style scoped lang="scss">
 @import "@/static/styles/common.scss";

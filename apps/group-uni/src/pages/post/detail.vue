@@ -34,8 +34,8 @@ onPageScroll((e) => {
         <view>
           <view class="text-40 font-900 ml-20">企业真题第18期</view>
           <view class="flex mt-20">
-            <view class="capsule-button bg-primary-sub font-700">进行中</view>
-            <view class="capsule-button bg-primary-sec font-700 ml-20">活动时：2.29-3.29</view>
+            <view class="capsule-button bg-primary-sub text-24">进行中</view>
+            <view class="capsule-button bg-primary-sec text-24 ml-20">活动时：2.29-3.29</view>
           </view>
         </view>
         <view class="w-170 h-170 b-rd-20 bg-amber mr-30">
@@ -44,12 +44,15 @@ onPageScroll((e) => {
       </view>
       <view class="bg-white p-40 b-rd-50">
         <view class="mt-30">
-          <view class="info-item">活动时间：小鳄鱼1</view>
-          <view class="info-item">9.3km 江北石子山-北门</view>
+          <view class="gc-item">活动时间：小鳄鱼1</view>
+          <view class="gc-item">
+            <!--            <uni-icons type="location-filled" size="20" color="#39393A"/>-->
+            9.3km 江北石子山-北门
+          </view>
         </view>
 
         <!--参与者列表，图像+名字，当前人数和剩余名额；点击可展开modal显示所有参与人员；-->
-        <view class="mt-40">
+        <view class="mt-30">
           <view class="text-24 center justify-between">
             <text class="text-gray">12人一起</text>
             <text class="text-primary">仅剩5个名额></text>
@@ -59,13 +62,13 @@ onPageScroll((e) => {
               <view class="avatar w-100 h-100 bg-red b-rd-50 mb-10">
 
               </view>
-              <view class="user-name text-24">李老师</view>
+              <view class="user-name text-gray text-24 text-nowrap w-100">李老师李老师李老师李老师</view>
             </view>
           </view>
         </view>
 
         <!-- 活动描述 -->
-        <view class="gc-title mt-40 mb-20">活动描述</view>
+        <view class="gc-title text-28 mt-40 mb-30">活动描述</view>
         <view class="text-26 font-400">
           1. 请在「艺术展览类活动」、「学习课程类活动」场景中二选一，设计活动报名小程序，需包含 4个必选命题 + 1 个可选「TDesign
           移动端组件库」 <br/>
@@ -75,7 +78,7 @@ onPageScroll((e) => {
           2. 必要的流程可以通过连线进行交互说明；点此查看 CoDesign 上传教程
         </view>
         <!-- 详情图片 -->
-        <view class="gc-title mt-40 mb-20">详情图片</view>
+        <view class="gc-title text-28 mt-40 mb-30">详情图片</view>
         <view class="w-full">
           <image class="w-full" src="https://img.js.design/assets/img/64180b6230374b2d6ef4499d.png" v-for="i in 5"/>
 
@@ -88,8 +91,10 @@ onPageScroll((e) => {
         <uni-icons type="redo-filled" size="22" class="mr-10"/>
         分享
       </view>
-      <view class="bg-black text-white p-20 b-rd-50 pl-60 pr-60">
-        <text class="text-32" @click="onGoPage({name: 'order-create', params: {id: '1'}}, false)">参加活动</text>
+      <view class="bg-black text-white p-20 b-rd-50 pl-120 pr-120 center"
+            @click="onGoPage({name: 'order-create', params: {id: '1'}}, false)">
+        <text class="text-35 font-900">上车</text>
+        <text class="text-28">（$20.00）</text>
       </view>
     </view>
 
