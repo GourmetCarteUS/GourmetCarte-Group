@@ -23,6 +23,13 @@
       }
     },
     {
+      "name": "post-create",
+      "path": "pages/post/create",
+      "style": {
+        "navigationBarTitleText": "活动创建"
+      }
+    },
+    {
       "name": "login",
       "path": "pages/login/login",
       "style": {

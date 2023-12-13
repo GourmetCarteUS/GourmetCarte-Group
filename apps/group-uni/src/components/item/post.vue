@@ -1,5 +1,5 @@
 <template>
-  <view class="post-container m-15 bg-white" @click="onGoPage({name: 'post-detail'}, false)">
+  <view class="post-container m-20 bg-white" @click="onGoPage({name: 'post-detail'}, false)">
     <view class="h-400">
       <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png" class="h-full w-full"/>
     </view>

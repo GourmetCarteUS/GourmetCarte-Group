@@ -63,7 +63,7 @@ const tabBarList = [
     title: "",
     icon: "plusempty",
     float: true,
-    handleClick: () => onGoPage({name: "scan"}, false)
+    handleClick: () => onGoPage({name: "post-create"}, false)
   },
   {
     index: 3,

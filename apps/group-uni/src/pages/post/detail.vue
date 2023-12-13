@@ -42,7 +42,7 @@ onPageScroll((e) => {
 
         </view>
       </view>
-      <view class="bg-white p-40" style="border-radius: 50rpx 50rpx 0 0">
+      <view class="bg-white p-40 b-rd-50">
         <view class="mt-30">
           <view class="info-item">活动时间：小鳄鱼1</view>
           <view class="info-item">9.3km 江北石子山-北门</view>

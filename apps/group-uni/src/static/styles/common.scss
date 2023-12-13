@@ -23,17 +23,20 @@
 .bg-primary-sub {
   background: $uni-color-primary-sub;
 }
-.bg-grey-sub{
+
+.bg-grey-sub {
   background: $uni-bg-color-grey;
 }
-.text-grey-sub{
+
+.text-grey-sub {
   color: $uni-bg-color-grey;
 }
-.text-color{
+
+.text-color {
   color: $uni-text-color;
 }
 
-.capsule-button{
+.capsule-button {
   border-radius: 174rpx;
   font-weight: 500;
   padding: 10rpx 30rpx;
@@ -117,9 +120,9 @@
 
 .gc-title {
   display: flex;
-  font-size: 28rpx;
+  //font-size: 28rpx;
   color: $uni-text-color;
-  font-weight: 500;
+  //font-weight: 500;
   align-items: center;
   position: relative;
   transform-style: preserve-3d;
@@ -133,6 +136,12 @@
     background: linear-gradient(122.54deg, rgba(193, 247, 213, 1) 0%, rgba(220, 248, 166, 0) 100%);
     border-radius: 50%;
     position: absolute;
-    transform: translateX(-10%) translateZ(-1px);
+    transform: translateX(-20%) translateZ(-1px);
   }
+}
+
+.text-nowrap {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

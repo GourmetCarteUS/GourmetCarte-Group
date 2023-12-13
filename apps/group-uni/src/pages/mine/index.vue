@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 import Layout from "@/components/layout/layout.vue";
-import CincoreIcon from "@/components/cincore-icon/index.vue";
-import {onGoPage, onGoReplace, onGoTab} from "@/utils/business";
-import {useUserInfoStore} from "@/state/modules/user-info";
-import type {UserInfo} from '@/api/user-info/user-info.types'
+import {onGoPage, onGoTab} from "@/utils/business";
 import Settings from "@/pages/mine/settings.vue";
 import NavBar from "@/components/nav-bar/nav-bar.vue";
 import TabBar from "@/components/tab-bar/tab-bar.vue";
 
-// const userInfo = computed<UserInfo | null>(() => useUserInfoStore().user)
 const dataList = ref([]), pagingRef = ref(),
     settingUserRef = ref(),
     scrollTop = ref(0);
@@ -26,7 +22,7 @@ const tabBarList = [
     title: "",
     icon: "plusempty",
     float: true,
-    handleClick: () => onGoPage({name: "scan"}, false)
+    handleClick: () => onGoPage({name: "post-create"}, false)
   },
   {
     index: 3,
@@ -70,6 +66,7 @@ function onScroll(env: Event) {
     })
   }
 }
+
 uni.hideTabBar()
 </script>
 
@@ -100,28 +97,28 @@ uni.hideTabBar()
         <view class="mt-30">
           <view class="user-info-item">报名参赛者：小鳄鱼1</view>
           <view class="user-info-item">手机号码：187010789087</view>
-          <view class="user-info-item">收货地址：北京市紫禁城</view>
         </view>
         <view class="title mt-30">我的活动</view>
         <view class="mt-30">
-          <view class="group-item mb-20" v-for="item in dataList" :key="item">
-            <view>
-              <text class="text-28 font-500">11月1日</text>
-              <text class="text-24 ml-20 text-gray">共58人一起</text>
+          <view class="group-item mb-20 flex" v-for="i in 10">
+            <view class="w-150 h-170 b-rd-20">
+              <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png" class="h-full w-full b-rd-20"
+                     mode="aspectFill"/>
             </view>
-            <view class="flex mt-20">
-              <view class="w-200 h-200 b-rd-20">
-                <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png" class="h-full w-full b-rd-20"
-                       mode="aspectFill"/>
+            <view class="text-24 ml-20 flex-col flex justify-center">
+              <view class="mb-20 flex justify-between">
+                <view class="flex-1">
+                  <view class="text-30 font-900 text-nowrap w-250">11.1周六室外活动1周六室外活动1周六室外活动</view>
+                  <view class="text-gray">重庆市xxxxxx</view>
+                </view>
+                <view>共58人一起</view>
               </view>
-              <view class="text-24 ml-20 flex-col flex justify-center">
-                <view class="mb-20 text-30">11.1周六室外活动</view>
-                <view class="mb-20 text-gray">卷卷户外</view>
-                <view class="text-gray">花果山</view>
+              <view class="flex">
+                <view class="capsule-button bg-primary-sub">进行中</view>
+                <view class="capsule-button bg-primary-sec ml-20">活动时：2.29-3.29</view>
               </view>
             </view>
           </view>
-
         </view>
       </view>
       <template #bottom>
