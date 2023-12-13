@@ -30,6 +30,13 @@
       }
     },
     {
+      "name": "order-create",
+      "path": "pages/order/create",
+      "style": {
+        "navigationBarTitleText": "授权登录"
+      }
+    },
+    {
       "name": "use-help",
       "path": "pages/help/use-help",
       "style": {

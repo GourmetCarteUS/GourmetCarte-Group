@@ -4,6 +4,7 @@ import NavBar from "@/components/nav-bar/nav-bar.vue";
 import UniIcons from "@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue";
 import {onPageScroll} from "@dcloudio/uni-app";
 import {ref} from "vue";
+import {onGoPage} from "@/utils/business";
 
 const scrollTop = ref(0)
 onPageScroll((e) => {
@@ -75,8 +76,8 @@ onPageScroll((e) => {
         </view>
         <!-- 详情图片 -->
         <view class="gc-title mt-40 mb-20">详情图片</view>
-        <view>
-          <image src="https://img.js.design/assets/img/64180b6230374b2d6ef4499d.png" v-for="i in 5"/>
+        <view class="w-full">
+          <image class="w-full" src="https://img.js.design/assets/img/64180b6230374b2d6ef4499d.png" v-for="i in 5"/>
 
         </view>
       </view>
@@ -88,7 +89,7 @@ onPageScroll((e) => {
         分享
       </view>
       <view class="bg-black text-white p-20 b-rd-50 pl-60 pr-60">
-        <text class="text-32">参加活动</text>
+        <text class="text-32" @click="onGoPage({name: 'order-create', params: {id: '1'}}, false)">参加活动</text>
       </view>
     </view>
 
