@@ -32,7 +32,7 @@ onLaunch(() => {
 });
 onShow(() => {
   console.log("App Show");
-  uni?.hideTabBar()
+  // uni?.hideTabBar()
 });
 onHide(() => {
   console.log("App Hide");

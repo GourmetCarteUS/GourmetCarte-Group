@@ -6,6 +6,13 @@
   background: $uni-color-primary !important;
 }
 
+.bg-error{
+  background: $uni-color-error !important;
+}
+.bg-warning{
+  background: $uni-color-warning !important;
+}
+
 .bg-primary-sec {
   background-color: $uni-color-primary-sec !important;
 }
@@ -20,6 +27,15 @@
 
 .text-color {
   color: $uni-text-color;;
+}
+
+
+.bg-grey-sub {
+  background: $uni-bg-color-grey;
+}
+
+.text-grey-sub {
+  color: $uni-bg-color-grey;
 }
 
 .capsule-button {

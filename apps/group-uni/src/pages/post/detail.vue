@@ -91,11 +91,42 @@ onPageScroll((e) => {
         <uni-icons type="redo-filled" size="22" class="mr-10"/>
         分享
       </view>
-      <view class="bg-black text-white p-20 b-rd-50 pl-120 pr-120 center"
-            @click="onGoPage({name: 'order-create', params: {id: '1'}}, false)">
-        <text class="text-35 font-900">上车</text>
-        <text class="text-28">（$20.00）</text>
-      </view>
+      <template v-if="false">
+        <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
+              @click="onGoPage({name: 'order-create', params: {id: '1'}}, false)">
+          <text class="text-35 font-900">上车</text>
+          <text class="text-24">（$20.00）</text>
+        </view>
+      </template>
+      <template v-else-if="true">
+        <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
+              @click="onGoPage({name: 'post-create', params: {id: '1'}}, false)">
+          <text class="text-35 font-900">编辑</text>
+        </view>
+        <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
+              @click="onGoPage({name: 'order-user', params: {id: '1'}}, false)">
+          <text class="text-35 font-900">检票</text>
+        </view>
+      </template>
+      <template v-else>
+        <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
+              @click="onGoPage({name: 'order-success', params: {id: '1'}}, false)">
+          <text class="text-35 font-900">票据</text>
+        </view>
+        <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
+              @click="onGoPage({name: 'order-create', params: {id: '1'}}, false)">
+          <text class="text-35 font-900">上车</text>
+          <text class="text-24">（$20.00）</text>
+        </view>
+      </template>
+
+      <!--      <view>-->
+      <!--        <view class="bg-black text-white p-20 b-rd-50 pl-120 pr-120 center"-->
+      <!--              @click="onGoPage({name: 'order-create', params: {id: '1'}}, false)">-->
+      <!--          <text class="text-35 font-900">上车</text>-->
+      <!--          <text class="text-28">（$20.00）</text>-->
+      <!--        </view>-->
+      <!--      </view>-->
     </view>
 
   </Layout>

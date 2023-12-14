@@ -44,6 +44,13 @@
       }
     },
     {
+      "name": "order-user",
+      "path": "pages/order/user",
+      "style": {
+        "navigationBarTitleText": "报名用户"
+      }
+    },
+    {
       "name": "order-success",
       "path": "pages/order/success",
       "style": {
