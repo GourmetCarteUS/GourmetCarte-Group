@@ -21,8 +21,6 @@ export class VersionController extends Controller {
 
         user.avatarUrl = 'https://avatars.githubusercontent.com/u/1024025?v=4';
         user.displayName = 'test';
-        user.openId = 'test';
-        user.unionId = 'test';
         await user.save();
 
         return {

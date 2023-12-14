@@ -1,18 +1,7 @@
 import { IEvent, IUser } from 'group-common';
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Relation, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, Index, JoinTable } from "typeorm"
+import { BaseModel } from './BaseModel.js';
 import { User } from './User.js';
-
-
-export abstract class BaseModel extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
-
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
-}
 
 @Entity()
 export class Event extends BaseModel implements IEvent {

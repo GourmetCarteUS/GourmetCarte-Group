@@ -1,28 +1,18 @@
 import { IUser } from 'group-common';
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn,Relation } from 'typeorm';
+import { BaseModel } from './BaseModel.js';
 import { Event } from './Event.js';
-
-export abstract class BaseModel extends BaseEntity {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
-
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
-}
 
 @Entity()
 export class User extends BaseModel implements IUser {
-    @Column()
+    @Column({ nullable: true})
     avatarUrl: string;
 
-    @Column()
+    @Column({ nullable: true})
     displayName: string;
-    @Column()
+    @Column({ nullable: true})
     openId: string;
-    @Column()
+    @Column({ nullable: true})
     unionId: string;
 
     @OneToMany(type => Event, event => event.creator)
