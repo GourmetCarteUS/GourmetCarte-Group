@@ -110,7 +110,8 @@ uni?.hideTabBar()
         </view>
         <view class="gc-title mt-60 text-28 font-500">我的活动</view>
         <view class="mt-30">
-          <view class="group-item b-rd-20 p-20 mb-20" v-for="i in 10">
+          <view class="group-item b-rd-20 p-20 mb-20" v-for="i in 10"
+                @click="onGoPage({name: 'post-detail', params:{id: i.toString()}}, false)">
             <view class="flex mb-10">
               <view class="w-150 h-170 b-rd-20">
                 <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png" class="h-full w-full b-rd-20"
@@ -130,10 +131,10 @@ uni?.hideTabBar()
                 </view>
               </view>
             </view>
-<!--            <view class="flex">-->
-<!--              <view class="capsule-button bg-error text-white w-full text-center">下车 (5票)</view>-->
-<!--              <view class="capsule-button bg-warning text-white w-full ml-20 text-center">验票 (5票)</view>-->
-<!--            </view>-->
+            <!--            <view class="flex">-->
+            <!--              <view class="capsule-button bg-error text-white w-full text-center">下车 (5票)</view>-->
+            <!--              <view class="capsule-button bg-warning text-white w-full ml-20 text-center">验票 (5票)</view>-->
+            <!--            </view>-->
           </view>
         </view>
       </view>

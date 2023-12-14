@@ -40,4 +40,25 @@ onHide(() => {
 </script>
 <style lang="scss">
 @import "@/static/iconfont/iconfont-weapp-icon.css";
+
+//设置圆角
+checkbox.round .wx-checkbox-input,
+checkbox.round .uni-checkbox-input {
+  transform: scale(0.8);
+	border-radius: 100upx;
+}
+
+//设置背景色
+checkbox.primary[checked] .wx-checkbox-input,
+checkbox.primary.checked .uni-checkbox-input{
+	background-color: $uni-color-primary !important;
+	border-color: $uni-color-primary !important;
+	color: green !important;
+}
+
+
+
+
+
+//元素使用的时候就是使用 round 和 red
 </style>

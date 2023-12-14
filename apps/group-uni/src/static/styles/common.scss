@@ -149,3 +149,18 @@
     transform: translateZ(-1px);
   }
 }
+
+// 已结束
+.solved {
+  background: $uni-text-color-grey !important;
+  color: white !important;
+}
+// 进行中
+.processing{
+  background: $uni-color-primary !important;
+  color: white !important;
+}
+// 未开始
+.pending{
+  background: $uni-color-primary-sub !important;
+}

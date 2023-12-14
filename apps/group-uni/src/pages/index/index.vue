@@ -43,7 +43,7 @@ import NavBar from "@/components/nav-bar/nav-bar.vue";
 import Layout from "@/components/layout/layout.vue";
 import PostItem from "@/components/item/post.vue";
 import TabBar from "@/components/tab-bar/tab-bar.vue";
-import {onGoPage, onGoReplace, onGoTab} from "@/utils/business";
+import {onGoPage, onGoTab} from "@/utils/business";
 
 const navHeight = computed(() => {
   const navStyle = uni.getStorageSync("navStyle")
@@ -96,7 +96,7 @@ const tabList = [
     current = ref(0),
     scrollTop = ref(0),
     tabsRef = ref(),
-    dataList = ref([1, 2, 3, 4, 5]);
+    dataList = ref([]);
 
 function tabsChange(index: number) {
   current.value = index;
@@ -138,7 +138,31 @@ const pagingRef = ref(),
       //   limit: pageSize,
       //   page: pageNo
       // })
-      pagingRef.value.complete([1, 2, 3, 4]);
+      pagingRef.value.complete([{
+        id: 1,
+        name: "1号活动",
+        status: "processing",
+        isJoin: true,
+        isMe: true
+      }, {
+        id: 2,
+        name: "2号活动",
+        status: "pending",
+        isJoin: true,
+        isMe: true
+      }, {
+        id: 3,
+        name: "3号活动",
+        status: "pending",
+        isJoin: true,
+        isMe: true
+      }, {
+        id: 4,
+        name: "4号活动",
+        status: "solved",
+        isJoin: true,
+        isMe: true
+      }]);
       hideLoading()
     };
 

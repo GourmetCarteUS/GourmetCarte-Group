@@ -44,11 +44,11 @@
           </view>
         </label>
       </view>
-      <view class="bg-white text-black text-center p-20 b-rd-50 flex-1 mr-20">
+      <view class="bg-black text-white text-center p-20 b-rd-50 flex-1 mr-20">
         <text class="text-32">下车</text>
       </view>
       <view class="bg-black text-white text-center p-20 b-rd-50 flex-1">
-        <text class="text-32">到店验票</text>
+        <text class="text-32">检票</text>
       </view>
     </view>
   </Layout>
