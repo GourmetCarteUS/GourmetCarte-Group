@@ -3,7 +3,7 @@
 /**
  * Module dependencies.
  */
-
+import 'reflect-metadata';
 import _debug from 'debug';
 import 'dotenv/config';
 import app from './app';

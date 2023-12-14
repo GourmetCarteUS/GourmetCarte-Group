@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
         "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "allowJs": true,
         "esModuleInterop": true,
-        "jsx": "react-native",
         "lib": ["es5", "es6"],
         "moduleResolution": "node",
         "resolveJsonModule": true,
@@ -13,6 +13,5 @@
         "declaration": true,
         "allowSyntheticDefaultImports": true,
         "module": "ESNext"
-    },
-    "include": ["./src/*", "./src/**/*"]
+    }
 }
