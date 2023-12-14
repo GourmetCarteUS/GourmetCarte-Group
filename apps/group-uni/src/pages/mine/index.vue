@@ -28,10 +28,9 @@ const tabBarList = [
     index: 3,
     title: "我的",
     icon: "person",
+    active: true
   }
 ]
-const tabIndex = ref(3)
-
 async function queryList(pageNo: number, pageSize: number) {
   // const {data} = await view_order_list({
   //   status: 'run',
@@ -140,7 +139,7 @@ uni?.hideTabBar()
       </view>
       <template #bottom>
         <view style="z-index: 99" class="h-150">
-          <TabBar v-model="tabIndex" :tab-bar-list="tabBarList"/>
+          <TabBar :tab-bar-list="tabBarList"/>
         </view>
       </template>
     </z-paging>

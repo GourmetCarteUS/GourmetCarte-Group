@@ -55,8 +55,7 @@ const tabBarList = [
     index: 1,
     title: "首页",
     icon: "home",
-    handleClick: () => {
-    }
+    active: true,
   },
   {
     index: 2,

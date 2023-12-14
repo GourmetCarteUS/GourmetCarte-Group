@@ -30,7 +30,7 @@ onLoad(params => {
   if (params?.id) {
     postId.value = params?.id
     const _currentData = TestData.find(item => item.id == postId.value)
-    if (!_currentData?.id) return toast("暂无该数据", {complete: onBack})
+    if (!_currentData?.id) return toast("暂无该数据", {complete: () => setTimeout(onBack, 1500)})
     Object.assign(currentData, _currentData)
   }
 })

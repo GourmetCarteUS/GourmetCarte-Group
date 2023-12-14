@@ -3,11 +3,11 @@
     <view class="flex">
       <view class="tqb-tabBar-item">
         <view class="tabBar-item-body" v-for="tabItem in tabBarList" :key="tabItem.index"
-              :class="{float: tabItem?.float, active: modelValue === tabItem.index}"
+              :class="{float: tabItem?.float, active: tabItem?.active}"
               @click="onClick(tabItem)">
           <view class="tabBar-item-icon">
             <uni-icons :type="tabItem.icon" :size="tabItem?.float?48:28"
-                       :color="tabItem?.float?'white':modelValue === tabItem.index ? '#8BE5B0': ''"/>
+                       :color="tabItem?.float?'white':tabItem?.active ? '#8BE5B0': ''"/>
           </view>
           <view class="tab-bar-text">{{ tabItem.title }}</view>
         </view>
@@ -24,10 +24,11 @@ interface TabItemType {
   title: string
   icon: string
   float?: boolean
+  active?: boolean
   handleClick?: Function
 }
 
-const props = defineProps({
+defineProps({
   float: {
     type: Boolean,
     value: false
@@ -43,10 +44,10 @@ const props = defineProps({
 });
 
 function onClick(tabItem: TabItemType) {
-  if (props.modelValue == tabItem.index) return;
+  // if (props.modelValue == tabItem.index) return;
   tabItem.handleClick && tabItem?.handleClick()
-  if (tabItem.index === 2) return
-  emits('update:modelValue', tabItem.index)
+  // if (tabItem.index === 2) return
+  // emits('update:modelValue', tabItem.index)
 }
 
 </script>
