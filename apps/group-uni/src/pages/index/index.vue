@@ -4,7 +4,8 @@
       <NavBar :backgroundColor="scrollTop>=150 ? 'white':undefined"/>
     </template>
     <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder
-              :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
+              :show-scrollbar="false" v-model="dataList" @scroll="onScroll"
+    >
       <view class="w-full" :style="{'margin-top': navHeight+'px'}">
         <swiper :current="current" @transition="swiperTransition" @animationfinish="swiperAnimationFinish">
           <swiper-item class="swiper-item bg-red" v-for="(item, index) in tabList" :key="index">
@@ -13,11 +14,12 @@
         </swiper>
       </view>
 
-      <view class="sticky pb-20 bg-white" :style="{top: (navHeight-5)+'px'}">
+      <view style="z-index: 100" class="sticky pb-20 bg-white" :style="{top: (navHeight-5)+'px'}">
         <z-tabs ref="tabsRef" :list="tabList" :current="current" @change="tabsChange"/>
         <view class="flex mt-20 ml-20">
           <view class="capsule-button text-24 bg-grey-sub">重庆市</view>
-          <view class="capsule-button text-24 bg-grey-sub ml-20">全部时间</view>
+          <view class="capsule-button text-24 bg-grey-sub ml-20"
+                @click="datePickerRef?.show">全部时间</view>
         </view>
       </view>
 
@@ -25,8 +27,11 @@
         <PostItem :data="item"/>
       </view>
       <template #bottom>
-        <view style="z-index: 99" class="h-150">
+        <view style="z-index: 10" class="h-150">
           <TabBar :tab-bar-list="tabBarList"/>
+          <view style="position: absolute; bottom: 1000px">
+            <uni-datetime-picker ref="datePickerRef" type="daterange"></uni-datetime-picker>
+          </view>
         </view>
       </template>
     </z-paging>
@@ -49,6 +54,7 @@ const navHeight = computed(() => {
   const navStyle = uni.getStorageSync("navStyle")
   return navStyle.statusBarHeight_ + navStyle.navBarHeight_ + 5
 })
+const datePickerRef = ref()
 
 const tabBarList = [
   {
