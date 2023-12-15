@@ -1,13 +1,8 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 
-export function expressAuthentication(
-    request: express.Request,
-    securityName: string,
-    scopes?: string[]
-) {
-    const authorized =
-        request.body.token || request.query.token || request.headers['authorization'];
+export function expressAuthentication(request: express.Request, securityName: string, scopes?: string[]) {
+    const authorized = request.body.token || request.query.token || request.headers['authorization'];
 
     return new Promise((resolve, reject) => {
         if (!authorized) {

@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { DataSource } from 'typeorm';
 
 export const AppDataSource = new DataSource({
-    type: "mysql",
+    type: 'mysql',
     host: process.env.DB_HOST,
     port: parseInt(process.env.DB_PORT),
     username: process.env.DB_USERNAME,
@@ -13,10 +13,10 @@ export const AppDataSource = new DataSource({
     entities: ['./src/models/*.ts'],
     subscribers: [],
     migrations: ['./src/migrations/*.ts'],
-})
+});
 
 AppDataSource.initialize()
     .then(() => {
         console.log('Connection has been established successfully.');
     })
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(error));

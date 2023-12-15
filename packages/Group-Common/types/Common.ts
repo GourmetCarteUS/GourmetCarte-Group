@@ -16,8 +16,6 @@ export interface GCJSONArrayResponse<T> extends GCJSONResponseBase {
     data?: T[];
 }
 
-export interface GCJSONPaginationResponse<T>
-    extends GCJSONResponseBase,
-        Omit<PaginationModel<T>, 'docs'> {
+export interface GCJSONPaginationResponse<T> extends GCJSONResponseBase, Omit<PaginationModel<T>, 'docs'> {
     data?: T[];
 }

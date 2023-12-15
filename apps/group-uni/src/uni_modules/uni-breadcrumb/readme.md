@@ -17,36 +17,31 @@
 
 ```html
 <uni-breadcrumb separator="/">
-  <uni-breadcrumb-item
-    v-for="(route,index) in routes"
-    :key="index"
-    :to="route.to"
-    >{{route.name}}</uni-breadcrumb-item
-  >
+    <uni-breadcrumb-item v-for="(route,index) in routes" :key="index" :to="route.to">{{route.name}}</uni-breadcrumb-item>
 </uni-breadcrumb>
 ```
 
 ```js
 export default {
-  name: "uni-stat-breadcrumb",
-  data() {
-    return {
-      routes: [
-        {
-          to: "/A",
-          name: "A页面",
-        },
-        {
-          to: "/B",
-          name: "B页面",
-        },
-        {
-          to: "/C",
-          name: "C页面",
-        },
-      ],
-    };
-  },
+    name: 'uni-stat-breadcrumb',
+    data() {
+        return {
+            routes: [
+                {
+                    to: '/A',
+                    name: 'A页面',
+                },
+                {
+                    to: '/B',
+                    name: 'B页面',
+                },
+                {
+                    to: '/C',
+                    name: 'C页面',
+                },
+            ],
+        };
+    },
 };
 ```
 

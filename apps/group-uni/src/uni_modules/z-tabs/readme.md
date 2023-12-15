@@ -41,36 +41,36 @@ npm update @zxlee/z-tabs
 
 ```html
 <template>
-  <z-tabs :list="list"></z-tabs>
+    <z-tabs :list="list"></z-tabs>
 </template>
 
 <script>
-  export default {
-    data() {
-      return {
-        list: [],
-      };
-    },
-    onLoad() {
-      const list = [];
-      for (let i = 0; i < 10; i++) {
-        // list内item支持字符串或对象，下方这个是字符串
-        list.push("tab标题");
+    export default {
+        data() {
+            return {
+                list: [],
+            };
+        },
+        onLoad() {
+            const list = [];
+            for (let i = 0; i < 10; i++) {
+                // list内item支持字符串或对象，下方这个是字符串
+                list.push('tab标题');
 
-        // 如果要展示徽标数，则list中item的数据结构应为：
-        list.push({
-          name: "tab标题",
-          badge: {
-            // 设置徽标数为6
-            count: 6,
-          },
-          // 可以禁用某个item
-          disabled: true,
-        });
-      }
-      this.list = list;
-    },
-  };
+                // 如果要展示徽标数，则list中item的数据结构应为：
+                list.push({
+                    name: 'tab标题',
+                    badge: {
+                        // 设置徽标数为6
+                        count: 6,
+                    },
+                    // 可以禁用某个item
+                    disabled: true,
+                });
+            }
+            this.list = list;
+        },
+    };
 </script>
 ```
 
@@ -125,11 +125,11 @@ npm update @zxlee/z-tabs
 
 ### 支持全局配置
 
-- 在`/z-tabs/components/z-tabs/config/index.js`文件中进行配置
+-   在`/z-tabs/components/z-tabs/config/index.js`文件中进行配置
 
 ```js
 export default {
-  "active-color": "red",
+    'active-color': 'red',
 };
 ```
 
@@ -137,46 +137,36 @@ export default {
 
 ```html
 <template>
-  <z-tabs ref="tabs" :list="tabList" :current="current" @change="tabsChange" />
-  <swiper
-    :current="current"
-    @transition="swiperTransition"
-    @animationfinish="swiperAnimationfinish"
-  >
-    <swiper-item
-      class="swiper-item"
-      v-for="(item, index) in tabList"
-      :key="index"
-    >
-      xxx
-    </swiper-item>
-  </swiper>
-  <template>
-    <script>
-      export default {
-        data() {
-          return {
-            tabList: ["测试1", "测试2", "测试3", "测试4"],
-            current: 0, // tabs组件的current值，表示当前活动的tab选项
-          };
-        },
-        methods: {
-          //tabs通知swiper切换
-          tabsChange(index) {
-            this.current = index;
-          },
-          //swiper滑动中
-          swiperTransition(e) {
-            this.$refs.tabs.setDx(e.detail.dx);
-          },
-          //swiper滑动结束
-          swiperAnimationfinish(e) {
-            this.current = e.detail.current;
-            this.$refs.tabs.unlockDx();
-          },
-        },
-      };
-    </script></template
-  ></template
+    <z-tabs ref="tabs" :list="tabList" :current="current" @change="tabsChange" />
+    <swiper :current="current" @transition="swiperTransition" @animationfinish="swiperAnimationfinish">
+        <swiper-item class="swiper-item" v-for="(item, index) in tabList" :key="index"> xxx </swiper-item>
+    </swiper>
+    <template>
+        <script>
+            export default {
+                data() {
+                    return {
+                        tabList: ['测试1', '测试2', '测试3', '测试4'],
+                        current: 0, // tabs组件的current值，表示当前活动的tab选项
+                    };
+                },
+                methods: {
+                    //tabs通知swiper切换
+                    tabsChange(index) {
+                        this.current = index;
+                    },
+                    //swiper滑动中
+                    swiperTransition(e) {
+                        this.$refs.tabs.setDx(e.detail.dx);
+                    },
+                    //swiper滑动结束
+                    swiperAnimationfinish(e) {
+                        this.current = e.detail.current;
+                        this.$refs.tabs.unlockDx();
+                    },
+                },
+            };
+        </script></template
+    ></template
 >
 ```

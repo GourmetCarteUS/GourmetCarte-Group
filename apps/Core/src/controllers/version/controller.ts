@@ -15,7 +15,6 @@ export class VersionController extends Controller {
 
     @Get('testdb')
     public async testDB(): Promise<GCJSONResponse<string>> {
-
         // User.update()
         const user = new User();
 

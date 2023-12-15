@@ -20,6 +20,4 @@ app.use(cookieParser());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerJson));
 app.use('/api/core', router);
 
-
-
 export default app;

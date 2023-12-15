@@ -11,8 +11,8 @@
 
 **_点击 picker 默认值规则：_**
 
-- 若设置初始值 value, 会显示在 picker 显示框中
-- 若无初始值 value，则初始值 value 为当前本地时间 Date.now()， 但不会显示在 picker 显示框中
+-   若设置初始值 value, 会显示在 picker 显示框中
+-   若无初始值 value，则初始值 value 为当前本地时间 Date.now()， 但不会显示在 picker 显示框中
 
 ### [查看文档](https://uniapp.dcloud.io/component/uniui/uni-datetime-picker)
 

@@ -9,24 +9,21 @@
  * @param options
  * @constructor
  */
-export function toast(
-  title: string,
-  options?: Partial<UniApp.ShowToastOptions>,
-) {
-  uni.showToast({
-    title,
-    duration: 1500,
-    icon: "none",
-    mask: true,
-    ...options,
-  });
+export function toast(title: string, options?: Partial<UniApp.ShowToastOptions>) {
+    uni.showToast({
+        title,
+        duration: 1500,
+        icon: 'none',
+        mask: true,
+        ...options,
+    });
 }
 
 /**
  * 隐藏消息提示框
  */
 export function hideToast() {
-  uni.hideToast();
+    uni.hideToast();
 }
 
 /**
@@ -35,22 +32,19 @@ export function hideToast() {
  * @param options
  * @constructor
  */
-export function loading(
-  title: string = "",
-  options?: Partial<UniApp.ShowLoadingOptions>,
-) {
-  uni.showLoading({
-    title,
-    mask: true,
-    ...options,
-  });
+export function loading(title: string = '', options?: Partial<UniApp.ShowLoadingOptions>) {
+    uni.showLoading({
+        title,
+        mask: true,
+        ...options,
+    });
 }
 
 /**
  * 隐藏 loading 提示框
  */
 export function hideLoading() {
-  uni.hideLoading();
+    uni.hideLoading();
 }
 
 /**
@@ -59,17 +53,17 @@ export function hideLoading() {
  * @constructor
  */
 export function modal(options: UniApp.ShowModalOptions) {
-  return new Promise((resolve, reject) => {
-    uni.showModal({
-      success: (res) => {
-        resolve(res);
-      },
-      fail: (res) => {
-        reject(res);
-      },
-      ...options,
+    return new Promise((resolve, reject) => {
+        uni.showModal({
+            success: (res) => {
+                resolve(res);
+            },
+            fail: (res) => {
+                reject(res);
+            },
+            ...options,
+        });
     });
-  });
 }
 
 /**
@@ -78,15 +72,15 @@ export function modal(options: UniApp.ShowModalOptions) {
  * @constructor
  */
 export function actionSheet(options: UniApp.ShowActionSheetOptions) {
-  return new Promise((resolve, reject) => {
-    uni.showActionSheet({
-      success: (res) => {
-        resolve(res);
-      },
-      fail: (res) => {
-        reject(res);
-      },
-      ...options,
+    return new Promise((resolve, reject) => {
+        uni.showActionSheet({
+            success: (res) => {
+                resolve(res);
+            },
+            fail: (res) => {
+                reject(res);
+            },
+            ...options,
+        });
     });
-  });
 }

@@ -23,6 +23,7 @@ Before you start, make sure you have the following installed:
 `yarn build`
 
 ### DATABASE change MakeMigration and Migrate
+
 Everytime when making changes to the database, you need to make a migration and migrate it to the database.
 
 Step1:
