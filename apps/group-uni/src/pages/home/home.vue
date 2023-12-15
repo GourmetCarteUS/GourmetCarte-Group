@@ -49,10 +49,7 @@ onLoad((params) => {
 });
 
 onShareAppMessage((): CustomShareContent => {
-    const shareImages = [
-        'https://open.sereinapp.com/mailbox/app-material/share.png',
-        'https://open.sereinapp.com/mailbox/app-material/shaare-2.png',
-    ];
+    const shareImages = ['https://open.sereinapp.com/mailbox/app-material/share.png', 'https://open.sereinapp.com/mailbox/app-material/shaare-2.png'];
     return {
         title: getEnvValue('VITE_PROJECT_TITLE') + '-拥有浪漫寓意的信箱递送服务',
         path: `/pages/home/home`,
@@ -62,10 +59,7 @@ onShareAppMessage((): CustomShareContent => {
 });
 
 onShareTimeline(() => {
-    const shareImages = [
-        'https://open.sereinapp.com/mailbox/app-material/share.png',
-        'https://open.sereinapp.com/mailbox/app-material/shaare-2.png',
-    ];
+    const shareImages = ['https://open.sereinapp.com/mailbox/app-material/share.png', 'https://open.sereinapp.com/mailbox/app-material/shaare-2.png'];
     return {
         title: getEnvValue('VITE_PROJECT_TITLE') + '-拥有浪漫寓意的信箱递送服务',
         path: `/pages/home/home`,
