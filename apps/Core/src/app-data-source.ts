@@ -1,12 +1,13 @@
+import 'dotenv/config';
 import { DataSource } from 'typeorm';
 
 export const AppDataSource = new DataSource({
     type: "mysql",
-    host: "db-mysql-sfo3-09881-do-user-7515807-0.b.db.ondigitalocean.com",
-    port: 25060,
-    username: "grouping",
-    password: "AVNS_AwA_xb5hjs37HMf8jGp",
-    database: "grouping-dev",
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT),
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
     synchronize: false,
     logging: true,
     entities: ['./src/models/*.ts'],
