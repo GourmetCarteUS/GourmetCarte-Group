@@ -8,6 +8,7 @@
         "build": "tsoa spec-and-routes --basePath=/api/core && esbuild src/run.ts --bundle --outfile=./dist/index.cjs --platform=node",
         "lint": "tslint --project tsconfig.json --format stylish",
         "serve": "tsoa spec-and-routes --basePath=/api/core && node --loader ts-node/esm --experimental-specifier-resolution=node src/run.ts ",
+        "dev": "yarn serve",
         "start": "concurrently \"nodemon\" \"nodemon -x tsoa spec-and-routes\"",
         "typeorm": "typeorm-ts-node-esm",
         "makemigration": "typeorm-ts-node-esm migration:generate ./src/migrations/migration -d ./src/app-data-source.ts",
