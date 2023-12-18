@@ -1,24 +1,27 @@
 {
-  "name": "group",
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "dev:group-uni": "yarn workspace group-uni run dev",
-    "dev:group-core": "yarn workspace grouping-core run serve",
-    "format": "prettier --write \"**/*.{ts,tsx,md,vue,nvue}\""
-  },
-  "devDependencies": {
-    "@typescript-eslint/parser": "^6.14.0",
-    "eslint": "^8.47.0",
-    "prettier": "^3.0.2",
-    "tsconfig": "*",
-    "turbo": "latest"
-  },
-  "packageManager": "yarn@1.22.21",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ]
+    "name": "group",
+    "private": true,
+    "scripts": {
+        "build": "turbo build",
+        "dev": "turbo dev",
+        "lint": "turbo lint",
+        "dev:group-uni": "yarn workspace group-uni run dev",
+        "dev:group-core": "yarn workspace grouping-core run serve",
+        "format": "prettier --write \"**/*.{ts,tsx,md,vue,nvue}\"",
+        "prepare": "husky install"
+    },
+    "devDependencies": {
+        "@typescript-eslint/parser": "^6.14.0",
+        "eslint": "^8.47.0",
+        "husky": "^8.0.3",
+        "prettier": "^2.8.2",
+        "pretty-quick": "^3.1.3",
+        "tsconfig": "*",
+        "turbo": "latest"
+    },
+    "packageManager": "yarn@1.22.21",
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ]
 }
