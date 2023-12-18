@@ -12,6 +12,7 @@ export const AppDataSource = new DataSource({
     logging: true,
     entities: ['./src/models/*.ts'],
     subscribers: [],
+    legacySpatialSupport:false,
     migrations: ['./src/migrations/*.ts'],
 });
 

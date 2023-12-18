@@ -1,6 +1,7 @@
 import {GCJSONArrayResponse, GCJSONResponse, IEvent} from 'group-common';
 import {Body, Controller, Get, Post, Request, Route, Security, Tags} from 'tsoa';
 import {Event} from "../../models/Event";
+import { User } from '../../models/User';
 
 
 @Tags('Event')
@@ -35,6 +36,25 @@ export class EventController extends Controller {
         return {
             success: true,
             data: {}
+        }
+    }
+
+    @Post('testEvent')
+    public async testEvent(@Request() request: any): Promise<GCJSONResponse<Partial<IEvent>>> {
+        const event = new Event()
+        event.title = 'test'
+        event.geoLocation = 'POINT(0 0)'
+        event.location = 'TEST LOCATION'
+        event.description = 'TEST'
+        event.startAt = new Date()
+        // event.category = value.category
+        event.creator = await User.findOneById('4b0f45a0-cadf-4c56-917d-0d63075e11dd')
+        event.maxParticipants = 10
+        await event.save()
+
+        return {
+            success: true,
+            data: event
         }
     }
 }
