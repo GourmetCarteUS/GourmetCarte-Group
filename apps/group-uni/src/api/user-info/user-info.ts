@@ -1,21 +1,14 @@
-import { request } from '@/utils/http';
-import { UserInfo } from '@/api/user-info/user-info.types';
-import { GeneralResponse } from 'cincore-common';
+import {request} from '@/utils/http';
+import {IUser} from 'group-common';
 
 export function user_info() {
-    return request.get<UserInfo>('/member/user/detail');
+    return request.get<IUser>('/user/profile');
 }
 
-export function modify_user_info(data: Partial<UserInfo>) {
+export function modify_user_info(data: Partial<IUser>) {
     return request.post('/member/user/update', data);
 }
 
-export function getUserPhone(code: string) {
-    return request.post<
-        GeneralResponse<{
-            countryCode: string;
-            phoneNumber: string;
-            purePhoneNumber: string;
-        }>
-    >('/common/member/wechatPhone', { code });
+export function getUserLogin(code: string) {
+    return request.post('/user/login', {code});
 }

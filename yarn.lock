@@ -7326,6 +7326,11 @@ webpack-virtual-modules@^0.6.0:
   resolved "https://registry.npmmirror.com/webpack-virtual-modules/-/webpack-virtual-modules-0.6.1.tgz#ac6fdb9c5adb8caecd82ec241c9631b7a3681b6f"
   integrity sha512-poXpCylU7ExuvZK8z+On3kX+S8o/2dQ/SVYueKA0D4WEMXROXgY8Ez50/bQEUmvoSMMrWcrJqCHuhAbsiwg7Dg==
 
+wechat-backend-miniprogram@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.npmmirror.com/wechat-backend-miniprogram/-/wechat-backend-miniprogram-0.0.1.tgz#2bcbaea9aa237edf97e6c5d574235307b8c1e461"
+  integrity sha512-WAT++LzhOeRFiang1SDyRNl5sPPt7ZA3RXCxo1/a7CzyWbCReUzMsztGKvI/dFDFVGewFZ2xYKRA1PhSJZi7+Q==
+
 whatwg-url@^11.0.0:
   version "11.0.0"
   resolved "https://registry.yarnpkg.com/whatwg-url/-/whatwg-url-11.0.0.tgz#0a849eebb5faf2119b901bb76fd795c2848d4018"

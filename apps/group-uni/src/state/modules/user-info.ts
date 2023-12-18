@@ -1,12 +1,12 @@
-import { defineStore } from 'pinia';
+import {defineStore} from 'pinia';
 import useTokenStorage from '@/storage/token';
-import type { UserInfo } from '@/api/user-info/user-info.types';
-import { user_info } from '@/api/user-info/user-info';
-import { toast } from '@/utils/uniapi/prompt';
+import {IUser} from 'group-common';
+import {user_info} from '@/api/user-info/user-info';
+import {toast} from '@/utils/uniapi/prompt';
 
 export const useUserInfoStore = defineStore('user-info', {
     state: () => ({
-        user: null as UserInfo | null,
+        user: null as IUser | null,
         location: null as {
             latitude: number;
             longitude: number;
@@ -29,7 +29,7 @@ export const useUserInfoStore = defineStore('user-info', {
             if (this.user?.id) return this.user;
             try {
                 const res = await user_info();
-                const userInfo: UserInfo = res.data.data;
+                const userInfo: IUser = res.data.data;
                 this.user = userInfo;
                 return userInfo;
             } catch (e) {
@@ -39,7 +39,7 @@ export const useUserInfoStore = defineStore('user-info', {
         },
         async updateUserInfo() {
             const res = await user_info();
-            const userInfo: UserInfo = res.data.data;
+            const userInfo: IUser = res.data.data;
             this.user = userInfo;
             return userInfo;
         },
@@ -69,9 +69,9 @@ export const useUserInfoStore = defineStore('user-info', {
                     fail(err) {
                         //用户拒绝
                         if (
-                            err.errMsg == 'getLocation:fail auth deny' ||
-                            err.errMsg == 'getLocation:fail:auth denied' ||
-                            err.errMsg == 'getLocation:fail system permission denied'
+                          err.errMsg == 'getLocation:fail auth deny' ||
+                          err.errMsg == 'getLocation:fail:auth denied' ||
+                          err.errMsg == 'getLocation:fail system permission denied'
                         ) {
                             toast('需要授权位置信息，请删除小程序重新进入');
                             //未开启手机定位

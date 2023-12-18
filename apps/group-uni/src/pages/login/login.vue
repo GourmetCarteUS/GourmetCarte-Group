@@ -1,34 +1,33 @@
 <template>
     <Layout>
-        <view class="center flex-col mt-100">
+        <view class="center flex-col mt-200">
             <view>
-                <image :src="logoUrl" class="w-200" mode="widthFix" />
+                <image :src="logoUrl" class="w-200" mode="widthFix"/>
             </view>
 
-            <view class="text-26 font-medium mt-20 text-gray-800">麻富棋牌24小时自助</view>
+            <view class="text-30 font-medium mt-50 text-gray-800">咕噜拼</view>
 
-            <view class="center flex-col mt-50">
-                <view class="text-28 font-medium text-gray-800">登录以后小程序将获得以下权限</view>
-                <view class="text-24 text-gray-600 mt-10">获取你的公开信息（手机号）用于登录注册</view>
-            </view>
+            <!--            <view class="center flex-col mt-50">-->
+            <!--                <view class="text-28 font-medium text-gray-800">登录小程序</view>-->
+            <!--                &lt;!&ndash;                <view class="text-24 text-gray-600 mt-10">获取你的公开信息用于登录注册</view>&ndash;&gt;-->
+            <!--            </view>-->
         </view>
-        <button class="bg-primary text-white m-100" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">授权登录</button>
+        <button class="bg-primary text-white m-100" @click="onWxLogin">登录</button>
     </Layout>
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue';
-import { onLoad } from '@dcloudio/uni-app';
-import { useRouter } from 'uni-mini-router';
-import { weixin_login } from '@/api/common/common';
-import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
-import { useUserInfoStore } from '@/state/modules/user-info';
+import {ref} from 'vue';
+import {onLoad} from '@dcloudio/uni-app';
+import {useRouter} from 'uni-mini-router';
+import {hideLoading, loading, toast} from '@/utils/uniapi/prompt';
+import {useUserInfoStore} from '@/state/modules/user-info';
+import {getUserLogin} from '@/api/user-info/user-info';
 import useTokenStorage from '@/storage/token';
 
 import logoUrl from '@/static/logo-1.png';
+import {IUser} from 'group-common';
 import Layout from '@/components/layout/layout.vue';
-import { UserInfo } from '@/api/user-info/user-info.types';
-import { getUserPhone } from '@/api/user-info/user-info';
 
 const redirectUrl = ref('');
 const router = useRouter();
@@ -44,12 +43,12 @@ onLoad((params: any) => {
     }
 });
 
-async function onWxLogin(phone?: string) {
+async function onWxLogin() {
     loading('登录中...');
     uni.login({
         success: async (res) => {
-            const { code } = res;
-            const resLogin = await weixin_login(code, phone);
+            const {code} = res;
+            const resLogin = await getUserLogin(code);
             if (resLogin.data.code) {
                 return toast(resLogin.data.msg);
             }
@@ -60,19 +59,16 @@ async function onWxLogin(phone?: string) {
 }
 
 async function loginSuccess() {
-    const userInfo = (await useUserInfoStore().getUserInfo()) as UserInfo;
+    const userInfo = (await useUserInfoStore().getUserInfo()) as IUser;
     hideLoading();
     if (!userInfo) return;
     if (redirectUrl.value) {
         return router.replace(redirectUrl.value);
     }
-    if (!userInfo.name || !userInfo.avatar) {
-        return router.back();
-        // return router.replace({name: 'home', params: {tab: 'mine'}})
-    }
+    if (!userInfo.id || !userInfo.displayName) return router.back();
     uni.navigateBack({
         fail: () => {
-            router.replace({ name: 'home' });
+            router.replace({name: 'home'});
         },
     });
 }
@@ -83,7 +79,7 @@ async function getPhoneNumber(e: { detail: { errMsg: string; code?: string } }) 
         return;
     } else if (e.detail?.code) {
         //获取手机号
-        const res = await getUserPhone(e.detail?.code);
+        const res = await getUserLogin(e.detail?.code);
         if (res.data.code) {
             return toast(res.data.msg);
         }
