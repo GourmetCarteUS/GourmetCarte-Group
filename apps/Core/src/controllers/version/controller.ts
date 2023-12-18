@@ -1,6 +1,6 @@
-import { GCJSONResponse } from 'group-common';
-import { Controller, Get, Route, Tags } from 'tsoa';
-import { User } from '../../models/User';
+import {GCJSONResponse} from 'group-common';
+import {Controller, Get, Route, Tags} from 'tsoa';
+import {User} from '../../models/User';
 
 @Tags('Version')
 @Route('version')

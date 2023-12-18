@@ -33,7 +33,8 @@
         "reflect-metadata": "^0.2.0",
         "swagger-ui-express": "^5.0.0",
         "tsoa": "^5.1.1",
-        "typeorm": "^0.3.17"
+        "typeorm": "^0.3.17",
+        "wechat-backend-miniprogram": "^0.0.1"
     },
     "devDependencies": {
         "@types/http-status-codes": "^1.2.0",

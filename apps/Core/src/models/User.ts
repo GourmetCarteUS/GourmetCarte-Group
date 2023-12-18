@@ -15,6 +15,13 @@ export class User extends BaseModel implements IUser {
     @Column({ nullable: true })
     unionId: string;
 
+    @Column({ nullable: true })
+    phoneNumber: string;
+    @Column({ default: 0 })
+    joinNumber: number;
+    @Column({ default: 0 })
+    postNumber: number;
+
     @OneToMany((type) => Event, (event) => event.creator)
     eventsCreated: Relation<Event>[];
 
