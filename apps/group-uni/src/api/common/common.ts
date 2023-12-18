@@ -1,8 +1,6 @@
 import { request } from '@/utils/http';
 import type { Token } from '@/storage/token';
 import type { FilePathTypeEnum, FileRes } from '@/api/common/common.types';
-import type { UnData, UnResponse } from '@uni-helper/uni-network';
-import type { HttpResponseData } from '@/utils/http/un';
 
 export function weixin_login(code: string, phone?: string) {
     return request.post<Token>(

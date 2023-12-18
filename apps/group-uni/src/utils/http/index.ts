@@ -7,6 +7,7 @@ import type { CustomUnConfig, HttpResponseData, UnInstanceCustom } from './un';
 import { refresh_token } from '@/api/common/common';
 import { transformHttpStatusMessage } from '@/utils/http/checkStatus';
 import { router } from '@/router';
+import { GCJSONResponse } from 'group-common';
 
 const instance = un.create({
     baseUrl: getEnvValue('VITE_API_BASE_URL'),
@@ -15,7 +16,7 @@ const instance = un.create({
     },
     sslVerify: false,
     enableCache: false,
-}) as unknown as UnInstanceCustom;
+});
 
 // 添加请求拦截器
 instance.interceptors.request.use(
@@ -51,7 +52,7 @@ instance.interceptors.response.use(
             setTimeout(async () => {
                 try {
                     const resToken = await refresh_token();
-                    resToken.data && useTokenStorage.setToken(resToken.data.data);
+                    resToken.data && useTokenStorage.setToken(resToken.data);
                 } catch (e: any) {}
             }, 0);
         }

@@ -28,6 +28,7 @@ import useTokenStorage from '@/storage/token';
 import logoUrl from '@/static/logo-1.png';
 import {IUser} from 'group-common';
 import Layout from '@/components/layout/layout.vue';
+import {onGoTab} from "@/utils/business";
 
 const redirectUrl = ref('');
 const router = useRouter();
@@ -59,7 +60,7 @@ async function onWxLogin() {
 }
 
 async function loginSuccess() {
-    const userInfo = (await useUserInfoStore().getUserInfo()) as IUser;
+    const userInfo = await useUserInfoStore().getUserInfo();
     hideLoading();
     if (!userInfo) return;
     if (redirectUrl.value) {
@@ -68,7 +69,7 @@ async function loginSuccess() {
     if (!userInfo.id || !userInfo.displayName) return router.back();
     uni.navigateBack({
         fail: () => {
-            router.replace({name: 'home'});
+            onGoTab({name: 'home'});
         },
     });
 }

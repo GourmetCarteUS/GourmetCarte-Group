@@ -1,7 +1,8 @@
-import { IEvent, IUser } from 'group-common';
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, Relation, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, Index, JoinTable } from 'typeorm';
-import { BaseModel } from './BaseModel.js';
-import { User } from './User.js';
+import {IEvent} from 'group-common';
+import {Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToOne, Relation} from 'typeorm';
+import {BaseModel} from './BaseModel.js';
+import {User} from './User.js';
+import {Category} from "./Category.js";
 
 @Entity()
 export class Event extends BaseModel implements IEvent {
@@ -9,9 +10,13 @@ export class Event extends BaseModel implements IEvent {
     creator: Relation<User>;
     @Column()
     description: string;
+    @Column({type: "simple-array", nullable: true})
+    imageDescription: string[];
+
     @Column('point')
-    @Index({ spatial: true })
+    @Index({spatial: true})
     geoLocation: string;
+
     @Column()
     location: string;
 
@@ -24,8 +29,18 @@ export class Event extends BaseModel implements IEvent {
     @Column()
     title: string;
 
-    @Column()
+    @Column({default: 0})
     maleTicketFee: number;
-    @Column()
+
+    @Column({default: 0})
     femaleTicketFee: number;
+
+    @OneToOne(type => Category)
+    category: string;
+
+    @Column({default: 10})
+    maxParticipants: number;
+
+    @Column({default: 0})
+    viewCount: number;
 }

@@ -1,4 +1,4 @@
-import { IUser } from './User';
+import {IUser} from './User';
 
 export interface IEvent {
     id: string;
@@ -8,6 +8,9 @@ export interface IEvent {
     geoLocation: string;
     startAt: Date;
     creator: IUser;
+    category: string;
+    maxParticipants: number;
+    imageDescription: string[];
 
     participants: IUser[];
 

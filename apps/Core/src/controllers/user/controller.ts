@@ -1,5 +1,5 @@
 import {Authentication, GCJSONArrayResponse, GCJSONResponse, IUser} from 'group-common';
-import {Body, Controller, Get, Post, Route, Security, Tags, Request} from 'tsoa';
+import {Body, Controller, Get, Post, Route, Security, Tags, Request, Patch} from 'tsoa';
 import {User} from '../../models/User';
 import {wechat} from "../../wechat";
 import {generateJwt} from "../../utils/jwt";
@@ -8,16 +8,6 @@ import {AppDataSource} from "../../app-data-source";
 @Tags('User')
 @Route('user')
 export class UserController extends Controller {
-    // @Get(":id")
-    // public async getUser(id: string): Promise<GCJSONResponse<Partial<IUser>>> {
-    //
-    //   const user = await User.findOneBy({id})
-    //
-    //   return {
-    //     data: user,
-    //     success: true
-    //   }
-    // }
 
     @Get("profile")
     @Security('authorized')
@@ -58,5 +48,36 @@ export class UserController extends Controller {
         }
     }
 
+    /**
+     * 修改用户信息
+     * @param request
+     * @param data
+     */
+    @Patch()
+    @Security('authorized')
+    public async patchMe(@Request() request: any, @Body() data: Partial<IUser>): Promise<GCJSONResponse<Partial<IUser>>> {
+
+        const user = request.user
+        if (data.phoneNumber) {
+            user.phoneNumber = data.phoneNumber
+        } else if (data.displayName) {
+            user.displayName = data.displayName
+        } else if (data.avatarUrl) {
+            user.avatarUrl = data.avatarUrl
+        } else {
+            return {
+                success: false,
+                errorMessage: '暂不支持修改',
+                errorCode: 200
+            }
+        }
+        user.save()
+
+        return {
+            success: true,
+            errorMessage: '修改成功',
+        }
+    }
+    
 
 }

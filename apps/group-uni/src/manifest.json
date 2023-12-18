@@ -65,7 +65,7 @@
       "wxeeb696861f7c6dea"
     ],
     "requiredPrivateInfos": [
-      "getLocation"
+      "getLocation", "chooseLocation"
     ]
   },
   "mp-alipay": {

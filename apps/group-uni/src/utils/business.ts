@@ -13,8 +13,6 @@ export function onGoPage(params: RouteLocationRaw, needLogged = true) {
             params: { redirect: JSON.stringify(params) },
         });
 
-    debugger;
-
     return router.push(params);
 }
 
