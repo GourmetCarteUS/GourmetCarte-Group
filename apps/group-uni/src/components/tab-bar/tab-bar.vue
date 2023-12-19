@@ -10,9 +10,9 @@
                     @click="onClick(tabItem)"
                 >
                     <view class="tabBar-item-icon">
-                        <uni-icons :type="tabItem.icon" :size="tabItem?.float ? 48 : 28" :color="tabItem?.float ? 'white' : tabItem?.active ? '#8BE5B0' : ''" />
+                        <uni-icons :type="tabItem.icon" :size="tabItem?.float ? 48 : 28" :color="tabItem?.float ? 'white' : tabItem?.active ? '#7F7EFF' : ''" />
                     </view>
-                    <view class="tab-bar-text">{{ tabItem.title }}</view>
+                    <view class="tab-bar-text" :class="{ 'text-primary': tabItem?.active }">{{ tabItem.title }}</view>
                 </view>
             </view>
         </view>
@@ -55,6 +55,8 @@ function onClick(tabItem: TabItemType) {
 </script>
 
 <style lang="scss" scoped>
+@import '@/static/styles/common.scss';
+
 .tabBar-body {
     border-radius: 80rpx;
     background: white;
@@ -63,16 +65,17 @@ function onClick(tabItem: TabItemType) {
     width: 95%;
     left: 50%;
     transform: translateX(-50%);
-    padding: 20rpx 0;
+    padding: 10rpx 0;
     box-shadow: rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
 }
 
 .tabBar-body-bottom {
-    padding: 20rpx 0;
+    padding: 10rpx 0;
     position: fixed;
     bottom: 0;
     width: 100%;
     background: white;
+    box-shadow: rgba(0, 0, 0, 0.15) 0 0 3.2px;
 }
 
 .tqb-tabBar-item {
@@ -90,14 +93,15 @@ function onClick(tabItem: TabItemType) {
             justify-content: space-between;
 
             .tabBar-item-icon {
-                width: 146rpx;
-                height: 146rpx;
-                border-radius: 50px;
+                width: 100rpx;
+                height: 100rpx;
+                border-radius: 20px;
                 background-color: $uni-color-primary;
                 display: flex;
                 align-items: center;
                 border: 14rpx solid white;
                 margin-top: -50%;
+                //box-shadow: rgba(0, 0, 0, 0.15) 0 0 3.2px;
             }
         }
 
@@ -112,8 +116,8 @@ function onClick(tabItem: TabItemType) {
     }
 
     .tab-bar-text {
-        font-size: 28rpx;
-        margin-top: 8rpx;
+        font-size: 20rpx;
+        margin-top: 5rpx;
     }
 }
 </style>

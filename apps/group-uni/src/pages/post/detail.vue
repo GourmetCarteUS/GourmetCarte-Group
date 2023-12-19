@@ -96,7 +96,7 @@ onLoad((params) => {
         <template #header>
             <NavBar :title="currentData?.title" :backgroundColor="scrollTop >= 80 ? 'white' : undefined"/>
         </template>
-        <view class="m-40 mb-160">
+        <view class="m-20 mb-160">
             <view class="flex justify-between center mb-30">
                 <view>
                     <view class="text-40 font-900 ml-20">{{ currentData?.title }}</view>
@@ -112,7 +112,7 @@ onLoad((params) => {
                 </view>
                 <!--                <view class="w-170 h-170 b-rd-20 mr-30"></view>-->
             </view>
-            <view class="bg-white p-40 b-rd-50">
+            <view class="bg-white p-30 b-rd-30">
                 <view class="mt-30">
                     <view class="gc-item">活动时间：{{ startAtFormat }}</view>
                     <view class="gc-item">

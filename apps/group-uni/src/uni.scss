@@ -1,21 +1,21 @@
 /* 行为相关颜色 */
-$uni-color-primary: #8BE5B0;
-$uni-color-primary-sec: #dcf1b2;
-$uni-color-primary-sub: #FFE89E;
+$uni-color-primary-sec: #8be5b0;
+$uni-color-primary: #7f7eff;
+$uni-color-primary-sub: #ffe89e;
 $uni-color-success: #4cd964;
 $uni-color-warning: #f0ad4e;
-$uni-color-error: #F67E7D;
+$uni-color-error: #f67e7d;
 
 /* 文字基本颜色 */
-$uni-text-color: #000000; // 基本色
-$uni-text-color-inverse: #ECE5F0; // 反色
-$uni-text-color-grey: rgba(0, 0, 1, 0.5); // 辅助灰色，如加载更多的提示信息
+$uni-text-color: #39393a; // 基本色
+$uni-text-color-inverse: #ece5f0; // 反色
+$uni-text-color-grey: #8e8e90; // 辅助灰色，如加载更多的提示信息
 $uni-text-color-placeholder: #808080;
 $uni-text-color-disable: #c0c0c0;
 
 /* 背景颜色 */
 $uni-bg-color: #f8f8f8;
-$uni-bg-color-grey: #ECE5F0;
+$uni-bg-color-grey: #ece5f0;
 $uni-bg-color-hover: #f1f1f1; // 点击状态颜色
 $uni-bg-color-mask: rgba(0, 0, 0, 0.4); // 遮罩颜色
 
