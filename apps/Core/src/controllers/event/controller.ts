@@ -1,7 +1,7 @@
 import {GCJSONArrayResponse, GCJSONResponse, IEvent} from 'group-common';
 import {Body, Controller, Get, Post, Request, Route, Security, Tags} from 'tsoa';
 import {Event} from "../../models/Event";
-import { User } from '../../models/User';
+import {User} from '../../models/User';
 
 
 @Tags('Event')
@@ -18,6 +18,17 @@ export class EventController extends Controller {
         }
     }
 
+    @Get("{id}")
+    public async getEvent(@Request() request: any, id: string): Promise<GCJSONResponse<IEvent>> {
+        const event = await Event.findOne({where: {id}, relations: {category: Boolean(0)}})
+        console.log(event)
+
+        return {
+            success: true,
+            data: event
+        }
+    }
+
     @Post()
     @Security('authorized')
     public async postEvent(@Request() request: any, @Body() value: Partial<IEvent>): Promise<GCJSONResponse<Partial<IEvent>>> {
@@ -27,7 +38,7 @@ export class EventController extends Controller {
         event.location = value.location
         event.description = value.description
         event.startAt = value.startAt
-        event.category = value.category
+        // event.category.id = value.category.id
         event.creator = request.user
         event.maxParticipants = value.maxParticipants
         event.imageDescription = value.imageDescription
@@ -35,7 +46,7 @@ export class EventController extends Controller {
 
         return {
             success: true,
-            data: {}
+            data: event,
         }
     }
 

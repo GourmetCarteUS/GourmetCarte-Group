@@ -35,11 +35,14 @@ export class Event extends BaseModel implements IEvent {
     @Column({default: 0})
     femaleTicketFee: number;
 
-    @OneToOne(type => Category)
-    category: string;
+    @ManyToOne((type) => Category, (category) => category.events)
+    category: Relation<Category>;
 
     @Column({default: 10})
     maxParticipants: number;
+
+    @Column({nullable: true})
+    minParticipants: number;
 
     @Column({default: 0})
     viewCount: number;
