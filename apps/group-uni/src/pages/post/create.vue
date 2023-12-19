@@ -31,8 +31,8 @@
                 </view>
                 <view class="gc-item-before justify-between pr-20" style="overflow: initial">
                     <view>活动类型</view>
-                    <view class="ml-20 w-full">
-                        <uni-data-select v-model="formData.category" :localdata="categoryList"/>
+                    <view class="ml-20 w-full" @click="multiplePickerShow = true">
+                        {{ formData?.categoryStr?.join('，') || '请选择活动类型' }}
                     </view>
                 </view>
             </view>
@@ -61,37 +61,44 @@
             </view>
         </view>
     </Layout>
+    <MultiplePicker
+        title="请选择活动类型"
+        :show="multiplePickerShow"
+        :columns="categoryList"
+        @confirm="confirmMultiple"
+        @cancel="multiplePickerShow = false"
+    />
 </template>
 <script setup lang="ts">
 import {reactive, ref} from 'vue';
 import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import {onLoad, onPageScroll} from '@dcloudio/uni-app';
-import {IEvent} from 'group-common';
+import {EventCreateForm} from 'group-common';
 import {view_categories, view_event_create} from "@/api/event/evnet";
 import {toast} from "@/utils/uniapi/prompt";
 import {onGoReplace} from "@/utils/business";
+import MultiplePicker from '@/components/multiple-picker/multiple-picker.vue'
 
-const categoryList = ref(), formData = reactive<Partial<IEvent>>({}), scrollTop = ref(0);
-onPageScroll((e) => {
-    scrollTop.value = e.scrollTop;
-    if (scrollTop.value > 80) {
-        uni.setNavigationBarColor({
-            frontColor: '#000000', //黑
-            backgroundColor: '#000000',
-        });
-    } else {
-        uni.setNavigationBarColor({
-            frontColor: '#ffffff', //白
-            backgroundColor: '#ffffff',
-        });
-    }
-});
+const categoryList = ref(),
+    formData = reactive<Partial<EventCreateForm>>({
+        categoryIds: [],
+        categoryStr: [],
+    }),
+    scrollTop = ref(0),
+    multiplePickerShow = ref(false)
+
+
+function confirmMultiple(e: any) {
+    e.selected.map((item: { label: string; }) => formData.categoryStr?.push(item?.label))
+    formData.categoryIds = e.value
+    multiplePickerShow.value = false;
+}
 
 async function getCategories() {
     const {data} = await view_categories()
     if (data?.success) categoryList.value = data.data?.map(item => {
-        return {value: item.id, text: item.name}
+        return {value: item.id, label: item.name}
     })
 }
 
@@ -119,6 +126,20 @@ function getLocation() {
     });
 }
 
+onPageScroll((e) => {
+    scrollTop.value = e.scrollTop;
+    if (scrollTop.value > 80) {
+        uni.setNavigationBarColor({
+            frontColor: '#000000', //黑
+            backgroundColor: '#000000',
+        });
+    } else {
+        uni.setNavigationBarColor({
+            frontColor: '#ffffff', //白
+            backgroundColor: '#ffffff',
+        });
+    }
+});
 onLoad(() => {
     getCategories()
 })

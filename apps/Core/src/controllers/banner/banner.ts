@@ -1,5 +1,5 @@
-import {GCJSONArrayResponse, IBanner} from 'group-common';
-import {Controller, Get, Route, Tags} from 'tsoa';
+import {GCJSONArrayResponse, GCJSONResponse, IBanner} from 'group-common';
+import {Body, Controller, Get, Post, Route, Tags} from 'tsoa';
 import {Banner} from "../../models/Banner";
 
 @Tags('Banner')
@@ -12,6 +12,18 @@ export class BannerController extends Controller {
         return {
             success: true,
             data: banners
+        }
+    }
+
+    @Post()
+    public async postBanner(@Body() value: Partial<IBanner>): Promise<GCJSONResponse<IBanner>> {
+        const banner = new Banner()
+        Object.assign(banner, value)
+        await banner.save()
+
+        return {
+            success: true,
+            data: banner
         }
     }
 }

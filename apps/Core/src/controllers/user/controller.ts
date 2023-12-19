@@ -58,18 +58,14 @@ export class UserController extends Controller {
     public async patchMe(@Request() request: any, @Body() data: Partial<IUser>): Promise<GCJSONResponse<Partial<IUser>>> {
 
         const user = request.user
-        if (data.phoneNumber) {
-            user.phoneNumber = data.phoneNumber
-        } else if (data.displayName) {
+        if (data.contact) {
+            user.contact = data.contact
+        }
+        if (data.displayName) {
             user.displayName = data.displayName
-        } else if (data.avatarUrl) {
+        }
+        if (data.avatarUrl) {
             user.avatarUrl = data.avatarUrl
-        } else {
-            return {
-                success: false,
-                errorMessage: '暂不支持修改',
-                errorCode: 200
-            }
         }
         user.save()
 
@@ -78,6 +74,5 @@ export class UserController extends Controller {
             errorMessage: '修改成功',
         }
     }
-    
 
 }

@@ -1,8 +1,8 @@
 export interface ICategory {
     id: string;
     name: string;
-    sort: number;
+    sort?: number;
 
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
 }

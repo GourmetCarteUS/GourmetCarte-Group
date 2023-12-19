@@ -9,32 +9,6 @@ import {toast} from '@/utils/uniapi/prompt';
 import {view_event_detail} from "@/api/event/evnet";
 import {IEvent} from 'group-common'
 
-const scrollTop = ref(0);
-onPageScroll((e) => {
-    scrollTop.value = e.scrollTop;
-    if (scrollTop.value > 80) {
-        uni.setNavigationBarColor({
-            frontColor: '#000000', //黑
-            backgroundColor: '#000000',
-        });
-    } else {
-        uni.setNavigationBarColor({
-            frontColor: '#ffffff', //白
-            backgroundColor: '#ffffff',
-        });
-    }
-});
-
-const postId = ref(),
-    currentData = reactive<Partial<IEvent>>({});
-
-onLoad((params) => {
-    if (params?.id) {
-        postId.value = params?.id;
-        getEvent()
-    }
-});
-
 const status = computed(() => {
     // 未开始
     if (currentData?.status == 'pending') {
@@ -76,36 +50,14 @@ const status = computed(() => {
     return 0;
 });
 
-const TestData = [
-    {
-        id: 1,
-        name: '1号活动',
-        status: 'processing',
-        isJoin: true,
-        isMe: true,
-    },
-    {
-        id: 2,
-        name: '2号活动',
-        status: 'pending',
-        isJoin: true,
-        isMe: true,
-    },
-    {
-        id: 3,
-        name: '3号活动',
-        status: 'pending',
-        isJoin: true,
-        isMe: false,
-    },
-    {
-        id: 4,
-        name: '4号活动',
-        status: 'solved',
-        isJoin: true,
-        isMe: true,
-    },
-];
+const startAtFormat = computed(() => {
+    if (!currentData.startAt) return
+    const d = new Date(Date.parse(currentData.startAt));
+    return d.toISOString();
+})
+
+const postId = ref(),
+    currentData = reactive<Partial<IEvent>>({});
 
 async function getEvent() {
     const {data} = await view_event_detail(postId.value)
@@ -115,6 +67,28 @@ async function getEvent() {
         Object.assign(currentData, data!.data);
     }
 }
+
+const scrollTop = ref(0);
+onPageScroll((e) => {
+    scrollTop.value = e.scrollTop;
+    if (scrollTop.value > 80) {
+        uni.setNavigationBarColor({
+            frontColor: '#000000', //黑
+            backgroundColor: '#000000',
+        });
+    } else {
+        uni.setNavigationBarColor({
+            frontColor: '#ffffff', //白
+            backgroundColor: '#ffffff',
+        });
+    }
+});
+onLoad((params) => {
+    if (params?.id) {
+        postId.value = params?.id;
+        getEvent()
+    }
+});
 </script>
 
 <template>
@@ -127,38 +101,49 @@ async function getEvent() {
                 <view>
                     <view class="text-40 font-900 ml-20">{{ currentData?.title }}</view>
                     <view class="flex mt-20">
-                        <view class="capsule-button text-24" :class="currentData?.status"
-                        >{{
-                                currentData?.status == 'processing' ? '进行中' : currentData?.status == 'pending' ? '未开始' : '已结束'
+                        <view class="capsule-button text-24" :class="currentData?.status">{{
+                                currentData?.status == 'processing' ? '进行中' : currentData?.status == 'pending' ? '未开始'
+                                    : '已结束'
                             }}
                         </view>
-                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时：{{ currentData?.startAt }}</view>
+                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时： {{ startAtFormat }}
+                        </view>
                     </view>
                 </view>
-                <view class="w-170 h-170 b-rd-20 bg-amber mr-30"></view>
+                <!--                <view class="w-170 h-170 b-rd-20 mr-30"></view>-->
             </view>
             <view class="bg-white p-40 b-rd-50">
                 <view class="mt-30">
-                    <view class="gc-item">活动时间：{{ currentData?.startAt}}</view>
+                    <view class="gc-item">活动时间：{{ startAtFormat }}</view>
                     <view class="gc-item">
                         <!--            <uni-icons type="location-filled" size="20" color="#39393A"/>-->
-                        {{currentData?.location}}
+                        {{ currentData?.location }}
                     </view>
                 </view>
 
                 <!--参与者列表，图像+名字，当前人数和剩余名额；点击可展开modal显示所有参与人员；-->
                 <view class="mt-30">
                     <view class="text-24 center justify-between">
-                        <text class="text-gray">12人一起</text>
-                        <text class="text-primary">仅剩5个名额</text>
+                        <text class="text-gray">{{
+                                currentData?.participants?.length > 0 ? `${currentData?.participants?.length}人一起` :
+                                    `${currentData?.viewCount || 5}人想去`
+                            }}
+                        </text>
+                        <text class="text-primary">仅剩{{
+                                (currentData?.maxParticipants - currentData?.participants?.length) || 0
+                            }}个名额
+                        </text>
                     </view>
-                    <view class="user-lists mt-20 grid grid-cols-5">
-                        <view class="user center flex-col" v-for="i in 5">
+                    <view class="user-lists mt-20 grid grid-cols-5" v-if="currentData?.participants?.length">
+                        <view class="user center flex-col" v-for="participant in currentData?.participants">
                             <view class="avatar w-100 h-100 mb-10">
-                                <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png"
+                                <image :src="participant?.avatarUrl"
                                        class="h-full w-full b-rd-50" mode="aspectFill"/>
                             </view>
-                            <view class="user-name text-gray text-24 text-nowrap w-100">李老师李老师李老师李老师</view>
+                            <view class="user-name text-gray text-24 text-nowrap w-100">{{
+                                    participant?.displayName || '参与者'
+                                }}
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -166,14 +151,17 @@ async function getEvent() {
                 <!-- 活动描述 -->
                 <view class="gc-title text-28 mt-40 mb-30">活动描述</view>
                 <view class="text-26 font-400">
-                    {{ currentData?.description}}
+                    <view v-for="(desc, idx) in currentData?.description.split('\n')" :key="idx+desc">
+                        {{ desc }}
+                    </view>
                 </view>
                 <!-- 详情图片 -->
-                <view class="gc-title text-28 mt-40 mb-30">详情图片</view>
-                <view class="w-full">
-                    <image class="w-full" src="https://img.js.design/assets/img/64180b6230374b2d6ef4499d.png"
-                           v-for="i in 5"/>
-                </view>
+                <template v-if="currentData?.imageDescription?.length">
+                    <view class="gc-title text-28 mt-40 mb-30">详情图片</view>
+                    <view class="w-full">
+                        <image class="w-full" :src="img" v-for="img in currentData?.imageDescription" :key="img"/>
+                    </view>
+                </template>
             </view>
         </view>
         <view class="flex center w-full justify-between bg-primary fixed bottom-0 p-40 pt-30 pb-50"
@@ -233,14 +221,6 @@ async function getEvent() {
                     <text class="text-30 font-900">检票</text>
                 </view>
             </template>
-
-            <!--      <view>-->
-            <!--        <view class="bg-black text-white p-20 b-rd-50 pl-120 pr-120 center"-->
-            <!--              @click="onGoPage({name: 'order-create', params: {id: '1'}}, false)">-->
-            <!--          <text class="text-35 font-900">上车</text>-->
-            <!--          <text class="text-28">（$20.00）</text>-->
-            <!--        </view>-->
-            <!--      </view>-->
         </view>
     </Layout>
 </template>

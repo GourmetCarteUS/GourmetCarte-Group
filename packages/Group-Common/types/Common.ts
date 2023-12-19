@@ -1,4 +1,4 @@
-import { PaginationModel } from 'mongoose-paginate-ts';
+import {PaginationModel} from 'mongoose-paginate-ts';
 
 export type LocationType = [number, number];
 
@@ -18,4 +18,9 @@ export interface GCJSONArrayResponse<T> extends GCJSONResponseBase {
 
 export interface GCJSONPaginationResponse<T> extends GCJSONResponseBase, Omit<PaginationModel<T>, 'docs'> {
     data?: T[];
+}
+
+export interface GCPageRequest {
+    limit?: number;
+    page?: number
 }
