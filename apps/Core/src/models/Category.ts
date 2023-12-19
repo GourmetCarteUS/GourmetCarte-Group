@@ -1,5 +1,5 @@
 import {ICategory} from 'group-common';
-import {Column, Entity, OneToMany, Relation} from 'typeorm';
+import {Column, Entity, ManyToMany, OneToMany, Relation} from 'typeorm';
 import {BaseModel} from './BaseModel.js';
 import {Event} from "./Event.js";
 
@@ -11,6 +11,6 @@ export class Category extends BaseModel implements ICategory {
     @Column({default: 0})
     sort: number;
 
-    @OneToMany(() => Event, (events) => events.category)
+    @ManyToMany(() => Event, (events) => events.category)
     events: Relation<Event>[];
 }

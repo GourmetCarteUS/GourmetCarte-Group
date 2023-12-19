@@ -1,4 +1,5 @@
 import {IUser} from './User';
+import {ICategory} from "./Category";
 
 export interface IEvent {
     id: string;
@@ -8,9 +9,11 @@ export interface IEvent {
     geoLocation: string;
     startAt: Date;
     creator: IUser;
-    category: string;
+    category: ICategory[];
     maxParticipants: number;
     imageDescription: string[];
+    disable: boolean;
+    groupQr: string;
 
     participants: IUser[];
 

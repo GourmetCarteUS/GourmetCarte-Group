@@ -69,6 +69,8 @@ import NavBar from '@/components/nav-bar/nav-bar.vue';
 import {onLoad, onPageScroll} from '@dcloudio/uni-app';
 import {IEvent} from 'group-common';
 import {view_categories, view_event_create} from "@/api/event/evnet";
+import {toast} from "@/utils/uniapi/prompt";
+import {onGoReplace} from "@/utils/business";
 
 const categoryList = ref(), formData = reactive<Partial<IEvent>>({}), scrollTop = ref(0);
 onPageScroll((e) => {
@@ -95,7 +97,13 @@ async function getCategories() {
 
 async function createEvent() {
     const {data} = await view_event_create(formData)
-    console.log(data)
+    if (data?.success) {
+        toast('创建成功', {
+            success: () => setTimeout(() => onGoReplace({name: 'post-detail', params: {id: data.data!.id}}), 1500)
+        })
+        return
+    }
+    return toast(data?.errorMessage || '创建失败')
 }
 
 function getLocation() {

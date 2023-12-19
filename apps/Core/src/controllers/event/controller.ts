@@ -1,7 +1,7 @@
 import {GCJSONArrayResponse, GCJSONResponse, IEvent} from 'group-common';
 import {Body, Controller, Get, Post, Request, Route, Security, Tags} from 'tsoa';
 import {Event} from "../../models/Event";
-import {User} from '../../models/User';
+import {Category} from "../../models/Category";
 
 
 @Tags('Event')
@@ -18,10 +18,13 @@ export class EventController extends Controller {
         }
     }
 
-    @Get("{id}")
+    @Get(":id")
     public async getEvent(@Request() request: any, id: string): Promise<GCJSONResponse<IEvent>> {
-        const event = await Event.findOne({where: {id}, relations: {category: Boolean(0)}})
-        console.log(event)
+        const event = await Event.findOne({where: {id}, relations: {category: true, creator: true}})
+
+        if (request?.isLogin) {
+            event['isMe'] = request.user.id == event.creator.id
+        }
 
         return {
             success: true,
@@ -32,13 +35,15 @@ export class EventController extends Controller {
     @Post()
     @Security('authorized')
     public async postEvent(@Request() request: any, @Body() value: Partial<IEvent>): Promise<GCJSONResponse<Partial<IEvent>>> {
+        // const category = await Category.findOneBy({id: value.category + ""})
+
         const event = new Event()
         event.title = value.title
         event.geoLocation = value.geoLocation
         event.location = value.location
         event.description = value.description
         event.startAt = value.startAt
-        // event.category.id = value.category.id
+        // event.category = category
         event.creator = request.user
         event.maxParticipants = value.maxParticipants
         event.imageDescription = value.imageDescription
@@ -47,25 +52,6 @@ export class EventController extends Controller {
         return {
             success: true,
             data: event,
-        }
-    }
-
-    @Post('testEvent')
-    public async testEvent(@Request() request: any): Promise<GCJSONResponse<Partial<IEvent>>> {
-        const event = new Event()
-        event.title = 'test'
-        event.geoLocation = 'POINT(0 0)'
-        event.location = 'TEST LOCATION'
-        event.description = 'TEST'
-        event.startAt = new Date()
-        // event.category = value.category
-        event.creator = await User.findOneById('4b0f45a0-cadf-4c56-917d-0d63075e11dd')
-        event.maxParticipants = 10
-        await event.save()
-
-        return {
-            success: true,
-            data: event
         }
     }
 }

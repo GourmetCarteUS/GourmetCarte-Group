@@ -16,7 +16,7 @@ export class User extends BaseModel implements IUser {
     unionId: string;
 
     @Column({ nullable: true })
-    phoneNumber: string;
+    contact: string;
 
     @OneToMany((type) => Event, (event) => event.creator)
     eventsCreated: Relation<Event>[];

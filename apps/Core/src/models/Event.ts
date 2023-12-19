@@ -35,8 +35,12 @@ export class Event extends BaseModel implements IEvent {
     @Column({default: 0})
     femaleTicketFee: number;
 
-    @ManyToOne((type) => Category, (category) => category.events)
-    category: Relation<Category>;
+    @Column({default: false})
+    disable: boolean;
+
+    @ManyToMany((type) => Category, (category) => category.events)
+    @JoinTable()
+    category: Relation<Category>[];
 
     @Column({default: 10})
     maxParticipants: number;
@@ -46,4 +50,7 @@ export class Event extends BaseModel implements IEvent {
 
     @Column({default: 0})
     viewCount: number;
+
+    @Column({nullable: true})
+    groupQr: string;
 }

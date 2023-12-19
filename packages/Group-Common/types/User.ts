@@ -4,9 +4,7 @@ export interface IUser {
     openId?: string;
     unionId?: string;
     avatarUrl?: string;
-    phoneNumber?: string;
-    joinNumber?: number;
-    postNumber?: number;
+    contact?: string;
 
     createdAt: Date;
     updatedAt: Date;
