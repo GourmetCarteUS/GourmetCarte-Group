@@ -53,4 +53,7 @@ export class Event extends BaseModel implements IEvent {
 
     @Column({nullable: true})
     groupQr: string;
+
+    @Column({default: 0})
+    joinCount: number;
 }

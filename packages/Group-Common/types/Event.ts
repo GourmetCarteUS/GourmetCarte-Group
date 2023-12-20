@@ -21,6 +21,12 @@ export interface IEvent {
 
     createdAt: Date;
     updatedAt: Date;
+    joinCount: number;
+}
+
+export interface EventDetailData extends IEvent {
+    isJoin?: boolean;
+    isMe?: boolean;
 }
 
 export interface EventCreateForm extends IEvent {
@@ -29,5 +35,6 @@ export interface EventCreateForm extends IEvent {
 }
 
 export interface EventForm extends GCPageRequest {
-    categoryId: string
+    categoryId?: string
+    userId?: string
 }

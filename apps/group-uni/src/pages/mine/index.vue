@@ -6,13 +6,19 @@ import Settings from '@/pages/mine/settings.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import TabBar from '@/components/tab-bar/tab-bar.vue';
 import {useUserInfoStore} from "@/state/modules/user-info";
-import {IUser} from 'group-common'
+import {IEvent, IUser} from 'group-common'
 import avatarUrl from '@/static/images/logo.png'
+import {view_event_user} from "@/api/event/evnet";
 
-const dataList = ref([]),
+const dataList = ref<IEvent[]>([]),
     pagingRef = ref(),
     settingUserRef = ref(),
-    scrollTop = ref(0);
+    scrollTop = ref(0),
+    tabList = ref([
+        {id: 'all', name: '全部'},
+        {id: 'hot', name: '热门'},
+    ])
+;
 
 const userInfo = computed(() => {
     return useUserInfoStore().user as IUser
@@ -41,13 +47,12 @@ const tabBarList = [
 ];
 
 async function queryList(pageNo: number, pageSize: number) {
-    // const {data} = await view_order_list({
-    //   status: 'run',
-    //   page: pageNo,
-    //   limit: pageSize
-    // })
-    // orderTotal.value = data.data.total
-    pagingRef.value.complete([1, 2, 3, 4]);
+    const {data} = await view_event_user({
+        page: pageNo,
+        limit: pageSize,
+        userId: userInfo.value?.id
+    })
+    if (data?.success) return pagingRef.value.complete(data.data);
 }
 
 function onSetting() {
@@ -106,40 +111,45 @@ useUserInfoStore().initUserInfo()
                 <view class="gc-title text-28 font-500">资料信息</view>
                 <view class="mt-30">
                     <view class="gc-item-before">报名参赛者：{{ userInfo?.displayName }}</view>
-                    <view class="gc-item-before">手机号码：187010789087</view>
-                    <view class="gc-item" style="height: auto; overflow: initial; padding-left: 0">
-                        <uni-file-picker limit="9">
-                            <template #title="{ filesList, limitLength }">
-                                <view class="gc-item-before justify-between m-0 pr-20" style="background: transparent">
-                                    <text>个人相册</text>
-                                    <text class="text-gray">{{ filesList?.length }}/{{ limitLength }}</text>
-                                </view>
-                            </template>
-                        </uni-file-picker>
-                    </view>
+                    <view class="gc-item-before">联系方式：187010789087</view>
+                    <!--                    <view class="gc-item" style="height: auto; overflow: initial; padding-left: 0">-->
+                    <!--                        <uni-file-picker limit="9">-->
+                    <!--                            <template #title="{ filesList, limitLength }">-->
+                    <!--                                <view class="gc-item-before justify-between m-0 pr-20" style="background: transparent">-->
+                    <!--                                    <text>个人相册</text>-->
+                    <!--                                    <text class="text-gray">{{ filesList?.length }}/{{ limitLength }}</text>-->
+                    <!--                                </view>-->
+                    <!--                            </template>-->
+                    <!--                        </uni-file-picker>-->
+                    <!--                    </view>-->
                 </view>
                 <view class="gc-title mt-60 text-28 font-500">我的活动</view>
                 <view class="mt-30">
-                    <view class="group-item b-rd-20 p-20 mb-20" v-for="i in 10"
-                          @click="onGoPage({ name: 'post-detail', params: { id: i.toString() } }, false)">
+                    <view style="z-index: 100" class="sticky pb-20" :class="{ 'bg-white': scrollTop >= 150 }"
+                          :style="{ top: navHeight - 5 + 'px' }">
+                        <z-tabs ref="tabsRef" :list="tabList"/>
+                    </view>
+
+                    <view class="group-item b-rd-20 p-20 mb-20" v-for="item in dataList" :key="item.id"
+                          @click="onGoPage({ name: 'post-detail', params: { id: item?.id } }, false)">
                         <view class="flex mb-10">
                             <view class="w-150 h-170 b-rd-20">
                                 <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png"
                                        class="h-full w-full b-rd-20" mode="aspectFill"/>
                             </view>
                             <view class="text-24 ml-20 flex-col flex justify-center">
-                                <view class="mb-20 flex justify-between">
-                                    <view class="flex-1">
+                                <view class="mb-20">
+                                    <view class="flex justify-between">
                                         <view class="text-30 font-900 text-nowrap w-250">
-                                            11.1周六室外活动1周六室外活动1周六室外活动
+                                            {{ item?.title }}
                                         </view>
-                                        <view class="text-gray">重庆市xxxxxx</view>
+                                        <view>共{{ item?.joinCount }}人一起</view>
                                     </view>
-                                    <view>共58人一起</view>
+                                    <view class="text-gray text-nowrap w-400">{{ item?.location }}</view>
                                 </view>
                                 <view class="flex">
                                     <view class="capsule-button bg-primary-sub">进行中</view>
-                                    <view class="capsule-button bg-primary-sec ml-20">活动时：2.29-3.29</view>
+                                    <view class="capsule-button bg-primary-sec ml-20">{{ item?.startAt }}</view>
                                 </view>
                             </view>
                         </view>

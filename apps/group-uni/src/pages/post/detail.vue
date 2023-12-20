@@ -2,54 +2,13 @@
 import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import UniIcons from '@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue';
-import {onLoad, onPageScroll} from '@dcloudio/uni-app';
+import {onLoad, onPageScroll, onShareAppMessage, onShareTimeline} from '@dcloudio/uni-app';
 import {computed, reactive, ref} from 'vue';
 import {onBack, onGoPage} from '@/utils/business';
-import {toast} from '@/utils/uniapi/prompt';
-import {view_event_detail, view_event_join} from "@/api/event/evnet";
-import {IEvent} from 'group-common'
+import {hideLoading, loading, toast} from '@/utils/uniapi/prompt';
+import {view_event_detail, view_event_join, view_event_quit} from "@/api/event/evnet";
+import {EventDetailData} from 'group-common'
 import LogoUrl from '@/static/images/logo.png'
-
-const status = computed(() => {
-    // 未开始
-    if (currentData?.status == 'pending') {
-        if (currentData?.isMe) {
-            // 编辑、检票
-            return 1;
-        } else if (currentData?.isJoin) {
-            // 票据、上车
-            return 2;
-        } else {
-            // 上车
-            return 3;
-        }
-        // 进行中
-    } else if (currentData?.status == 'processing') {
-        if (currentData?.isMe) {
-            // 检票
-            return 4;
-        } else if (currentData?.isJoin) {
-            // 票据
-            return 5;
-        } else {
-            // 只有分享
-            return 0;
-        }
-        // 已结束
-    } else if (currentData?.status == 'solved') {
-        if (currentData?.isMe) {
-            // 检票、再发起
-            return 6;
-        } else if (currentData?.isJoin) {
-            // 票据
-            return 4;
-        } else {
-            // 只有分享
-            return 0;
-        }
-    }
-    return 0;
-});
 
 const startAtFormat = computed(() => {
     if (!currentData.startAt) return
@@ -58,15 +17,17 @@ const startAtFormat = computed(() => {
 })
 
 const postId = ref(),
-    currentData = reactive<Partial<IEvent>>({});
+    currentData = reactive<Partial<EventDetailData>>({});
 
 async function getEvent() {
+    loading()
     const {data} = await view_event_detail(postId.value)
     if (data?.errorCode) {
-        return toast(data?.errorMessage || '暂无该数据', {complete: () => setTimeout(onBack, 1500)});
+        toast(data?.errorMessage || '暂无该数据', {complete: () => setTimeout(onBack, 1500)});
     } else {
         Object.assign(currentData, data!.data);
     }
+    hideLoading()
 }
 
 async function joinEvent() {
@@ -76,8 +37,20 @@ async function joinEvent() {
     } else {
         toast('上车成功', {
             success: () => setTimeout(() => {
-                onGoPage({name: 'order-detail', params: {id: postId.value}})
+                onGoPage({name: 'order-success', params: {id: postId.value}})
             }, 1500)
+        })
+
+    }
+}
+
+async function quitEvent() {
+    const {data} = await view_event_quit(postId.value)
+    if (!data?.success) {
+        toast(data?.errorMessage || '下车失败')
+    } else {
+        toast('下车成功', {
+            success: getEvent
         })
 
     }
@@ -103,6 +76,22 @@ onLoad((params) => {
         postId.value = params?.id;
         getEvent()
     }
+});
+onShareAppMessage(() => {
+    return {
+        title: '咕噜拼',
+        desc: currentData?.title,
+        path: `/pages/post/detail?id=${postId.value}`,
+        imageUrl: LogoUrl,
+    };
+});
+onShareTimeline(() => {
+    return {
+        title: '咕噜拼',
+        desc: currentData?.title,
+        path: `/pages/post/detail?id=${postId.value}`,
+        imageUrl: LogoUrl,
+    };
 });
 </script>
 
@@ -140,8 +129,7 @@ onLoad((params) => {
                 <view class="mt-30">
                     <view class="text-24 center justify-between">
                         <text class="text-gray">{{
-                                currentData?.participants?.length > 0 ? `${currentData?.participants?.length}人一起` :
-                                    `${currentData?.viewCount || 5}人想去`
+                                currentData?.joinCount > 0 ? `${currentData?.joinCount}人一起` : `${currentData?.viewCount || 5}人想去`
                             }}
                         </text>
                         <text class="text-primary">仅剩{{
@@ -150,7 +138,8 @@ onLoad((params) => {
                         </text>
                     </view>
                     <view class="user-lists mt-20 grid grid-cols-5" v-if="currentData?.participants?.length">
-                        <view class="user center flex-col" v-for="participant in currentData?.participants">
+                        <view class="user center flex-col" v-for="participant in currentData?.participants"
+                              :key="participant">
                             <view class="avatar w-100 h-100 mb-10">
                                 <image :src="participant?.avatarUrl||LogoUrl"
                                        class="h-full w-full b-rd-50" mode="aspectFill"/>
@@ -166,7 +155,7 @@ onLoad((params) => {
                 <!-- 活动描述 -->
                 <view class="gc-title text-28 mt-40 mb-30">活动描述</view>
                 <view class="text-26 font-400">
-                    <view v-for="(desc, idx) in currentData?.description.split('\n')" :key="idx+desc">
+                    <view v-for="(desc, idx) in currentData?.description?.split('\n')" :key="idx+desc">
                         {{ desc }}
                     </view>
                 </view>
@@ -181,61 +170,25 @@ onLoad((params) => {
         </view>
         <view class="flex center w-full justify-between bg-primary fixed bottom-0 p-40 pt-30 pb-50"
               style="box-sizing: border-box">
-            <view class="center">
+            <button class="center view-button" open-type="share">
                 <uni-icons type="redo-filled" size="22" class="mr-10"/>
                 分享
+            </button>
+
+            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center"
+                  @click="onGoPage({name:'post-create', params: {id: postId}})" v-if="currentData?.isMe">
+                <text class="text-30 font-900">编辑</text>
             </view>
 
-            <template v-if="status === 1">
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="onGoPage({ name: 'post-create', params: { id: '1' } }, false)">
-                    <text class="text-30 font-900">编辑</text>
-                </view>
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="onGoPage({ name: 'order-user', params: { id: '1' } }, false)">
-                    <text class="text-30 font-900">检票</text>
-                </view>
-            </template>
-            <template v-else-if="status === 2">
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="onGoPage({ name: 'order-success', params: { id: '1' } }, false)">
-                    <text class="text-30 font-900">票据</text>
-                </view>
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="onGoPage({ name: 'order-create', params: { id: '1' } }, false)">
-                    <text class="text-30 font-900">上车</text>
-                    <text class="text-24">（$20.00）</text>
-                </view>
-            </template>
-            <template v-else-if="true">
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="joinEvent">
-                    <text class="text-30 font-900">上车</text>
-                    <!--                    <text class="text-24">（$20.00）</text>-->
-                </view>
-            </template>
-            <template v-else-if="status === 4">
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="onGoPage({ name: 'order-user', params: { id: '1' } }, false)">
-                    <text class="text-30 font-900">检票</text>
-                </view>
-            </template>
-            <template v-else-if="status === 5">
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="onGoPage({ name: 'order-success', params: { id: '1' } }, false)">
-                    <text class="text-30 font-900">票据</text>
-                </view>
-            </template>
-            <template v-else-if="status === 6">
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="onGoPage({ name: 'post-create', params: { id: '1' } }, false)">
-                    <text class="text-30 font-900">再发起</text>
-                </view>
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="onGoPage({ name: 'order-user', params: { id: '1' } }, false)">
-                    <text class="text-30 font-900">检票</text>
-                </view>
-            </template>
+            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center"
+                  @click="quitEvent" v-else-if="currentData?.isJoin">
+                <text class="text-30 font-900">下车</text>
+            </view>
+
+            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center"
+                  @click="joinEvent" v-else>
+                <text class="text-30 font-900">上车</text>
+            </view>
         </view>
     </Layout>
 </template>

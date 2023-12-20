@@ -6,7 +6,7 @@ import {
     ICategory,
     IBanner,
     GCJSONPaginationResponse,
-    EventForm
+    EventForm, EventDetailData
 } from 'group-common'
 
 export function view_event_create(data: Partial<IEvent>) {
@@ -14,7 +14,11 @@ export function view_event_create(data: Partial<IEvent>) {
 }
 
 export function view_event_detail(id: string) {
-    return request.get<GCJSONResponse<IEvent>>(`/event/${id}`);
+    return request.get<GCJSONResponse<EventDetailData>>(`/event/${id}`);
+}
+
+export function view_event_success(id: string) {
+    return request.get<GCJSONResponse<EventDetailData>>(`/event/success/${id}`);
 }
 
 export function view_categories() {
@@ -31,4 +35,12 @@ export function view_events(data: Partial<EventForm>) {
 
 export function view_event_join(id: string) {
     return request.post<GCJSONResponse<IEvent>>(`event/join/${id}`)
+}
+
+export function view_event_quit(id: string) {
+    return request.post<GCJSONResponse<IEvent>>(`event/quit/${id}`)
+}
+
+export function view_event_user(data: Partial<EventForm>) {
+    return request.get<GCJSONResponse<IEvent>>(`event/user/${data.userId}`, {params: data})
 }
