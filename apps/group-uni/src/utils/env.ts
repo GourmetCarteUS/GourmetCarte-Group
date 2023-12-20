@@ -1,3 +1,6 @@
+declare global {
+    var wx: any;
+}
 /**
  * @description: Development mode
  */

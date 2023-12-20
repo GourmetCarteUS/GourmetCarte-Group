@@ -9,8 +9,20 @@ import { transformHttpStatusMessage } from '@/utils/http/checkStatus';
 import { router } from '@/router';
 import { GCJSONResponse } from 'group-common';
 
+let API_BASE_URL = getEnvValue('VITE_API_BASE_URL');
+
+if (wx) {
+    const AppInfo = wx.getAccountInfoSync();
+    if (AppInfo.miniProgram.envVersion === 'release') {
+        API_BASE_URL = getEnvValue('VITE_API_BASE_URL_PROD');
+    }
+    if (AppInfo.miniProgram.envVersion === 'trial') {
+        API_BASE_URL = getEnvValue('VITE_API_BASE_URL_PREVIEW');
+    }
+}
+
 const instance = un.create({
-    baseUrl: getEnvValue('VITE_API_BASE_URL'),
+    baseUrl: API_BASE_URL,
     headers: {
         'content-type': 'application/json',
     },
