@@ -28,3 +28,7 @@ export function view_banner() {
 export function view_events(data: Partial<EventForm>) {
     return request.get<GCJSONPaginationResponse<IEvent>>('/event', {params: data});
 }
+
+export function view_event_join(id: string) {
+    return request.post<GCJSONResponse<IEvent>>(`event/join/${id}`)
+}

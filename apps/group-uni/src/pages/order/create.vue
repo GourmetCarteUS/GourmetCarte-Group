@@ -18,29 +18,29 @@
                 <uni-icons type="info-filled" size="20" color="green" class="pr-20" />
                 距离活动前3小时随时可退
             </view>
-            <view class="mt-30" style="border-bottom: 2rpx solid #e8e8e8">
-                <view class="flex justify-between">
-                    <view class="item-title"
-                        >价格
-                        <text class="text-gray text-26">（剩余{{ orderData?.maxNumber || 0 }}张）</text>
-                    </view>
-                    <view>
-                        <uni-number-box v-model="orderForm.num" min="1" :max="orderData?.maxNumber" />
-                    </view>
-                </view>
-                <view class="flex justify-between mt-20">
-                    <view class="item-title">支付金额</view>
-                    <view class="text-red-6 font-400">${{ totalPrice }}</view>
-                </view>
-            </view>
+<!--            <view class="mt-30" style="border-bottom: 2rpx solid #e8e8e8">-->
+<!--                <view class="flex justify-between">-->
+<!--                    <view class="item-title"-->
+<!--                        >价格-->
+<!--                        <text class="text-gray text-26">（剩余{{ orderData?.maxNumber || 0 }}张）</text>-->
+<!--                    </view>-->
+<!--                    <view>-->
+<!--                        <uni-number-box v-model="orderForm.num" min="1" :max="orderData?.maxNumber" />-->
+<!--                    </view>-->
+<!--                </view>-->
+<!--                <view class="flex justify-between mt-20">-->
+<!--                    <view class="item-title">支付金额</view>-->
+<!--                    <view class="text-red-6 font-400">${{ totalPrice }}</view>-->
+<!--                </view>-->
+<!--            </view>-->
             <view class="mt-20">
-                <view class="text-30 mb-20 pt-20">支付说明</view>
+                <view class="text-30 mb-20 pt-20">上车说明</view>
                 <view>
                     <view>
                         <view class="title">退换规则</view>
                         <view class="ul">
                             <view class="li">距离活动开始前3小时可以随时退出</view>
-                            <view class="li">距离活动开始不足3小时与主办方协商退款</view>
+<!--                            <view class="li">距离活动开始不足3小时与主办方协商退款</view>-->
                         </view>
                     </view>
                     <view>

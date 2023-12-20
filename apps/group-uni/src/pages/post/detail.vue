@@ -6,8 +6,9 @@ import {onLoad, onPageScroll} from '@dcloudio/uni-app';
 import {computed, reactive, ref} from 'vue';
 import {onBack, onGoPage} from '@/utils/business';
 import {toast} from '@/utils/uniapi/prompt';
-import {view_event_detail} from "@/api/event/evnet";
+import {view_event_detail, view_event_join} from "@/api/event/evnet";
 import {IEvent} from 'group-common'
+import LogoUrl from '@/static/images/logo.png'
 
 const status = computed(() => {
     // 未开始
@@ -65,6 +66,20 @@ async function getEvent() {
         return toast(data?.errorMessage || '暂无该数据', {complete: () => setTimeout(onBack, 1500)});
     } else {
         Object.assign(currentData, data!.data);
+    }
+}
+
+async function joinEvent() {
+    const {data} = await view_event_join(postId.value)
+    if (!data?.success) {
+        toast(data?.errorMessage || '上车失败')
+    } else {
+        toast('上车成功', {
+            success: () => setTimeout(() => {
+                onGoPage({name: 'order-detail', params: {id: postId.value}})
+            }, 1500)
+        })
+
     }
 }
 
@@ -137,10 +152,10 @@ onLoad((params) => {
                     <view class="user-lists mt-20 grid grid-cols-5" v-if="currentData?.participants?.length">
                         <view class="user center flex-col" v-for="participant in currentData?.participants">
                             <view class="avatar w-100 h-100 mb-10">
-                                <image :src="participant?.avatarUrl"
+                                <image :src="participant?.avatarUrl||LogoUrl"
                                        class="h-full w-full b-rd-50" mode="aspectFill"/>
                             </view>
-                            <view class="user-name text-gray text-24 text-nowrap w-100">{{
+                            <view class="user-name text-gray text-24 text-nowrap w-100 text-center">{{
                                     participant?.displayName || '参与者'
                                 }}
                             </view>
@@ -192,11 +207,11 @@ onLoad((params) => {
                     <text class="text-24">（$20.00）</text>
                 </view>
             </template>
-            <template v-else-if="status === 3">
+            <template v-else-if="true">
                 <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center"
-                      @click="onGoPage({ name: 'order-create', params: { id: '1' } }, false)">
+                      @click="joinEvent">
                     <text class="text-30 font-900">上车</text>
-                    <text class="text-24">（$20.00）</text>
+                    <!--                    <text class="text-24">（$20.00）</text>-->
                 </view>
             </template>
             <template v-else-if="status === 4">

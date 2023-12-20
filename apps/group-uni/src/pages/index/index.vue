@@ -41,7 +41,7 @@ import { hideLoading, loading } from '@/utils/uniapi/prompt';
 import { onLoad, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
 import { IBanner, ICategory } from 'group-common';
 
-import LogoUrl from '@/static/logo-2.png';
+import LogoUrl from '@/static/images/logo.png';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import Layout from '@/components/layout/layout.vue';
 import PostItem from '@/components/item/post.vue';

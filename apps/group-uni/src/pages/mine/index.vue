@@ -7,7 +7,7 @@ import NavBar from '@/components/nav-bar/nav-bar.vue';
 import TabBar from '@/components/tab-bar/tab-bar.vue';
 import {useUserInfoStore} from "@/state/modules/user-info";
 import {IUser} from 'group-common'
-import avatarUrl from '@/static/avatar.png'
+import avatarUrl from '@/static/images/logo.png'
 
 const dataList = ref([]),
     pagingRef = ref(),

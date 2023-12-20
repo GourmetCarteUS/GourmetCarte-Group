@@ -1,11 +1,8 @@
-import {EventCreateForm, EventForm, GCJSONArrayResponse, GCJSONResponse, IEvent} from 'group-common';
-import {Body, Controller, Get, Post, Query, Request, Route, Security, Tags} from 'tsoa';
+import {EventCreateForm, GCJSONArrayResponse, GCJSONResponse, IEvent} from 'group-common';
+import {Body, Controller, Get, Path, Post, Request, Route, Security, Tags} from 'tsoa';
 import {Event} from "../../models/Event";
 import {Category} from "../../models/Category";
-import {getManager, getRepository, In, Raw} from "typeorm";
-import {User} from "../../models/User";
-import {deflateRawSync} from "zlib";
-import {query} from "express";
+import {In} from "typeorm";
 
 
 @Tags('Event')
@@ -99,5 +96,79 @@ export class EventController extends Controller {
             success: true,
             data: event,
         }
+    }
+
+
+    @Post("join/{id}")
+    @Security('authorized')
+    public async joinEvent(@Request() request: any, @Path() id: string): Promise<GCJSONResponse<IEvent>> {
+
+        const event = await Event.findOne({
+            relations: {participants: true, creator: true},
+            where: {id}
+        })
+
+        if (request.user.id == event.creator.id) {
+            return {
+                success: false,
+                errorCode: 200,
+                errorMessage: '您就是司机，不用上车！！'
+            }
+        }
+
+        let participants = event.participants
+        if (!event.participants.find(item => item.id == request.user.id)) {
+            participants.push(request.user)
+            event.participants = participants
+            await event.save()
+            return {
+                success: true,
+                data: event
+            }
+        } else {
+            return {
+                success: false,
+                errorCode: 200,
+                errorMessage: '你已经在车上了！！'
+            }
+        }
+
+    }
+
+    @Post("quit/{id}")
+    @Security('authorized')
+    public async quitEvent(@Request() request: any, @Path() id: string): Promise<GCJSONResponse<IEvent>> {
+
+        const event = await Event.findOne({
+            relations: {participants: true, creator: true},
+            where: {id}
+        })
+
+        if (request.user.id == event.creator.id) {
+            return {
+                success: false,
+                errorCode: 200,
+                errorMessage: '您就是司机，不能下车！！'
+            }
+        }
+
+        let participants = event.participants
+
+        if (event.participants.find(item => item.id == request.user.id)) {
+            participants = participants.filter(item => item.id != request.user.id)
+            event.participants = participants
+            await event.save()
+            return {
+                success: true,
+                data: event
+            }
+        } else {
+            return {
+                success: false,
+                errorCode: 200,
+                errorMessage: '你还没上车呢！！'
+            }
+        }
+
     }
 }

@@ -37,7 +37,7 @@ import { modify_user_info } from '@/api/user-info/user-info';
 import { FilePathTypeEnum } from '@/api/common/common.types';
 import { loading } from '@/utils/uniapi/prompt';
 import { trim } from '@sky-serein/js-utils';
-import avatarDefaultUrl from '@/static/avatar.png';
+import avatarDefaultUrl from '@/static/images/logo.png';
 
 const popupRef = ref();
 const userInfo = computed(() => useUserInfoStore().user);

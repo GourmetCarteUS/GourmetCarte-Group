@@ -25,7 +25,7 @@ import {useUserInfoStore} from '@/state/modules/user-info';
 import {getUserLogin} from '@/api/user-info/user-info';
 import useTokenStorage from '@/storage/token';
 
-import logoUrl from '@/static/logo-1.png';
+import logoUrl from '@/static/images/logo.png';
 import {IUser} from 'group-common';
 import Layout from '@/components/layout/layout.vue';
 import {onGoTab} from "@/utils/business";
