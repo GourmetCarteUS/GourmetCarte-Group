@@ -1,166 +1,168 @@
 .text-primary {
-  color: $uni-color-primary !important;
+    color: $uni-color-primary !important;
 }
 
 .bg-primary {
-  background: $uni-color-primary !important;
+    background: $uni-color-primary !important;
 }
 
-.bg-error{
-  background: $uni-color-error !important;
+.bg-black {
+    background: $uni-color-black !important;
 }
-.bg-warning{
-  background: $uni-color-warning !important;
+
+.bg-error {
+    background: $uni-color-error !important;
+}
+.bg-warning {
+    background: $uni-color-warning !important;
 }
 
 .bg-primary-sec {
-  background-color: $uni-color-primary-sec !important;
+    background-color: $uni-color-primary-sec !important;
 }
 
 .text-primary-sub {
-  color: $uni-color-primary-sub !important;
+    color: $uni-color-primary-sub !important;
 }
 
 .bg-primary-sub {
-  background: $uni-color-primary-sub !important;
+    background: $uni-color-primary-sub !important;
 }
 
 .text-color {
-  color: $uni-text-color;;
+    color: $uni-text-color;
 }
 
-
 .bg-grey-sub {
-  background: $uni-bg-color-grey;
+    background: $uni-bg-color-grey;
 }
 
 .text-grey-sub {
-  color: $uni-bg-color-grey;
+    color: $uni-bg-color-grey;
 }
 
 .capsule-button {
-  border-radius: 174rpx;
-  font-weight: 500;
-  padding: 10rpx 30rpx;
+    border-radius: 174rpx;
+    font-weight: 500;
+    padding: 10rpx 30rpx;
 }
 
 .view-button {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  line-height: normal;
-  font-size: inherit;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    line-height: normal;
+    font-size: inherit;
 
-  &:after {
-    border: none
-  }
+    &:after {
+        border: none;
+    }
 }
 
 .text-button {
-  margin: 0;
-  padding: 0;
-  background: transparent;
-  line-height: normal;
-  font-size: inherit;
-  display: inline-flex;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    line-height: normal;
+    font-size: inherit;
+    display: inline-flex;
 
-  &:after {
-    border: none
-  }
+    &:after {
+        border: none;
+    }
 }
 
 .text-nowrap {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .safe-padding-bottom {
-  padding-bottom: constant(safe-area-inset-bottom);
-  padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom);
 }
 
 .safe-margin-bottom {
-  margin-bottom: constant(safe-area-inset-bottom);
-  margin-bottom: env(safe-area-inset-bottom);
+    margin-bottom: constant(safe-area-inset-bottom);
+    margin-bottom: env(safe-area-inset-bottom);
 }
 
 /*
 虚线分割
  */
 .balance {
-  border-bottom: 1px dashed $uni-bg-color-grey;
+    border-bottom: 1px dashed $uni-bg-color-grey;
 }
 
 /*
 实线分割
  */
 .solid {
-  border-bottom: 1px solid $uni-bg-color-grey;
+    border-bottom: 1px solid $uni-bg-color-grey;
 }
 
 .gc-item {
-  height: 94rpx;
-  border-radius: 20rpx;
-  background: rgba($uni-color-primary, .3);
-  display: flex;
-  align-items: center;
-  margin-bottom: 20rpx;
-  font-size: 28rpx;
-  color: $uni-text-color;
-  font-weight: 500;
-  padding-left: 22rpx;
-  @extend .text-nowrap;
-
+    height: 94rpx;
+    border-radius: 20rpx;
+    background: rgba($uni-color-primary, 0.1);
+    display: flex;
+    align-items: center;
+    margin-bottom: 20rpx;
+    font-size: 28rpx;
+    color: $uni-text-color;
+    font-weight: 500;
+    padding-left: 22rpx;
+    @extend .text-nowrap;
 }
 
 .gc-item-before {
-  @extend .gc-item;
-  //padding-left: 66rpx;
-  //
-  //&:before {
-  //  content: " ";
-  //  background: url("@/static/images/item-prefix.png") 100%/100%;
-  //  width: 46rpx;
-  //  height: 28rpx;
-  //  position: absolute;
-  //  transform: translateX(-56rpx) translateZ(-1px);
-  //}
+    @extend .gc-item;
+    //padding-left: 66rpx;
+    //
+    //&:before {
+    //  content: " ";
+    //  background: url("@/static/images/item-prefix.png") 100%/100%;
+    //  width: 46rpx;
+    //  height: 28rpx;
+    //  position: absolute;
+    //  transform: translateX(-56rpx) translateZ(-1px);
+    //}
 }
 
 .gc-title {
-  display: flex;
-  color: $uni-text-color;
-  align-items: center;
-  position: relative;
-  transform-style: preserve-3d;
-  margin-left: 10rpx;
-  font-weight: 500;
+    display: flex;
+    color: $uni-text-color;
+    align-items: center;
+    position: relative;
+    transform-style: preserve-3d;
+    margin-left: 10rpx;
+    font-weight: 500;
 
-  &:before {
-    display: block;
-    content: " ";
-    width: 62rpx;
-    height: 62rpx;
-    background: linear-gradient(122.54deg, $uni-color-primary 0%, rgba(220, 248, 166, 0) 100%);
-    border-radius: 50%;
-    position: absolute;
-    left: -10rpx;
-    transform: translateZ(-1px);
-  }
+    &:before {
+        display: block;
+        content: ' ';
+        width: 10rpx;
+        height: 30rpx;
+        background: $uni-color-primary;
+        border-radius: 2rpx;
+        position: absolute;
+        left: -20rpx;
+        transform: translateZ(-1px);
+    }
 }
 
 // 已结束
 .solved {
-  background: $uni-text-color-grey !important;
-  color: white !important;
+    background: $uni-text-color-grey !important;
+    color: white !important;
 }
 // 进行中
-.processing{
-  background: $uni-color-primary !important;
-  color: white !important;
+.processing {
+    background: $uni-color-primary !important;
+    color: white !important;
 }
 // 未开始
-.pending{
-  background: $uni-color-primary-sub !important;
+.pending {
+    background: $uni-color-primary-sub !important;
 }
