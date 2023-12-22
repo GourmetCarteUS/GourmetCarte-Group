@@ -14,7 +14,7 @@
                 <view class="gc-item-before">
                     <view>举办城市</view>
                     <view class="ml-20">
-                        <picker :range="cityArray" @change="e=>formData.cityIndex=e.detail.value">
+                        <picker :range="cityArray" @change="bindPickerChange">
                             <view class="uni-input">{{ cityArray[formData?.cityIndex] }}</view>
                         </picker>
                     </view>
@@ -114,6 +114,11 @@ function confirmMultiple(e: any) {
 
 function checkboxChange(e: any) {
     formData.isPublic = Boolean(e.detail.value.length)
+}
+
+function bindPickerChange(e) {
+    formData.cityIndex = e.detail.value
+    formData.city = cityArray[formData.cityIndex || 0]
 }
 
 async function getCategories() {
