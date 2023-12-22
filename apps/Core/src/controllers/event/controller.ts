@@ -16,7 +16,7 @@ export class EventController extends Controller {
 
         let order = {}
         let where = {
-            disable: false,
+            disable: false, isPublic: true
         }
         if (request.query?.category) {
             if (request.query?.category == 'all') {

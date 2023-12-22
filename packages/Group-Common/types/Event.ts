@@ -22,6 +22,8 @@ export interface IEvent {
     createdAt: Date;
     updatedAt: Date;
     joinCount: number;
+    isPublic: boolean;
+    city: string;
 }
 
 export interface EventDetailData extends IEvent {
@@ -32,6 +34,7 @@ export interface EventDetailData extends IEvent {
 export interface EventCreateForm extends IEvent {
     categoryIds: string[];
     categoryStr?: string[];
+    cityIndex?: number;
 }
 
 export interface EventForm extends GCPageRequest {

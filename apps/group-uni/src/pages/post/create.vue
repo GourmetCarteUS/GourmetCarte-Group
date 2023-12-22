@@ -12,6 +12,14 @@
                     </view>
                 </view>
                 <view class="gc-item-before">
+                    <view>举办城市</view>
+                    <view class="ml-20">
+                        <picker :range="cityArray" @change="e=>formData.cityIndex=e.detail.value">
+                            <view class="uni-input">{{ cityArray[formData?.cityIndex] }}</view>
+                        </picker>
+                    </view>
+                </view>
+                <view class="gc-item-before">
                     <view>活动地址</view>
                     <view class="ml-20" @click="getLocation">{{ formData.location || '请输入选择活动地址' }}</view>
                 </view>
@@ -35,6 +43,12 @@
                         {{ formData?.categoryStr?.join('，') || '请选择活动类型' }}
                     </view>
                 </view>
+                <checkbox-group class="gc-item-before pr-20" @change="checkboxChange">
+                    <label class="flex justify-between w-full">
+                        <view>是否公开</view>
+                        <checkbox color="#7f7eff" checked style="transform:scale(0.8)"/>
+                    </label>
+                </checkbox-group>
             </view>
 
             <view class="gc-title text-28 font-900 mb-30 mt-40">活动介绍</view>
@@ -84,15 +98,22 @@ const categoryList = ref(),
     formData = reactive<Partial<EventCreateForm>>({
         categoryIds: [],
         categoryStr: [],
+        isPublic: true,
+        cityIndex: 0
     }),
     scrollTop = ref(0),
     multiplePickerShow = ref(false)
 
+const cityArray = ["San Francisco Bay Area", "Los Angeles", "New York", "Seattle", "Boston", "Chicago", "Washington DC", "Houston", "Dallas"]
 
 function confirmMultiple(e: any) {
     e.selected.map((item: { label: string; }) => formData.categoryStr?.push(item?.label))
     formData.categoryIds = e.value
     multiplePickerShow.value = false;
+}
+
+function checkboxChange(e: any) {
+    formData.isPublic = Boolean(e.detail.value.length)
 }
 
 async function getCategories() {

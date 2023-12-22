@@ -1,9 +1,8 @@
-import {Authentication, GCJSONArrayResponse, GCJSONResponse, IUser} from 'group-common';
-import {Body, Controller, Get, Post, Route, Security, Tags, Request, Patch} from 'tsoa';
+import {Authentication, GCJSONResponse, IUser} from 'group-common';
+import {Body, Controller, Get, Patch, Post, Request, Route, Security, Tags} from 'tsoa';
 import {User} from '../../models/User';
 import {wechat} from "../../wechat";
 import {generateJwt} from "../../utils/jwt";
-import {AppDataSource} from "../../app-data-source";
 
 @Tags('User')
 @Route('user')
@@ -15,7 +14,7 @@ export class UserController extends Controller {
         return {
             data: {
                 avatarUrl: request.user?.avatarUrl,
-                displayName: request.user.displayName,
+                displayName: request.user?.displayName,
                 id: request.user.id,
             },
             success: true

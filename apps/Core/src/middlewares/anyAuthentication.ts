@@ -10,8 +10,13 @@ export async function anyAuthentication(request: express.Request, response: expr
             if (err) {
                 return
             } else {
-                request['user'] = await User.findOneBy({id: decoded.id})
-                request['isLogin'] = true
+                const user = await User.findOneBy({id: decoded.id})
+                if (!user) {
+                    request['isLogin'] = false
+                } else {
+                    request['isLogin'] = true
+                    request['user'] = user
+                }
             }
         });
     } else {

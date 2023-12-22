@@ -1,5 +1,5 @@
 import {IEvent} from 'group-common';
-import {Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, OneToOne, Relation} from 'typeorm';
+import {Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, Relation} from 'typeorm';
 import {BaseModel} from './BaseModel.js';
 import {User} from './User.js';
 import {Category} from "./Category.js";
@@ -56,4 +56,7 @@ export class Event extends BaseModel implements IEvent {
 
     @Column({default: 0})
     joinCount: number;
+
+    @Column({nullable: true})
+    isPublic: boolean;
 }
