@@ -23,7 +23,7 @@
                         </picker>
                     </view>
                     <view class="capsule-button text-24 bg-white ml-20" @click="datePickerRef?.show">{{
-                            filterForm.dataFormat || '全部时间'
+                        filterForm.dataFormat || '全部时间'
                         }}
                     </view>
                 </view>
@@ -67,7 +67,7 @@ const navHeight = computed(() => {
 });
 const datePickerRef = ref();
 
-const _cityArray = ['all', ...cityArray]
+const _cityArray = ['All', ...cityArray]
 
 const tabBarList = [
     {

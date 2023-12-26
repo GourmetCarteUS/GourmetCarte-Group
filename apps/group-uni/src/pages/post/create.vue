@@ -107,7 +107,8 @@ const categoryList = ref(),
         categoryIds: [],
         categoryStr: [],
         isPublic: true,
-        cityIndex: 0
+        cityIndex: 0,
+        city: "San Francisco Bay Area"
     }),
     scrollTop = ref(0),
     multiplePickerShow = ref(false)

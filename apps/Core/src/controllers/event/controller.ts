@@ -2,7 +2,7 @@ import {EventCreateForm, EventDetailData, GCJSONArrayResponse, GCJSONResponse, I
 import {Body, Controller, Get, Path, Post, Request, Route, Security, Tags} from 'tsoa';
 import {Event} from "../../models/Event";
 import {Category} from "../../models/Category";
-import {FindOptionsOrder, In} from "typeorm";
+import {Between, FindOptionsOrder, In} from "typeorm";
 import {User} from "../../models/User";
 import dayjs from "dayjs";
 
@@ -30,6 +30,17 @@ export class EventController extends Controller {
                 category.id = request.query?.category
                 where['category'] = category
             }
+        }
+        if (request.query?.city && request.query?.city != 'All') {
+            where['city'] = request.query.city
+        }
+
+        if (request.query?.data) {
+            let data = request.query?.data.split(",")
+            if (data[0] == data[1]) {
+                data[1] = dayjs(data[1]).add(1, 'day').format("YYYY-MM-DD").toString()
+            }
+            where['startAt'] = Between(data[0], data[1])
         }
 
         const events = await Event.find({
@@ -127,6 +138,8 @@ export class EventController extends Controller {
         event.maxParticipants = value.maxParticipants
         event.imageDescription = value.imageDescription
         event.groupQr = value.groupQr
+        event.city = value.city
+        event.isPublic = value.isPublic
         await event.save()
 
         return {
