@@ -9,12 +9,9 @@ import {hideLoading, loading, toast} from '@/utils/uniapi/prompt';
 import {view_event_detail, view_event_join, view_event_quit} from "@/api/event/evnet";
 import {EventDetailData} from 'group-common'
 import LogoUrl from '@/static/images/logo.png'
+import {startAtFormat} from "@/utils/utils";
 
-const startAtFormat = computed(() => {
-    if (!currentData.startAt) return
-    const d = new Date(Date.parse(currentData.startAt));
-    return d.toISOString();
-})
+const startAt = computed(() => startAtFormat(currentData.startAt))
 
 const postId = ref(),
     currentData = reactive<Partial<EventDetailData>>({});
@@ -110,7 +107,7 @@ onShareTimeline(() => {
                                     : '已结束'
                             }}
                         </view>
-                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时： {{ startAtFormat }}
+                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时： {{ startAt }}
                         </view>
                     </view>
                 </view>
@@ -118,7 +115,7 @@ onShareTimeline(() => {
             </view>
             <view class="bg-white p-30 b-rd-30">
                 <view class="mt-30">
-                    <view class="gc-item">活动时间：{{ startAtFormat }}</view>
+                    <view class="gc-item">活动时间：{{ startAt }}</view>
                     <view class="gc-item">
                         <!--            <uni-icons type="location-filled" size="20" color="#39393A"/>-->
                         {{ currentData?.location }}

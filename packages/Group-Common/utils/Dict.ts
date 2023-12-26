@@ -1,0 +1,1 @@
+export const cityArray = ["San Francisco Bay Area", "Los Angeles", "New York", "Seattle", "Boston", "Chicago", "Washington DC", "Houston", "Dallas"]

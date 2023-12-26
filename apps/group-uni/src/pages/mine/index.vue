@@ -9,6 +9,7 @@ import {useUserInfoStore} from "@/state/modules/user-info";
 import {IEvent, IUser} from 'group-common'
 import avatarUrl from '@/static/images/logo.png'
 import {view_event_user} from "@/api/event/evnet";
+import {startAtFormat} from "@/utils/utils";
 
 const dataList = ref<IEvent[]>([]),
     pagingRef = ref(),
@@ -149,7 +150,7 @@ useUserInfoStore().initUserInfo()
                                 </view>
                                 <view class="flex">
                                     <view class="capsule-button bg-primary-sub">进行中</view>
-                                    <view class="capsule-button bg-primary-sec ml-20">{{ item?.startAt }}</view>
+                                    <view class="capsule-button bg-primary-sec ml-20">{{ startAtFormat(item?.startAt) }}</view>
                                 </view>
                             </view>
                         </view>

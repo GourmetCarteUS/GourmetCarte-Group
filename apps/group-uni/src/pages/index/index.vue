@@ -17,8 +17,15 @@
                   :style="{ top: navHeight - 5 + 'px' }">
                 <z-tabs ref="tabsRef" :list="tabList" :current="current" @change="tabsChange"/>
                 <view class="flex mt-20 ml-20">
-                    <view class="capsule-button text-24 bg-white">重庆市</view>
-                    <view class="capsule-button text-24 bg-white ml-20" @click="datePickerRef?.show">全部时间</view>
+                    <view class="capsule-button text-24 bg-white">
+                        <picker :range="_cityArray" @change="bindPickerChange">
+                            <view class="uni-input">{{ _cityArray[filterForm?.cityIndex] }}</view>
+                        </picker>
+                    </view>
+                    <view class="capsule-button text-24 bg-white ml-20" @click="datePickerRef?.show">{{
+                            filterForm.dataFormat || '全部时间'
+                        }}
+                    </view>
                 </view>
             </view>
 
@@ -29,7 +36,9 @@
                 <view style="z-index: 10" class="">
                     <TabBar :tab-bar-list="tabBarList"/>
                     <view style="position: absolute; bottom: 1000px">
-                        <uni-datetime-picker ref="datePickerRef" type="daterange"></uni-datetime-picker>
+                        <uni-datetime-picker v-model="filterForm.data" ref="datePickerRef" type="daterange"
+                                             @change="dateChange"
+                        />
                     </view>
                 </view>
             </template>
@@ -41,7 +50,7 @@
 import {computed, reactive, ref} from 'vue';
 import {hideLoading, loading} from '@/utils/uniapi/prompt';
 import {onLoad, onShareAppMessage, onShareTimeline} from '@dcloudio/uni-app';
-import {IBanner, ICategory} from 'group-common';
+import {cityArray, IBanner, ICategory} from 'group-common';
 
 import LogoUrl from '@/static/images/logo.png';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
@@ -57,6 +66,8 @@ const navHeight = computed(() => {
     return navStyle.statusBarHeight_ + navStyle.navBarHeight_ + 5;
 });
 const datePickerRef = ref();
+
+const _cityArray = ['all', ...cityArray]
 
 const tabBarList = [
     {
@@ -80,16 +91,41 @@ const tabBarList = [
     },
 ];
 
+
 const tabList = ref<ICategory[]>([]),
     bannerList = ref<IBanner[]>([]),
     current = ref(0),
     scrollTop = ref(0),
     tabsRef = ref(),
     dataList = ref([]),
-    filterForm = reactive<Partial<{ category: string }>>({});
+    filterForm = reactive<{
+        category?: string,
+        dataFormat?: string,
+        data?: string,
+        cityIndex: number,
+        city?: string
+    }>({
+        cityIndex: 0,
+        city: undefined,
+        category: undefined,
+        data: undefined,
+        dataFormat: undefined
+    });
 
 function tabsChange(index: number) {
     filterForm.category = tabList.value[index].id;
+    pagingRef.value.reload();
+}
+
+function bindPickerChange(e) {
+    filterForm.cityIndex = e.detail.value
+    filterForm.city = _cityArray[filterForm.cityIndex || 0]
+    pagingRef.value.reload();
+}
+
+function dateChange(e) {
+    filterForm.data = e.join(",")
+    filterForm.dataFormat = e.map(item => item.slice(5).replace("-", ".")).join("-")
     pagingRef.value.reload();
 }
 

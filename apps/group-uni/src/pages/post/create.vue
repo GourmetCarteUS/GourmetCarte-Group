@@ -60,6 +60,14 @@
             <view class="m-20">
                 <uni-file-picker limit="9" title="最多选择9张图片" :value="formData.imageDescription"/>
             </view>
+
+            <view class="gc-title text-28 font-900 mb-20 mt-40 justify-between">
+                <text>群二维码</text>
+                <text class="text-gray-3 text-24">用户上车之后才会显示</text>
+            </view>
+            <view class="m-20">
+                <uni-file-picker limit="1" :value="formData.groupQr"/>
+            </view>
         </view>
 
         <view class="flex center w-full justify-between bg-primary fixed bottom-0 p-40 pt-30 pb-50"
@@ -88,7 +96,7 @@ import {reactive, ref} from 'vue';
 import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import {onLoad, onPageScroll} from '@dcloudio/uni-app';
-import {EventCreateForm} from 'group-common';
+import {cityArray, EventCreateForm} from 'group-common';
 import {view_categories, view_event_create} from "@/api/event/evnet";
 import {toast} from "@/utils/uniapi/prompt";
 import {onGoReplace} from "@/utils/business";
@@ -103,8 +111,6 @@ const categoryList = ref(),
     }),
     scrollTop = ref(0),
     multiplePickerShow = ref(false)
-
-const cityArray = ["San Francisco Bay Area", "Los Angeles", "New York", "Seattle", "Boston", "Chicago", "Washington DC", "Houston", "Dallas"]
 
 function confirmMultiple(e: any) {
     e.selected.map((item: { label: string; }) => formData.categoryStr?.push(item?.label))

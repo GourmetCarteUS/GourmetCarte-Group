@@ -24,7 +24,7 @@ export class Event extends BaseModel implements IEvent {
     @JoinTable()
     participants: Relation<User>[];
 
-    @Column()
+    @Column({type: "datetime"})
     startAt: Date;
     @Column()
     title: string;
@@ -57,6 +57,9 @@ export class Event extends BaseModel implements IEvent {
     @Column({default: 0})
     joinCount: number;
 
-    @Column({nullable: true})
+    @Column({default: true})
     isPublic: boolean;
+
+    @Column({nullable: true})
+    city: string;
 }

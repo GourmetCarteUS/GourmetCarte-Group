@@ -1,6 +1,7 @@
 import {Authentication, GCJSONResponse, IUser} from 'group-common';
 import {Body, Controller, Get, Patch, Post, Request, Route, Security, Tags} from 'tsoa';
 import {User} from '../../models/User';
+import {Event} from '../../models/Event';
 import {wechat} from "../../wechat";
 import {generateJwt} from "../../utils/jwt";
 
@@ -10,12 +11,23 @@ export class UserController extends Controller {
 
     @Get("profile")
     @Security('authorized')
-    public async getProfile(@Request() request: any): Promise<GCJSONResponse<Partial<IUser>>> {
+    public async getProfile(@Request() request: any) {
+        const user = new User()
+        user.id = request.user.id
+        const events = await Event.findAndCount({
+            where: {
+                // @ts-ignore
+                participants: user
+            }
+        })
+
         return {
             data: {
                 avatarUrl: request.user?.avatarUrl,
                 displayName: request.user?.displayName,
+                contact: request.user.contact,
                 id: request.user.id,
+                joinCount: events[1],
             },
             success: true
         }

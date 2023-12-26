@@ -29,6 +29,7 @@ export interface IEvent {
 export interface EventDetailData extends IEvent {
     isJoin?: boolean;
     isMe?: boolean;
+    status?: boolean;
 }
 
 export interface EventCreateForm extends IEvent {

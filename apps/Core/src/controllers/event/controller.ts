@@ -2,8 +2,9 @@ import {EventCreateForm, EventDetailData, GCJSONArrayResponse, GCJSONResponse, I
 import {Body, Controller, Get, Path, Post, Request, Route, Security, Tags} from 'tsoa';
 import {Event} from "../../models/Event";
 import {Category} from "../../models/Category";
-import {In} from "typeorm";
+import {FindOptionsOrder, In} from "typeorm";
 import {User} from "../../models/User";
+import dayjs from "dayjs";
 
 
 @Tags('Event')
@@ -14,14 +15,16 @@ export class EventController extends Controller {
         const take = request.query?.limit || 10
         const skip = ((request.query?.page || 1) - 1) * take
 
-        let order = {}
+        let order: FindOptionsOrder<Event> = {
+            startAt: "asc"
+        }
         let where = {
             disable: false, isPublic: true
         }
         if (request.query?.category) {
             if (request.query?.category == 'all') {
             } else if (request.query?.category == 'hot') {
-                order = {viewCount: "DESC"}
+                order['viewCount'] = "DESC"
             } else {
                 const category = new Category()
                 category.id = request.query?.category
@@ -31,10 +34,17 @@ export class EventController extends Controller {
 
         const events = await Event.find({
             where,
-            select: ["id", "title", "category", "startAt", "imageDescription", "joinCount", "maxParticipants"],
+            select: ["id", "title", "category", "startAt", "imageDescription", "joinCount", "maxParticipants", "viewCount"],
             order,
             skip,
             take
+        })
+
+        const now = dayjs()
+        events.map(item => {
+            // 活动是否结束，开始之后五小时转为结束
+            item['status'] = now.subtract(12, 'hour').isAfter(item.startAt)
+
         })
 
         return {

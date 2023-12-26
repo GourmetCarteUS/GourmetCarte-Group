@@ -667,10 +667,11 @@ export default {
         },
         mobileChange(e) {
             if (this.isRange) {
-                const { before, after } = e.range;
+                let { before, after } = e.range;
 
                 if (!before || !after) {
-                    return;
+                    after = before
+                    // return;
                 }
 
                 this.handleStartAndEnd(before, after, true);
