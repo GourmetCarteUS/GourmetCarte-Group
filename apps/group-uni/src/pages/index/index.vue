@@ -1,7 +1,7 @@
 <template>
     <Layout mode="none">
         <template #header>
-            <NavBar :backgroundColor="scrollTop >= 150 ? 'white' : undefined"/>
+            <NavBar @search="searchChange" :backgroundColor="scrollTop >= 150 ? 'white' : undefined"/>
         </template>
         <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder
                   :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
@@ -127,6 +127,12 @@ function dateChange(e) {
     filterForm.data = e.join(",")
     filterForm.dataFormat = e.map(item => item.slice(5).replace("-", ".")).join("-")
     pagingRef.value.reload();
+}
+
+function searchChange(e) {
+    console.log("searchChange", e)
+    // filterForm.key =
+    // pagingRef.value.reload();
 }
 
 async function getCategories() {
