@@ -17,9 +17,9 @@ const dataList = ref<IEvent[]>([]),
     scrollTop = ref(0),
     tabList = ref([
         {id: 'all', name: '全部'},
-        {id: 'hot', name: '热门'},
-    ])
-;
+        {id: 'upcoming', name: '未开始'},
+        {id: 'ended', name: '已结束'},
+    ]);
 
 const userInfo = computed(() => {
     return useUserInfoStore().user as IUser
@@ -150,7 +150,10 @@ useUserInfoStore().initUserInfo()
                                 </view>
                                 <view class="flex">
                                     <view class="capsule-button bg-primary-sub">进行中</view>
-                                    <view class="capsule-button bg-primary-sec ml-20">{{ startAtFormat(item?.startAt) }}</view>
+                                    <view class="capsule-button bg-primary-sec ml-20">{{
+                                            startAtFormat(item?.startAt)
+                                        }}
+                                    </view>
                                 </view>
                             </view>
                         </view>
