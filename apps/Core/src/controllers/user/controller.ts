@@ -82,6 +82,7 @@ export class UserController extends Controller {
 
         return {
             success: true,
+            data: user,
             errorMessage: '修改成功',
         }
     }

@@ -6,7 +6,7 @@ export function user_info() {
 }
 
 export function modify_user_info(data: Partial<IUser>) {
-    return request.post('/member/user/update', data);
+    return request.patch('/user', data);
 }
 
 export function getUserLogin(code: string) {

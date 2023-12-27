@@ -102,10 +102,14 @@ onShareTimeline(() => {
                 <view>
                     <view class="text-40 font-900 ml-20">{{ currentData?.title }}</view>
                     <view class="flex mt-20">
-                        <view class="capsule-button text-24" :class="currentData?.status">{{
-                                currentData?.status == 'processing' ? '进行中' : currentData?.status == 'pending' ? '未开始'
-                                    : '已结束'
-                            }}
+                        <view v-if="currentData.isJoin" class="capsule-button processing text-24">
+                            已报名
+                        </view>
+                        <view v-else-if="currentData?.status" class="capsule-button text-24 solved">
+                            已结束
+                        </view>
+                        <view v-else class="capsule-button text-24 pending">
+                            未开始
                         </view>
                         <view class="capsule-button bg-primary-sec text-24 ml-20">活动时： {{ startAt }}
                         </view>

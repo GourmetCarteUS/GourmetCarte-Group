@@ -13,7 +13,7 @@
             </view>
             <view class="flex justify-between mt-20">
                 <view class="flex items-center">
-                    <view class="capsule-button text-24 bg-primary-sub mr-20">{{ data?.status ? '已结束' : '未开始' }}
+                    <view class="capsule-button text-24 pending mr-20">未开始
                     </view>
                     <view class="capsule-button text-24 bg-primary-sec mr-20">
                         {{ startAtFormat(data?.startAt) }}

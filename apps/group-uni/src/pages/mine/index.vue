@@ -1,25 +1,31 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import {computed, reactive, ref} from 'vue';
 import Layout from '@/components/layout/layout.vue';
 import {onGoPage, onGoTab} from '@/utils/business';
 import Settings from '@/pages/mine/settings.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import TabBar from '@/components/tab-bar/tab-bar.vue';
 import {useUserInfoStore} from "@/state/modules/user-info";
-import {IEvent, IUser} from 'group-common'
+import {EventDetailData, IEvent, IUser} from 'group-common'
 import avatarUrl from '@/static/images/logo.png'
 import {view_event_user} from "@/api/event/evnet";
 import {startAtFormat} from "@/utils/utils";
+import {hideLoading, loading} from "@/utils/uniapi/prompt";
 
-const dataList = ref<IEvent[]>([]),
+const dataList = ref<EventDetailData[]>([]),
     pagingRef = ref(),
     settingUserRef = ref(),
     scrollTop = ref(0),
     tabList = ref([
         {id: 'all', name: '全部'},
-        {id: 'upcoming', name: '未开始'},
-        {id: 'ended', name: '已结束'},
-    ]);
+        {id: 'pending', name: '未开始'},
+        {id: 'solved', name: '已结束'},
+    ]),
+    filterForm = reactive<{
+        status: string
+    }>({
+        status: 'all'
+    });
 
 const userInfo = computed(() => {
     return useUserInfoStore().user as IUser
@@ -48,11 +54,14 @@ const tabBarList = [
 ];
 
 async function queryList(pageNo: number, pageSize: number) {
+    loading();
     const {data} = await view_event_user({
         page: pageNo,
         limit: pageSize,
-        userId: userInfo.value?.id
+        userId: userInfo.value?.id,
+        ...filterForm
     })
+    hideLoading();
     if (data?.success) return pagingRef.value.complete(data.data);
 }
 
@@ -65,6 +74,11 @@ const navHeight = computed(() => {
     const navStyle = uni.getStorageSync('navStyle');
     return navStyle.statusBarHeight_ + navStyle.navBarHeight_ + 5;
 });
+
+function tabsChange(index: number) {
+    filterForm.status = tabList.value[index].id;
+    pagingRef.value.reload();
+}
 
 function onScroll(env: Event) {
     scrollTop.value = env?.target?.scrollTop;
@@ -98,7 +112,14 @@ useUserInfoStore().initUserInfo()
                 <view>
                     <view class="text-40 font-700 ml-30">{{ userInfo?.displayName }}</view>
                     <view class="capsule-button bg-primary-sub text-20 mt-20 text-black">
-                        <text class="pl-20 pr-20">已经连续参加18期</text>
+                        <text class="pl-20 pr-20">已经连续参加{{
+                                userInfo?.joinCount || 0
+                            }}期
+                        </text>
+                    </view>
+                    <view class="capsule-button bg-primary-sub text-20 mt-20 text-black">
+                        <text class="pl-20 pr-20">已举行20期
+                        </text>
                     </view>
                 </view>
                 <view @click="onSetting">
@@ -112,7 +133,7 @@ useUserInfoStore().initUserInfo()
                 <view class="gc-title text-28 font-500">资料信息</view>
                 <view class="mt-30">
                     <view class="gc-item-before">报名参赛者：{{ userInfo?.displayName }}</view>
-                    <view class="gc-item-before">联系方式：187010789087</view>
+                    <view class="gc-item-before" v-if="userInfo?.contact">联系方式：{{ userInfo?.contact }}</view>
                     <!--                    <view class="gc-item" style="height: auto; overflow: initial; padding-left: 0">-->
                     <!--                        <uni-file-picker limit="9">-->
                     <!--                            <template #title="{ filesList, limitLength }">-->
@@ -128,12 +149,12 @@ useUserInfoStore().initUserInfo()
                 <view class="mt-30">
                     <view style="z-index: 100" class="sticky pb-20" :class="{ 'bg-white': scrollTop >= 150 }"
                           :style="{ top: navHeight - 5 + 'px' }">
-                        <z-tabs ref="tabsRef" :list="tabList"/>
+                        <z-tabs ref="tabsRef" :list="tabList" @change="tabsChange"/>
                     </view>
 
                     <view class="group-item b-rd-20 p-20 mb-20" v-for="item in dataList" :key="item.id"
                           @click="onGoPage({ name: 'post-detail', params: { id: item?.id } }, false)">
-                        <view class="flex mb-10">
+                        <view class="flex mb-10 justify-between">
                             <view class="w-150 h-170 b-rd-20">
                                 <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png"
                                        class="h-full w-full b-rd-20" mode="aspectFill"/>
@@ -149,7 +170,8 @@ useUserInfoStore().initUserInfo()
                                     <view class="text-gray text-nowrap w-400">{{ item?.location }}</view>
                                 </view>
                                 <view class="flex">
-                                    <view class="capsule-button bg-primary-sub">进行中</view>
+                                    <view class="capsule-button solved" v-if="item.status">已结束</view>
+                                    <view class="capsule-button pending" v-else>未开始</view>
                                     <view class="capsule-button bg-primary-sec ml-20">{{
                                             startAtFormat(item?.startAt)
                                         }}

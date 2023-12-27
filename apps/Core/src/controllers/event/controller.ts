@@ -2,7 +2,7 @@ import {EventCreateForm, EventDetailData, GCJSONArrayResponse, GCJSONResponse, I
 import {Body, Controller, Get, Path, Post, Request, Route, Security, Tags} from 'tsoa';
 import {Event} from "../../models/Event";
 import {Category} from "../../models/Category";
-import {Between, FindOptionsOrder, In} from "typeorm";
+import {Between, FindOptionsOrder, In, LessThanOrEqual, MoreThan, MoreThanOrEqual} from "typeorm";
 import {User} from "../../models/User";
 import dayjs from "dayjs";
 
@@ -51,13 +51,6 @@ export class EventController extends Controller {
             take
         })
 
-        const now = dayjs()
-        events.map(item => {
-            // 活动是否结束，开始之后五小时转为结束
-            item['status'] = now.subtract(12, 'hour').isAfter(item.startAt)
-
-        })
-
         return {
             success: true,
             data: events
@@ -74,23 +67,28 @@ export class EventController extends Controller {
                 participants: true
             }
         })
+        const currentUser = request.user
 
         if (event) {
-            if (event.joinCount != event.participants?.length) {
-                event.joinCount = event.participants?.length
+            const participants = event.participants
+            if (event.joinCount != participants?.length) {
+                event.joinCount = participants?.length
             }
             if (request?.isLogin) {
-                const isMe = request.user.id == event.creator.id
+                const isMe = currentUser.id == event.creator.id
                 event['isMe'] = isMe
                 if (!isMe) {
                     event.viewCount += 1
                 }
-                if (event.participants.find(id => request.user.id)) {
-                    event['isJoin'] = true
-                }
+
+                event['isJoin'] = !!participants.find(id => currentUser.id);
             }
             await event.save()
         }
+
+        const now = dayjs()
+        // 活动是否结束，当前时间在开始之间之后就变为已结束
+        event['status'] = now.isAfter(event.startAt)
 
         return {
             success: true,
@@ -227,6 +225,16 @@ export class EventController extends Controller {
         const skip = ((request.query?.page || 1) - 1) * take
         const user = new User()
         user.id = userId
+        let where = {}
+        const status = request.query?.status
+        const now = new Date()
+        if (status && status != 'all') {
+            if (status == 'pending') {
+                where['startAt'] = MoreThanOrEqual(now)
+            } else {
+                where['startAt'] = LessThanOrEqual(now)
+            }
+        }
 
         const events = await Event.find({
             relations: {
@@ -235,12 +243,18 @@ export class EventController extends Controller {
             select: ["id", "title", "category", "participants", "startAt", "imageDescription", "joinCount"],
             where: [
                 // @ts-ignore
-                {participants: user},
+                {participants: user, startAt: where.startAt},
                 // @ts-ignore
-                {creator: user},
+                {creator: user, startAt: where.startAt},
             ],
             skip,
             take
+        })
+
+        // 活动是否结束，当前时间在开始之间之后就变为已结束
+        events.map(event => {
+            // true 是已结束， false 未开始
+            event['status'] = dayjs().isAfter(event.startAt)
         })
 
         return {

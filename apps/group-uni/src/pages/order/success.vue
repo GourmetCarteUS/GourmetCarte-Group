@@ -11,7 +11,7 @@
                     <view class="text-36 font-500">恭喜您成功报名活动</view>
                 </view>
                 <view>
-                    <view class="gc-item-before text-28 font-500">报名参赛者：{{
+                    <view v-if="currentData?.participants?.length" class="gc-item-before text-28 font-500">报名参赛者：{{
                             currentData?.participants[0]?.displayName
                         }}
                     </view>
