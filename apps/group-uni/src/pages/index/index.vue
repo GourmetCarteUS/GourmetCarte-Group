@@ -5,7 +5,7 @@
         </template>
         <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
             <view class="m-20" :style="{ 'margin-top': navHeight + 'px' }">
-                <swiper class="rounded-20 overflow-hidden">
+                <swiper circular indicator-dots autoplay indicator-color="#7f7eff" class="rounded-20 overflow-hidden">
                     <swiper-item class="swiper-item w-full" v-for="item in bannerList" :key="item?.id">
                         <image :src="item.imgUrl" class="w-full h-full" mode="aspectFill" />
                     </swiper-item>
@@ -20,7 +20,9 @@
                             <view class="uni-input">{{ _cityArray[filterForm?.cityIndex] }}</view>
                         </picker>
                     </view>
-                    <view class="capsule-button text-24 bg-white ml-20" @click="datePickerRef?.show">{{ filterForm.dataFormat || '全部时间' }} </view>
+                    <view class="capsule-button text-24 bg-white ml-20" @click="datePickerRef?.show">
+                        {{ filterForm.dataFormat || '全部时间' }}
+                    </view>
                 </view>
             </view>
 

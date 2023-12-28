@@ -1,49 +1,50 @@
 <script setup lang="ts">
-import {computed, reactive, ref} from 'vue';
+import { computed, reactive, ref } from 'vue';
 import Layout from '@/components/layout/layout.vue';
-import {onGoPage, onGoTab} from '@/utils/business';
+import { onGoPage, onGoTab } from '@/utils/business';
 import Settings from '@/pages/mine/settings.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import TabBar from '@/components/tab-bar/tab-bar.vue';
-import {useUserInfoStore} from "@/state/modules/user-info";
-import {EventDetailData, IEvent, IUser} from 'group-common'
-import avatarUrl from '@/static/images/logo.png'
-import {view_event_user} from "@/api/event/evnet";
-import {startAtFormat} from "@/utils/utils";
-import {hideLoading, loading} from "@/utils/uniapi/prompt";
+import { useUserInfoStore } from '@/state/modules/user-info';
+import { EventDetailData, IEvent, IUser } from 'group-common';
+import avatarUrl from '@/static/images/logo.png';
+import { view_event_user } from '@/api/event/evnet';
+import { startAtFormat } from '@/utils/utils';
+import { hideLoading, loading } from '@/utils/uniapi/prompt';
+import MinePost from '@/components/item/mine-post.vue';
 
 const dataList = ref<EventDetailData[]>([]),
     pagingRef = ref(),
     settingUserRef = ref(),
     scrollTop = ref(0),
     tabList = ref([
-        {id: 'all', name: '全部'},
-        {id: 'pending', name: '未开始'},
-        {id: 'solved', name: '已结束'},
+        { id: 'all', name: '全部' },
+        { id: 'pending', name: '未开始' },
+        { id: 'solved', name: '已结束' },
     ]),
     filterForm = reactive<{
-        status: string
+        status: string;
     }>({
-        status: 'all'
+        status: 'all',
     });
 
 const userInfo = computed(() => {
-    return useUserInfoStore().user as IUser
-})
+    return useUserInfoStore().user as IUser;
+});
 
 const tabBarList = [
     {
         index: 1,
         title: '首页',
         icon: 'home',
-        handleClick: () => onGoTab({name: 'main'}, false),
+        handleClick: () => onGoTab({ name: 'main' }, false),
     },
     {
         index: 2,
         title: '',
         icon: 'plusempty',
         float: true,
-        handleClick: () => onGoPage({name: 'post-create'}),
+        handleClick: () => onGoPage({ name: 'post-create' }),
     },
     {
         index: 3,
@@ -55,12 +56,12 @@ const tabBarList = [
 
 async function queryList(pageNo: number, pageSize: number) {
     loading();
-    const {data} = await view_event_user({
+    const { data } = await view_event_user({
         page: pageNo,
         limit: pageSize,
         userId: userInfo.value?.id,
-        ...filterForm
-    })
+        ...filterForm,
+    });
     hideLoading();
     if (data?.success) return pagingRef.value.complete(data.data);
 }
@@ -96,35 +97,29 @@ function onScroll(env: Event) {
 }
 
 uni?.hideTabBar();
-useUserInfoStore().initUserInfo()
+useUserInfoStore().initUserInfo();
 </script>
 
 <template>
     <Layout>
         <template #header>
-            <NavBar :is-back="false" title="我的" :backgroundColor="scrollTop >= 100 ? 'white' : undefined"/>
+            <NavBar :is-back="false" title="我的" :backgroundColor="scrollTop >= 100 ? 'white' : undefined" />
         </template>
 
-        <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder
-                  :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
-            <view class="user-info h-230 flex center justify-between pl-40 pr-50"
-                  :style="{ 'margin-top': navHeight + 'px' }">
+        <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
+            <view class="user-info h-230 flex center justify-between pl-40 pr-50" :style="{ 'margin-top': navHeight + 'px' }">
                 <view>
                     <view class="text-40 font-700 ml-30">{{ userInfo?.displayName }}</view>
                     <view class="capsule-button bg-primary-sub text-20 mt-20 text-black">
-                        <text class="pl-20 pr-20">已经连续参加{{
-                                userInfo?.joinCount || 0
-                            }}期
-                        </text>
+                        <text class="pl-20 pr-20">已经连续参加{{ userInfo?.joinCount || 0 }}期 </text>
                     </view>
                     <view class="capsule-button bg-primary-sub text-20 mt-20 text-black">
-                        <text class="pl-20 pr-20">已举行20期
-                        </text>
+                        <text class="pl-20 pr-20">已举行20期 </text>
                     </view>
                 </view>
                 <view @click="onSetting">
                     <view>
-                        <image class="w-160 h-160 b-rd-120" :src="userInfo?.avatarUrl||avatarUrl"/>
+                        <image class="w-160 h-160 b-rd-120" :src="userInfo?.avatarUrl || avatarUrl" />
                     </view>
                 </view>
             </view>
@@ -147,62 +142,25 @@ useUserInfoStore().initUserInfo()
                 </view>
                 <view class="gc-title mt-60 text-28 font-500">我的活动</view>
                 <view class="mt-30">
-                    <view style="z-index: 100" class="sticky pb-20" :class="{ 'bg-white': scrollTop >= 150 }"
-                          :style="{ top: navHeight - 5 + 'px' }">
-                        <z-tabs ref="tabsRef" :list="tabList" @change="tabsChange"/>
+                    <view style="z-index: 100" class="sticky pb-20" :class="{ 'bg-white': scrollTop >= 150 }" :style="{ top: navHeight - 5 + 'px' }">
+                        <z-tabs ref="tabsRef" :list="tabList" @change="tabsChange" />
                     </view>
-
-                    <view class="group-item b-rd-20 p-20 mb-20" v-for="item in dataList" :key="item.id"
-                          @click="onGoPage({ name: 'post-detail', params: { id: item?.id } }, false)">
-                        <view class="flex mb-10 justify-between">
-                            <view class="w-150 h-170 b-rd-20">
-                                <image src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png"
-                                       class="h-full w-full b-rd-20" mode="aspectFill"/>
-                            </view>
-                            <view class="text-24 ml-20 flex-col flex justify-center">
-                                <view class="mb-20">
-                                    <view class="flex justify-between">
-                                        <view class="text-30 font-900 text-nowrap w-250">
-                                            {{ item?.title }}
-                                        </view>
-                                        <view>共{{ item?.joinCount }}人一起</view>
-                                    </view>
-                                    <view class="text-gray text-nowrap w-400">{{ item?.location }}</view>
-                                </view>
-                                <view class="flex">
-                                    <view class="capsule-button solved" v-if="item.status">已结束</view>
-                                    <view class="capsule-button pending" v-else>未开始</view>
-                                    <view class="capsule-button bg-primary-sec ml-20">{{
-                                            startAtFormat(item?.startAt)
-                                        }}
-                                    </view>
-                                </view>
-                            </view>
-                        </view>
-                        <!--            <view class="flex">-->
-                        <!--              <view class="capsule-button bg-error text-white w-full text-center">下车 (5票)</view>-->
-                        <!--              <view class="capsule-button bg-warning text-white w-full ml-20 text-center">验票 (5票)</view>-->
-                        <!--            </view>-->
-                    </view>
+                    <MinePost v-for="item in dataList" :key="item.id" :data="item" />
                 </view>
             </view>
             <template #bottom>
                 <view style="z-index: 99" class="h-150">
-                    <TabBar :tab-bar-list="tabBarList"/>
+                    <TabBar :tab-bar-list="tabBarList" />
                 </view>
             </template>
         </z-paging>
     </Layout>
 
-    <Settings ref="settingUserRef"/>
+    <Settings ref="settingUserRef" />
 </template>
 
 <style scoped lang="scss">
 @import '@/static/styles/common.scss';
-
-.group-item {
-    background: linear-gradient(180deg, rgba($uni-color-primary, 0.2) 0%, rgba(243, 250, 231, 0) 100%);
-}
 
 :deep {
     .uni-file-picker__container {

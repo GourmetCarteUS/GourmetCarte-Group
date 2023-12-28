@@ -2,54 +2,57 @@
 import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import UniIcons from '@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue';
-import {onLoad, onPageScroll, onShareAppMessage, onShareTimeline} from '@dcloudio/uni-app';
-import {computed, reactive, ref} from 'vue';
-import {onBack, onGoPage} from '@/utils/business';
-import {hideLoading, loading, toast} from '@/utils/uniapi/prompt';
-import {view_event_detail, view_event_join, view_event_quit} from "@/api/event/evnet";
-import {EventDetailData} from 'group-common'
-import LogoUrl from '@/static/images/logo.png'
-import {startAtFormat} from "@/utils/utils";
+import { onLoad, onPageScroll, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
+import { computed, reactive, ref } from 'vue';
+import { onBack, onGoPage } from '@/utils/business';
+import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
+import { view_event_detail, view_event_join, view_event_quit } from '@/api/event/evnet';
+import { EventDetailData } from 'group-common';
+import LogoUrl from '@/static/images/logo.png';
+import { startAtFormat } from '@/utils/utils';
 
-const startAt = computed(() => startAtFormat(currentData.startAt))
+const startAt = computed(() => startAtFormat(currentData.startAt));
 
 const postId = ref(),
     currentData = reactive<Partial<EventDetailData>>({});
 
 async function getEvent() {
-    loading()
-    const {data} = await view_event_detail(postId.value)
+    loading();
+    const { data } = await view_event_detail(postId.value);
     if (data?.errorCode) {
-        toast(data?.errorMessage || '暂无该数据', {complete: () => setTimeout(onBack, 1500)});
+        toast(data?.errorMessage || '暂无该数据', { complete: () => setTimeout(onBack, 1500) });
     } else {
         Object.assign(currentData, data!.data);
     }
-    hideLoading()
+    hideLoading();
 }
 
 async function joinEvent() {
-    const {data} = await view_event_join(postId.value)
+    loading();
+    const { data } = await view_event_join(postId.value);
+    hideLoading();
     if (!data?.success) {
-        toast(data?.errorMessage || '上车失败')
+        toast(data?.errorMessage || '上车失败');
     } else {
         toast('上车成功', {
-            success: () => setTimeout(() => {
-                onGoPage({name: 'order-success', params: {id: postId.value}})
-            }, 1500)
-        })
-
+            success: () =>
+                setTimeout(() => {
+                    onGoPage({ name: 'order-success', params: { id: postId.value } });
+                }, 1500),
+        });
     }
 }
 
 async function quitEvent() {
-    const {data} = await view_event_quit(postId.value)
+    loading();
+    const { data } = await view_event_quit(postId.value);
+    hideLoading();
     if (!data?.success) {
-        toast(data?.errorMessage || '下车失败')
+        toast(data?.errorMessage || '下车失败');
     } else {
         toast('下车成功', {
-            success: getEvent
-        })
-
+            success: getEvent,
+        });
     }
 }
 
@@ -71,7 +74,7 @@ onPageScroll((e) => {
 onLoad((params) => {
     if (params?.id) {
         postId.value = params?.id;
-        getEvent()
+        getEvent();
     }
 });
 onShareAppMessage(() => {
@@ -95,24 +98,24 @@ onShareTimeline(() => {
 <template>
     <Layout>
         <template #header>
-            <NavBar :title="currentData?.title" :backgroundColor="scrollTop >= 80 ? 'white' : undefined"/>
+            <view :class="currentData?.imageDescription?.length ? 'absolute' : ''">
+                <NavBar :title="currentData?.title" :backgroundColor="scrollTop >= 80 ? 'white' : undefined" />
+            </view>
+            <swiper circular indicator-dots autoplay indicator-color="#7f7eff" class="h-800" v-if="currentData?.imageDescription?.length">
+                <swiper-item class="w-full h-1000" v-for="item in currentData?.imageDescription" :key="item">
+                    <image :src="item" class="w-full h-full" mode="aspectFill" />
+                </swiper-item>
+            </swiper>
         </template>
         <view class="m-20 mb-160">
             <view class="flex justify-between center mb-30">
                 <view>
                     <view class="text-40 font-900 ml-20">{{ currentData?.title }}</view>
                     <view class="flex mt-20">
-                        <view v-if="currentData.isJoin" class="capsule-button processing text-24">
-                            已报名
-                        </view>
-                        <view v-else-if="currentData?.status" class="capsule-button text-24 solved">
-                            已结束
-                        </view>
-                        <view v-else class="capsule-button text-24 pending">
-                            未开始
-                        </view>
-                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时： {{ startAt }}
-                        </view>
+                        <view v-if="currentData.isJoin" class="capsule-button processing text-24"> 已报名 </view>
+                        <view v-else-if="currentData?.status" class="capsule-button text-24 solved"> 已结束 </view>
+                        <view v-else class="capsule-button text-24 pending"> 未开始 </view>
+                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时： {{ startAt }} </view>
                     </view>
                 </view>
                 <!--                <view class="w-170 h-170 b-rd-20 mr-30"></view>-->
@@ -120,7 +123,7 @@ onShareTimeline(() => {
             <view class="bg-white p-30 b-rd-30">
                 <view class="mt-30">
                     <view class="gc-item">活动时间：{{ startAt }}</view>
-                    <view class="gc-item">
+                    <view class="gc-item" style="white-space: pre-wrap">
                         <!--            <uni-icons type="location-filled" size="20" color="#39393A"/>-->
                         {{ currentData?.location }}
                     </view>
@@ -129,26 +132,15 @@ onShareTimeline(() => {
                 <!--参与者列表，图像+名字，当前人数和剩余名额；点击可展开modal显示所有参与人员；-->
                 <view class="mt-30">
                     <view class="text-24 center justify-between">
-                        <text class="text-gray">{{
-                                currentData?.joinCount > 0 ? `${currentData?.joinCount}人一起` : `${currentData?.viewCount || 5}人想去`
-                            }}
-                        </text>
-                        <text class="text-primary">仅剩{{
-                                (currentData?.maxParticipants - currentData?.participants?.length) || 0
-                            }}个名额
-                        </text>
+                        <text class="text-gray">{{ currentData?.joinCount > 0 ? `${currentData?.joinCount}人一起` : `${currentData?.viewCount || 5}人想去` }} </text>
+                        <text class="text-primary">仅剩{{ currentData?.maxParticipants - currentData?.participants?.length || 0 }}个名额 </text>
                     </view>
                     <view class="user-lists mt-20 grid grid-cols-5" v-if="currentData?.participants?.length">
-                        <view class="user center flex-col" v-for="participant in currentData?.participants"
-                              :key="participant">
+                        <view class="user center flex-col" v-for="participant in currentData?.participants" :key="participant">
                             <view class="avatar w-100 h-100 mb-10">
-                                <image :src="participant?.avatarUrl||LogoUrl"
-                                       class="h-full w-full b-rd-50" mode="aspectFill"/>
+                                <image :src="participant?.avatarUrl || LogoUrl" class="h-full w-full b-rd-50" mode="aspectFill" />
                             </view>
-                            <view class="user-name text-gray text-24 text-nowrap w-100 text-center">{{
-                                    participant?.displayName || '参与者'
-                                }}
-                            </view>
+                            <view class="user-name text-gray text-24 text-nowrap w-100 text-center">{{ participant?.displayName || '参与者' }} </view>
                         </view>
                     </view>
                 </view>
@@ -156,7 +148,7 @@ onShareTimeline(() => {
                 <!-- 活动描述 -->
                 <view class="gc-title text-28 mt-40 mb-30">活动描述</view>
                 <view class="text-26 font-400">
-                    <view v-for="(desc, idx) in currentData?.description?.split('\n')" :key="idx+desc">
+                    <view v-for="(desc, idx) in currentData?.description?.split('\n')" :key="idx + desc">
                         {{ desc }}
                     </view>
                 </view>
@@ -164,30 +156,31 @@ onShareTimeline(() => {
                 <template v-if="currentData?.imageDescription?.length">
                     <view class="gc-title text-28 mt-40 mb-30">详情图片</view>
                     <view class="w-full">
-                        <image class="w-full" :src="img" v-for="img in currentData?.imageDescription" :key="img"/>
+                        <image class="w-full" :src="img" v-for="img in currentData?.imageDescription" :key="img" />
                     </view>
                 </template>
             </view>
         </view>
-        <view class="flex center w-full justify-between bg-primary fixed bottom-0 p-40 pt-30 pb-50"
-              style="box-sizing: border-box">
+        <view class="flex center w-full justify-between bg-primary fixed bottom-0 p-40 pt-30 pb-50" style="box-sizing: border-box">
             <button class="center view-button" open-type="share">
-                <uni-icons type="redo-filled" size="22" class="mr-10"/>
+                <uni-icons type="redo-filled" size="22" class="mr-10" />
                 分享
             </button>
 
-            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center"
-                  @click="onGoPage({name:'post-create', params: {id: postId}})" v-if="currentData?.isMe">
+            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center" @click="onGoPage({ name: 'post-create', params: { id: postId } })" v-if="currentData?.isMe">
                 <text class="text-30 font-900">编辑</text>
             </view>
 
-            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center"
-                  @click="quitEvent" v-else-if="currentData?.isJoin">
-                <text class="text-30 font-900">下车</text>
-            </view>
+            <template v-else-if="currentData?.isJoin">
+                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="quitEvent">
+                    <text class="text-30 font-900">下车</text>
+                </view>
+                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="onGoPage({ name: 'order-success', params: { id: currentData.id } })">
+                    <text class="text-30 font-900">票据</text>
+                </view>
+            </template>
 
-            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center"
-                  @click="joinEvent" v-else>
+            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center" @click="joinEvent" v-else>
                 <text class="text-30 font-900">上车</text>
             </view>
         </view>
