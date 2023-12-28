@@ -10,6 +10,7 @@ import { view_event_detail, edit_event_join, edit_event_quit } from '@/api/event
 import { EventDetailData } from 'group-common';
 import LogoUrl from '@/static/images/logo.png';
 import { startAtFormat } from '@/utils/utils';
+import { useUserInfoStore } from '@/state/modules/user-info';
 
 const startAt = computed(() => startAtFormat(currentData.startAt));
 
@@ -68,6 +69,9 @@ function openMap() {
 }
 
 const scrollTop = ref(0);
+const userInfo = computed(() => {
+    return useUserInfoStore().user as IUser;
+});
 onPageScroll((e) => {
     scrollTop.value = e.scrollTop;
     if (scrollTop.value > 80) {
@@ -90,18 +94,16 @@ onLoad((params) => {
 });
 onShareAppMessage(() => {
     return {
-        title: '咕噜拼',
-        desc: currentData?.title,
+        title: `${userInfo.value.displayName}邀请您参加 ${currentData?.title} |『咕噜拼』`,
         path: `/pages/post/detail?id=${postId.value}`,
-        imageUrl: LogoUrl,
+        imageUrl: currentData?.imageDescription?.[0] || LogoUrl,
     };
 });
 onShareTimeline(() => {
     return {
-        title: '咕噜拼',
-        desc: currentData?.title,
+        title: `${userInfo.value.displayName}邀请您参加 ${currentData?.title} |『咕噜拼』`,
         path: `/pages/post/detail?id=${postId.value}`,
-        imageUrl: LogoUrl,
+        imageUrl: currentData?.imageDescription?.[0] || LogoUrl,
     };
 });
 </script>

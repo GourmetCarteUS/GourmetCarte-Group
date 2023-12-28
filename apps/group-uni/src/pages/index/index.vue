@@ -174,8 +174,7 @@ function onScroll(env: Event) {
 
 onShareAppMessage(() => {
     return {
-        title: '麻富无人茶室',
-        desc: '麻富24小时自助无人茶室',
+        title: '『咕噜拼』Grouping 拼团组局不再愁~',
         path: `/pages/index/index`,
         imageUrl: LogoUrl,
     };
@@ -183,8 +182,7 @@ onShareAppMessage(() => {
 
 onShareTimeline(() => {
     return {
-        title: '麻富无人茶室',
-        desc: '麻富24小时自助无人茶室',
+        title: '『咕噜拼』Grouping 拼团组局不再愁~',
         path: `/pages/index/index`,
         imageUrl: LogoUrl,
     };
