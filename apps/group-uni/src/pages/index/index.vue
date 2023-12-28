@@ -1,44 +1,37 @@
 <template>
     <Layout mode="none">
         <template #header>
-            <NavBar @search="searchChange" :backgroundColor="scrollTop >= 150 ? 'white' : undefined"/>
+            <NavBar @search="searchChange" :backgroundColor="scrollTop >= 150 ? 'white' : undefined" />
         </template>
-        <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder
-                  :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
+        <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
             <view class="m-20" :style="{ 'margin-top': navHeight + 'px' }">
                 <swiper class="rounded-20 overflow-hidden">
                     <swiper-item class="swiper-item w-full" v-for="item in bannerList" :key="item?.id">
-                        <image :src="item.imgUrl" class="w-full h-full" mode="aspectFit"/>
+                        <image :src="item.imgUrl" class="w-full h-full" mode="aspectFill" />
                     </swiper-item>
                 </swiper>
             </view>
 
-            <view style="z-index: 100" class="sticky pb-20" :class="{ 'bg-white': scrollTop >= 150 }"
-                  :style="{ top: navHeight - 5 + 'px' }">
-                <z-tabs ref="tabsRef" :list="tabList" :current="current" @change="tabsChange"/>
+            <view style="z-index: 100" class="sticky pb-20" :class="{ 'bg-white': scrollTop >= 150 }" :style="{ top: navHeight - 5 + 'px' }">
+                <z-tabs ref="tabsRef" :list="tabList" :current="current" @change="tabsChange" />
                 <view class="flex mt-20 ml-20">
                     <view class="capsule-button text-24 bg-white">
                         <picker :range="_cityArray" @change="bindPickerChange">
                             <view class="uni-input">{{ _cityArray[filterForm?.cityIndex] }}</view>
                         </picker>
                     </view>
-                    <view class="capsule-button text-24 bg-white ml-20" @click="datePickerRef?.show">{{
-                        filterForm.dataFormat || '全部时间'
-                        }}
-                    </view>
+                    <view class="capsule-button text-24 bg-white ml-20" @click="datePickerRef?.show">{{ filterForm.dataFormat || '全部时间' }} </view>
                 </view>
             </view>
 
             <view class="item" v-for="item in dataList" :key="item.id">
-                <PostItem :data="item"/>
+                <PostItem :data="item" />
             </view>
             <template #bottom>
                 <view style="z-index: 10" class="">
-                    <TabBar :tab-bar-list="tabBarList"/>
+                    <TabBar :tab-bar-list="tabBarList" />
                     <view style="position: absolute; bottom: 1000px">
-                        <uni-datetime-picker v-model="filterForm.data" ref="datePickerRef" type="daterange"
-                                             @change="dateChange"
-                        />
+                        <uni-datetime-picker v-model="filterForm.data" ref="datePickerRef" type="daterange" @change="dateChange" />
                     </view>
                 </view>
             </template>
@@ -47,19 +40,19 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, reactive, ref} from 'vue';
-import {hideLoading, loading} from '@/utils/uniapi/prompt';
-import {onLoad, onShareAppMessage, onShareTimeline} from '@dcloudio/uni-app';
-import {cityArray, IBanner, ICategory} from 'group-common';
+import { computed, reactive, ref } from 'vue';
+import { hideLoading, loading } from '@/utils/uniapi/prompt';
+import { onLoad, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
+import { cityArray, IBanner, ICategory } from 'group-common';
 
 import LogoUrl from '@/static/images/logo.png';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import Layout from '@/components/layout/layout.vue';
 import PostItem from '@/components/item/post.vue';
 import TabBar from '@/components/tab-bar/tab-bar.vue';
-import {onGoPage, onGoTab} from '@/utils/business';
-import {useUserInfoStore} from '@/state/modules/user-info';
-import {view_banner, view_categories, view_events} from '@/api/event/evnet';
+import { onGoPage, onGoTab } from '@/utils/business';
+import { useUserInfoStore } from '@/state/modules/user-info';
+import { view_banner, view_categories, view_events } from '@/api/event/evnet';
 
 const navHeight = computed(() => {
     const navStyle = uni.getStorageSync('navStyle');
@@ -67,7 +60,7 @@ const navHeight = computed(() => {
 });
 const datePickerRef = ref();
 
-const _cityArray = ['All', ...cityArray]
+const _cityArray = ['All', ...cityArray];
 
 const tabBarList = [
     {
@@ -81,16 +74,15 @@ const tabBarList = [
         title: '',
         icon: 'plusempty',
         float: true,
-        handleClick: () => onGoPage({name: 'post-create'}),
+        handleClick: () => onGoPage({ name: 'post-create' }),
     },
     {
         index: 3,
         title: '我的',
         icon: 'person',
-        handleClick: () => onGoTab({name: 'mine'}),
+        handleClick: () => onGoTab({ name: 'mine' }),
     },
 ];
-
 
 const tabList = ref<ICategory[]>([]),
     bannerList = ref<IBanner[]>([]),
@@ -99,17 +91,17 @@ const tabList = ref<ICategory[]>([]),
     tabsRef = ref(),
     dataList = ref([]),
     filterForm = reactive<{
-        category?: string,
-        dataFormat?: string,
-        data?: string,
-        cityIndex: number,
-        city?: string
+        category?: string;
+        dataFormat?: string;
+        data?: string;
+        cityIndex: number;
+        city?: string;
     }>({
         cityIndex: 0,
         city: undefined,
         category: undefined,
         data: undefined,
-        dataFormat: undefined
+        dataFormat: undefined,
     });
 
 function tabsChange(index: number) {
@@ -118,43 +110,43 @@ function tabsChange(index: number) {
 }
 
 function bindPickerChange(e) {
-    filterForm.cityIndex = e.detail.value
-    filterForm.city = _cityArray[filterForm.cityIndex || 0]
+    filterForm.cityIndex = e.detail.value;
+    filterForm.city = _cityArray[filterForm.cityIndex || 0];
     pagingRef.value.reload();
 }
 
 function dateChange(e) {
-    filterForm.data = e.join(",")
-    filterForm.dataFormat = e.map(item => item.slice(5).replace("-", ".")).join("-")
+    filterForm.data = e.join(',');
+    filterForm.dataFormat = e.map((item) => item.slice(5).replace('-', '.')).join('-');
     pagingRef.value.reload();
 }
 
 function searchChange(e) {
-    console.log("searchChange", e)
+    console.log('searchChange', e);
     // filterForm.key =
     // pagingRef.value.reload();
 }
 
 async function getCategories() {
-    const {data} = await view_categories();
+    const { data } = await view_categories();
     tabList.value.push(
         ...[
-            {id: 'all', name: '全部'},
-            {id: 'hot', name: '热门'},
+            { id: 'all', name: '全部' },
+            { id: 'hot', name: '热门' },
         ]
     );
     if (data?.success) data.data?.map((item: ICategory) => tabList.value.push(item));
 }
 
 async function getBanners() {
-    const {data} = await view_banner();
+    const { data } = await view_banner();
     if (data?.success) bannerList.value = data.data || [];
 }
 
 const pagingRef = ref(),
     queryList = async (pageNo?: number, pageSize?: number) => {
         loading();
-        const {data} = await view_events({
+        const { data } = await view_events({
             limit: pageSize,
             page: pageNo,
             ...filterForm,
