@@ -1,8 +1,8 @@
-import {IEvent} from 'group-common';
-import {Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, Relation} from 'typeorm';
-import {BaseModel} from './BaseModel.js';
-import {User} from './User.js';
-import {Category} from "./Category.js";
+import { IEvent } from 'group-common';
+import { Column, Entity, Index, JoinTable, ManyToMany, ManyToOne, Relation } from 'typeorm';
+import { BaseModel } from './BaseModel.js';
+import { User } from './User.js';
+import { Category } from './Category.js';
 
 @Entity()
 export class Event extends BaseModel implements IEvent {
@@ -10,11 +10,11 @@ export class Event extends BaseModel implements IEvent {
     creator: Relation<User>;
     @Column()
     description: string;
-    @Column({type: "simple-array", nullable: true})
+    @Column({ type: 'simple-array', nullable: true })
     imageDescription: string[];
 
     @Column('point')
-    @Index({spatial: true})
+    @Index({ spatial: true })
     geoLocation: string;
 
     @Column()
@@ -24,42 +24,42 @@ export class Event extends BaseModel implements IEvent {
     @JoinTable()
     participants: Relation<User>[];
 
-    @Column({type: "datetime"})
+    @Column({ type: 'timestamp' })
     startAt: Date;
     @Column()
     title: string;
 
-    @Column({default: 0})
+    @Column({ default: 0 })
     maleTicketFee: number;
 
-    @Column({default: 0})
+    @Column({ default: 0 })
     femaleTicketFee: number;
 
-    @Column({default: false})
+    @Column({ default: false })
     disable: boolean;
 
     @ManyToMany((type) => Category, (category) => category.events)
     @JoinTable()
     category: Relation<Category>[];
 
-    @Column({default: 10})
+    @Column({ default: 10 })
     maxParticipants: number;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     minParticipants: number;
 
-    @Column({default: 0})
+    @Column({ default: 0 })
     viewCount: number;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     groupQr: string;
 
-    @Column({default: 0})
+    @Column({ default: 0 })
     joinCount: number;
 
-    @Column({default: true})
+    @Column({ default: true })
     isPublic: boolean;
 
-    @Column({nullable: true})
+    @Column({ nullable: true })
     city: string;
 }

@@ -76,6 +76,7 @@ function onClick(tabItem: TabItemType) {
     width: 100%;
     background: white;
     box-shadow: rgba(0, 0, 0, 0.15) 0 0 3.2px;
+    padding-bottom: 30rpx;
 }
 
 .tqb-tabBar-item {

@@ -25,8 +25,10 @@
                 <view class="gc-item">
                     <view>活动时间</view>
                     <view class="ml-20">
-                        <uni-datetime-picker :border="false" v-model="formData.startAt">
-                            {{ formData.startAt || '请选择活动开始时间' }}
+                        <uni-datetime-picker :border="false" v-model="formData.startAt" return-type="date">
+                            <uni-dateformat v-if="formData.startAt" :date="formData.startAt"></uni-dateformat>
+                            <span v-else>请选择活动开始时间</span>
+                            <!--                            {{ formData.startAt || '请选择活动开始时间' }}-->
                         </uni-datetime-picker>
                     </view>
                 </view>
