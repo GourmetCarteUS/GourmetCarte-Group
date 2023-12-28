@@ -1,6 +1,6 @@
 <template>
     <uni-popup ref="popupRef" background-color="#fff" type="bottom" @mask-click="popupRef?.close">
-        <view class="pt-70 pl-60 pr-60 pb-30 h-600">
+        <view class="pt-70 pl-60 pr-60 pb-30 h-700">
             <view class="btn-close">
                 <uni-icons color="#ccc" size="40rpx" type="closeempty" @click="popupRef?.close" />
             </view>
@@ -42,9 +42,7 @@ import { computed, reactive, ref } from 'vue';
 import { upload_file } from '@/api/common/common';
 import { useUserInfoStore } from '@/state/modules/user-info';
 import { modify_user_info } from '@/api/user-info/user-info';
-import { FilePathTypeEnum } from '@/api/common/common.types';
 import { loading } from '@/utils/uniapi/prompt';
-import { trim } from '@sky-serein/js-utils';
 import avatarDefaultUrl from '@/static/images/logo.png';
 import { sleep } from '@/utils/utils';
 
@@ -65,7 +63,7 @@ async function onChooseAvatar(res: any) {
     // #ifdef MP-WEIXIN
     const avatarTempUrl = res.detail.avatarUrl;
     if (!avatarTempUrl) return;
-    const { data } = await upload_file(avatarTempUrl, FilePathTypeEnum.MailboxAvatar);
+    const { data } = await upload_file(avatarTempUrl);
     if (data?.success) userForm.avatar = data.data;
     // #endif
 
@@ -76,7 +74,7 @@ async function onChooseAvatar(res: any) {
         sourceType: ['album'],
         success: async (res) => {
             const tempFilePaths = res.tempFilePaths[0];
-            const { data } = await upload_file(tempFilePaths!, FilePathTypeEnum.MailboxAvatar);
+            const { data } = await upload_file(tempFilePaths!);
             if (data?.success) userForm.avatar = data.data;
         },
     });
@@ -87,7 +85,7 @@ async function onSubmit() {
     loading('保存中...');
     try {
         await modify_user_info({
-            displayName: trim(userForm.name.toString()),
+            displayName: userForm.name.toString().trim(),
             avatarUrl: userForm?.avatar || undefined,
             contact: userForm.contact,
         });

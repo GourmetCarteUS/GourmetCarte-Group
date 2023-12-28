@@ -2,7 +2,7 @@ import { request } from '@/utils/http';
 import { IEvent, GCJSONResponse, GCJSONArrayResponse, ICategory, IBanner, GCJSONPaginationResponse, EventForm, EventDetailData, EventCreateForm } from 'group-common';
 import dayjs from 'dayjs';
 
-export function view_event_create(data: Partial<EventCreateForm>) {
+export function edit_create_event(data: Partial<EventCreateForm>) {
     return request.post<GCJSONResponse<IEvent>>('/event', {
         title: data.title || undefined,
         geoLocation: data.geoLocation || undefined,
@@ -18,7 +18,7 @@ export function view_event_create(data: Partial<EventCreateForm>) {
     });
 }
 
-export function view_event_edit(data: Partial<EventCreateForm>) {
+export function edit_modify_event(data: Partial<EventCreateForm>) {
     return request.put<GCJSONResponse<IEvent>>('/event', {
         id: data.id,
         title: data.title || undefined,
@@ -55,11 +55,11 @@ export function view_events(data: Partial<EventForm>) {
     return request.get<GCJSONPaginationResponse<IEvent>>('/event', { params: data });
 }
 
-export function view_event_join(id: string) {
+export function edit_event_join(id: string) {
     return request.post<GCJSONResponse<IEvent>>(`event/join/${id}`);
 }
 
-export function view_event_quit(id: string) {
+export function edit_event_quit(id: string) {
     return request.post<GCJSONResponse<IEvent>>(`event/quit/${id}`);
 }
 

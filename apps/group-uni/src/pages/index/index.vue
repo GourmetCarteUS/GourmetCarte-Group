@@ -82,7 +82,7 @@ const tabBarList = [
         index: 3,
         title: '我的',
         icon: 'person',
-        handleClick: () => onGoTab({ name: 'mine' }),
+        handleClick: () => onGoTab({ name: 'mine' }, true),
     },
 ];
 

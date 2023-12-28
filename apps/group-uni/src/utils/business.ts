@@ -2,7 +2,6 @@ import type { RouteLocationRaw } from 'uni-mini-router';
 import useTokenStorage from '@/storage/token';
 import { router } from '@/router';
 import { useUserInfoStore } from '@/state/modules/user-info';
-import { serializeToGetRequestString } from '@sky-serein/js-utils';
 
 export function onGoPage(params: RouteLocationRaw, needLogged = true) {
     if (!needLogged) return router.push(params);
@@ -51,14 +50,20 @@ export function onBack() {
 }
 
 export function onGoTab(params: RouteLocationRaw, needLogged = true) {
-    router.pushTab(params);
+    if (!needLogged) return router.pushTab(params);
+    if (!useTokenStorage.getToken())
+        return router.push({
+            name: 'login',
+            params: { tab: JSON.stringify(params) },
+        });
+    return router.pushTab(params);
 }
 
 export function getCurrentPageUrl() {
     const cur = getCurrentPages() as any;
     const currentPagePath = cur.slice(-1)[0]?.['name'] ?? '/pages/open/open';
     const currentPageParams = cur.slice(-1)[0]?.['options'] ?? {};
-    return currentPagePath + '?' + serializeToGetRequestString(currentPageParams);
+    return currentPagePath + '?' + currentPageParams;
 }
 
 export function getUrlParams(urlString: string, name: string) {

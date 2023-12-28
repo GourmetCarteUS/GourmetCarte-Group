@@ -116,20 +116,6 @@
     @extend .text-nowrap;
 }
 
-.gc-item-before {
-    @extend .gc-item;
-    //padding-left: 66rpx;
-    //
-    //&:before {
-    //  content: " ";
-    //  background: url("@/static/images/item-prefix.png") 100%/100%;
-    //  width: 46rpx;
-    //  height: 28rpx;
-    //  position: absolute;
-    //  transform: translateX(-56rpx) translateZ(-1px);
-    //}
-}
-
 .gc-title {
     display: flex;
     color: $uni-text-color;

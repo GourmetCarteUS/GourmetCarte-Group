@@ -6,7 +6,7 @@ import { onLoad, onPageScroll, onShareAppMessage, onShareTimeline } from '@dclou
 import { computed, reactive, ref } from 'vue';
 import { onBack, onGoPage } from '@/utils/business';
 import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
-import { view_event_detail, view_event_join, view_event_quit } from '@/api/event/evnet';
+import { view_event_detail, edit_event_join, edit_event_quit } from '@/api/event/evnet';
 import { EventDetailData } from 'group-common';
 import LogoUrl from '@/static/images/logo.png';
 import { startAtFormat } from '@/utils/utils';
@@ -29,7 +29,7 @@ async function getEvent() {
 
 async function joinEvent() {
     loading();
-    const { data } = await view_event_join(postId.value);
+    const { data } = await edit_event_join(postId.value);
     hideLoading();
     if (!data?.success) {
         toast(data?.errorMessage || '上车失败');
@@ -45,7 +45,7 @@ async function joinEvent() {
 
 async function quitEvent() {
     loading();
-    const { data } = await view_event_quit(postId.value);
+    const { data } = await edit_event_quit(postId.value);
     hideLoading();
     if (!data?.success) {
         toast(data?.errorMessage || '下车失败');

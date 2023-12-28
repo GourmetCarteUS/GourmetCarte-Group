@@ -6,11 +6,11 @@
         <view class="bg-white m-40 p-40 b-rd-50 pb-800">
             <view class="gc-title text-28 font-900 mb-30">发布新活动</view>
             <view class="mt-20">
-                <view class="gc-item-before">
+                <view class="gc-item">
                     <view>活动名称</view>
                     <view class="ml-20"><input type="text" v-model="formData.title" placeholder="请输入活动名称" /> </view>
                 </view>
-                <view class="gc-item-before">
+                <view class="gc-item">
                     <view>举办城市</view>
                     <view class="ml-20">
                         <picker :range="cityArray" @change="bindPickerChange">
@@ -18,11 +18,11 @@
                         </picker>
                     </view>
                 </view>
-                <view class="gc-item-before">
+                <view class="gc-item">
                     <view>活动地址</view>
                     <view class="ml-20" @click="getLocation">{{ formData.location || '请输入选择活动地址' }}</view>
                 </view>
-                <view class="gc-item-before">
+                <view class="gc-item">
                     <view>活动时间</view>
                     <view class="ml-20">
                         <uni-datetime-picker :border="false" v-model="formData.startAt">
@@ -30,19 +30,19 @@
                         </uni-datetime-picker>
                     </view>
                 </view>
-                <view class="gc-item-before justify-between pr-20">
+                <view class="gc-item justify-between pr-20">
                     <view>活动人数</view>
                     <view class="ml-20">
                         <uni-number-box :min="2" v-model="formData.maxParticipants" />
                     </view>
                 </view>
-                <view class="gc-item-before justify-between pr-20" style="overflow: initial">
+                <view class="gc-item justify-between pr-20" style="overflow: initial">
                     <view>活动类型</view>
                     <view class="ml-20 w-full" @click="multiplePickerShow = true">
                         {{ formData?.categoryStr?.join('，') || '请选择活动类型' }}
                     </view>
                 </view>
-                <checkbox-group class="gc-item-before pr-20" @change="checkboxChange">
+                <checkbox-group class="gc-item pr-20" @change="checkboxChange">
                     <label class="flex justify-between w-full">
                         <view>是否公开</view>
                         <checkbox color="#7f7eff" :checked="formData.isPublic" style="transform: scale(0.8)" />
@@ -96,7 +96,7 @@ import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import { onLoad, onPageScroll } from '@dcloudio/uni-app';
 import { cityArray, EventCreateForm } from 'group-common';
-import { view_categories, view_event_create, view_event_detail, view_event_edit } from '@/api/event/evnet';
+import { view_categories, edit_create_event, view_event_detail, edit_modify_event } from '@/api/event/evnet';
 import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
 import { onBack, onGoReplace } from '@/utils/business';
 import MultiplePicker from '@/components/multiple-picker/multiple-picker.vue';
@@ -140,7 +140,7 @@ async function getCategories() {
 }
 
 async function createEvent() {
-    const { data } = isNew.value ? await view_event_create(formData) : await view_event_edit(formData);
+    const { data } = isNew.value ? await edit_create_event(formData) : await edit_modify_event(formData);
     if (data?.success) {
         toast(`${text.value}成功`, {
             success: () => setTimeout(() => onGoReplace({ name: 'post-detail', params: { id: data.data!.id } }), 1500),

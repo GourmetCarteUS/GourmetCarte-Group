@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import Layout from '@/components/layout/layout.vue';
 import { onGoPage, onGoTab } from '@/utils/business';
 import Settings from '@/pages/mine/settings.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import TabBar from '@/components/tab-bar/tab-bar.vue';
 import { useUserInfoStore } from '@/state/modules/user-info';
-import { EventDetailData, IEvent, IUser } from 'group-common';
+import { EventDetailData, IUser } from 'group-common';
 import avatarUrl from '@/static/images/logo.png';
 import { view_event_user } from '@/api/event/evnet';
-import { startAtFormat } from '@/utils/utils';
 import { hideLoading, loading } from '@/utils/uniapi/prompt';
 import MinePost from '@/components/item/mine-post.vue';
+import { onLoad, onShow } from '@dcloudio/uni-app';
 
 const dataList = ref<EventDetailData[]>([]),
     pagingRef = ref(),
@@ -67,7 +67,7 @@ async function queryList(pageNo: number, pageSize: number) {
 }
 
 function onSetting() {
-    // if (!userInfo.value) return router.push({name: "login"});
+    if (!userInfo.value) return onGoPage({ name: 'login' });
     settingUserRef.value.handleOpen();
 }
 
@@ -98,6 +98,10 @@ function onScroll(env: Event) {
 
 uni?.hideTabBar();
 useUserInfoStore().initUserInfo();
+
+onMounted(() => {
+    if (!userInfo.value.avatarUrl || !userInfo.value.displayName) onSetting();
+});
 </script>
 
 <template>
@@ -126,8 +130,8 @@ useUserInfoStore().initUserInfo();
             <view class="m-25 p-35 pb-0 b-rd-20 bg-white">
                 <view class="gc-title text-28 font-500">资料信息</view>
                 <view class="mt-30">
-                    <view class="gc-item-before">报名参赛者：{{ userInfo?.displayName }}</view>
-                    <view class="gc-item-before" v-if="userInfo?.contact">联系方式：{{ userInfo?.contact }}</view>
+                    <view class="gc-item">报名参赛者：{{ userInfo?.displayName }}</view>
+                    <view class="gc-item" v-if="userInfo?.contact">联系方式：{{ userInfo?.contact }}</view>
                     <!--                    <view class="gc-item" style="height: auto; overflow: initial; padding-left: 0">-->
                     <!--                        <uni-file-picker limit="9">-->
                     <!--                            <template #title="{ filesList, limitLength }">-->

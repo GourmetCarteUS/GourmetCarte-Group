@@ -1,6 +1,5 @@
 import { request } from '@/utils/http';
 import type { Token } from '@/storage/token';
-import type { FilePathTypeEnum, FileRes } from '@/api/common/common.types';
 import { GCJSONResponse } from 'group-common';
 
 export function refresh_token() {
@@ -13,14 +12,12 @@ export function refresh_token() {
     );
 }
 
-export function upload_file(filePath: string, pathType?: FilePathTypeEnum) {
+export function upload_file(filePath: string) {
     return request.upload<GCJSONResponse<string>>({
         url: '/upload/image',
         name: 'file',
         filePath: filePath,
         fileType: 'image', // image, video, audio
-        formData: {
-            pathType,
-        },
+        formData: {},
     });
 }

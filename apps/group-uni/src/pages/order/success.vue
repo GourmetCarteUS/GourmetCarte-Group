@@ -10,9 +10,9 @@
                     <view class="text-36 font-500">恭喜您成功报名活动</view>
                 </view>
                 <view>
-                    <view v-if="currentData?.participants?.length" class="gc-item-before text-28 font-500">报名参赛者：{{ currentData?.participants[0]?.displayName }} </view>
+                    <view v-if="currentData?.participants?.length" class="gc-item text-28 font-500">报名参赛者：{{ currentData?.participants[0]?.displayName }} </view>
                     <!--          <view class="gc-item-before text-28 font-500">联系方式：187010789087</view>-->
-                    <view class="gc-item-before text-28 font-500">活动：{{ currentData?.title }} </view>
+                    <view class="gc-item text-28 font-500">活动：{{ currentData?.title }} </view>
                 </view>
             </view>
             <view class="m-30" v-if="currentData?.groupQr">
