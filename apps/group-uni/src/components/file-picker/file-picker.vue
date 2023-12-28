@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { upload_file } from '@/api/common/common';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const prop = defineProps({
     title: {
@@ -12,26 +12,25 @@ const prop = defineProps({
         type: String,
     },
     modelValue: {
-        type: [Array, Object],
-        default() {
-            return [];
-        },
+        type: [Array, Object, String],
     },
 });
 const emit = defineEmits(['update:modelValue']);
+const localValue = ref<any>([]),
+    uploadPickerRef = ref();
 
-const localValue = ref([]),
-    uploadVideo = ref();
-
-async function pictureSelect(event: { tempFiles: any[]; tempFilePaths: string[] }) {
+async function pictureSelect() {
     const res = await Promise.all(
-        event.tempFilePaths.map(async (tempFiles, idx) => {
-            const { data } = await upload_file(tempFiles);
-            if (data?.success) {
-                uploadVideo.value?.manuallySetProgress(idx);
-                return data.data;
+        uploadPickerRef.value.filesList.map(async (file: any, idx: number) => {
+            if (file.status == 'ready') {
+                const { data } = await upload_file(file.url);
+                if (data?.success) {
+                    uploadPickerRef.value?.manuallySetProgress(idx);
+                    return data.data;
+                }
+            } else {
+                return file.url;
             }
-            return '';
         })
     );
     if (prop.limit == '1') {
@@ -40,10 +39,45 @@ async function pictureSelect(event: { tempFiles: any[]; tempFilePaths: string[] 
         emit('update:modelValue', res);
     }
 }
+
+function onDelete(e: { index: any }) {
+    if (prop.limit == '1') {
+        emit('update:modelValue', '');
+    } else {
+        localValue.value.splice(e.index, 1);
+        emit(
+            'update:modelValue',
+            localValue.value.map((item: { url: any }) => item.url)
+        );
+    }
+}
+
+watch(
+    () => prop.modelValue,
+    (newValue) => {
+        if (newValue) {
+            if (prop.limit == '1') {
+                localValue.value = {
+                    name: newValue,
+                    extname: 'png,jpg',
+                    url: newValue,
+                    status: 'success',
+                };
+            } else {
+                localValue.value = newValue.map((item: any) => {
+                    return {
+                        name: item,
+                        extname: 'png,jpg',
+                        url: item,
+                        status: 'success',
+                    };
+                });
+            }
+        }
+    }
+);
 </script>
 
 <template>
-    <uni-file-picker :limit="limit" :title="title" :value="localValue" ref="uploadVideo" @select="pictureSelect" :auto-upload="false" />
+    <uni-file-picker :limit="limit" :title="title" v-model="localValue" ref="uploadPickerRef" @select="pictureSelect" @delete="onDelete" :auto-upload="false" />
 </template>
-
-<style scoped lang="scss"></style>

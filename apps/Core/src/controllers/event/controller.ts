@@ -1,5 +1,5 @@
 import { EventCreateForm, EventDetailData, GCJSONArrayResponse, GCJSONResponse, IEvent } from 'group-common';
-import { Body, Controller, Get, Path, Post, Request, Route, Security, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Put, Request, Route, Security, Tags } from 'tsoa';
 import { Event } from '../../models/Event';
 import { Category } from '../../models/Category';
 import { Between, FindOptionsOrder, In, LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
@@ -76,10 +76,14 @@ export class EventController extends Controller {
                 'startAt',
                 'imageDescription',
                 'joinCount',
+                'isPublic',
+                'groupQr',
+                'category',
             ],
             relations: {
                 creator: true,
                 participants: true,
+                category: true,
             },
         });
         const currentUser = request.user;
@@ -140,6 +144,45 @@ export class EventController extends Controller {
         });
 
         const event = new Event();
+        event.title = value.title;
+        event.geoLocation = value.geoLocation;
+        event.location = value.location;
+        event.description = value.description;
+        event.startAt = value.startAt;
+        event.category = category;
+        event.creator = request.user;
+        event.maxParticipants = value.maxParticipants;
+        event.imageDescription = value.imageDescription;
+        event.groupQr = value.groupQr;
+        event.city = value.city;
+        event.isPublic = value.isPublic;
+        await event.save();
+
+        return {
+            success: true,
+            data: event,
+        };
+    }
+
+    @Put()
+    @Security('authorized')
+    public async putEvent(@Request() request: any, @Body() value: Partial<EventCreateForm>): Promise<GCJSONResponse<Partial<IEvent>>> {
+        const user = new User();
+        user.id = request.user.id;
+        // @ts-ignore
+        const event = await Event.findOneBy({ id: value.id, creator: user });
+        if (!event) {
+            return {
+                success: false,
+                errorCode: 400,
+                errorMessage: '数据不存在',
+            };
+        }
+
+        const category = await Category.findBy({
+            id: In(value.categoryIds),
+        });
+
         event.title = value.title;
         event.geoLocation = value.geoLocation;
         event.location = value.location;

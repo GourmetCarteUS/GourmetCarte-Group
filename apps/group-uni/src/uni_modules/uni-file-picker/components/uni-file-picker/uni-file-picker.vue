@@ -534,6 +534,7 @@ export default {
             this.$emit('delete', {
                 tempFile: this.files[index],
                 tempFilePath: this.files[index].url,
+                index,
             });
             this.files.splice(index, 1);
             this.$nextTick(() => {

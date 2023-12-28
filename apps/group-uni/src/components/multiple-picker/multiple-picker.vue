@@ -4,25 +4,20 @@
         <view class="selectMultiple" :animation="animationData">
             <view class="multipleBody">
                 <view class="title">
-                    <view class="close" @tap="cancelMultiple">
-                        取消
-                    </view>
+                    <view class="close" @tap="cancelMultiple"> 取消 </view>
                     <view class="name">
                         {{ title }}
                     </view>
-                    <view class="confirm" @tap="confirmMultiple">
-                        确认
-                    </view>
+                    <view class="confirm" @tap="confirmMultiple"> 确认 </view>
                 </view>
                 <view class="list">
                     <view class="mask mask-top"></view>
                     <view class="mask mask-bottom"></view>
                     <scroll-view class="diet-list" scroll-y="true">
-                        <view v-for="(item, index) in list" :class="['item', item.selected ? 'checked' : '']"
-                              @tap="onChange(index, item)">
+                        <view v-for="(item, index) in list" :key="item" :class="['item', item.selected ? 'checked' : '']" @tap="onChange(index, item)">
                             <span>{{ item.label }}</span>
                             <view class="icon" v-show="item.selected">
-                                <icon type="success_no_circle" size="16" color="#2D8DFF"/>
+                                <icon type="success_no_circle" size="16" color="#2D8DFF" />
                             </view>
                         </view>
                     </scroll-view>
@@ -34,7 +29,7 @@
 
 <script>
 export default {
-    name: "multiple-picker",
+    name: 'multiple-picker',
     data() {
         return {
             // 选中值
@@ -51,12 +46,12 @@ export default {
         // 是否显示
         show: {
             type: Boolean,
-            default: false
+            default: false,
         },
         // 标题
         title: {
             type: String,
-            default: ''
+            default: '',
         },
         //数据列表
         columns: {
@@ -65,14 +60,14 @@ export default {
                 {
                     label: '测试1',
                     value: '1',
-                }
-            ]
+                },
+            ],
         },
         // 默认选中
         defaultIndex: {
             type: Array,
             default: [],
-        }
+        },
     },
     watch: {
         // 监听是否显示
@@ -80,7 +75,7 @@ export default {
             if (val) {
                 this.openMultiple();
             }
-        }
+        },
     },
     methods: {
         // 列点击事件
@@ -104,14 +99,14 @@ export default {
                     });
                 }
             });
-            this.$emit("change", {selected: this.selected, value: this.value});
+            this.$emit('change', { selected: this.selected, value: this.value });
         },
         // 弹出框开启触发事件
         openMultiple() {
             // 初始化列表数据,默认勾选数据
             this.value = this.defaultIndex;
             this.columns.forEach((item, index) => {
-                this.$set(item, "selected", false);
+                this.$set(item, 'selected', false);
                 if (this.value.indexOf(item.value.toString()) >= 0) {
                     item.selected = true;
                 }
@@ -122,24 +117,24 @@ export default {
         },
         // 确认
         confirmMultiple() {
-            this.$emit("confirm", {selected: this.selected, value: this.value});
+            this.$emit('confirm', { selected: this.selected, value: this.value });
         },
         // 关闭/取消
         cancelMultiple() {
-            this.$emit("cancel");
+            this.$emit('cancel');
         },
         // 展开动画
         openAnimation() {
-            var animation = uni.createAnimation()
-            animation.translate(0, 300).step({duration: 0});
+            var animation = uni.createAnimation();
+            animation.translate(0, 300).step({ duration: 0 });
             this.animationData = animation.export();
             this.$nextTick(() => {
-                animation.translate(0, 0).step({duration: 300, timingFunction: 'ease'});
-                this.animationData = animation.export()
-            })
+                animation.translate(0, 0).step({ duration: 300, timingFunction: 'ease' });
+                this.animationData = animation.export();
+            });
         },
-    }
-}
+    },
+};
 </script>
 
 <style scoped lang="scss">
@@ -154,7 +149,7 @@ export default {
     .bg {
         width: 100%;
         height: 100%;
-        background-color: rgba(black, .5);
+        background-color: rgba(black, 0.5);
     }
 }
 
@@ -178,7 +173,7 @@ export default {
 
             .close {
                 width: 80rpx;
-                opacity: .5;
+                opacity: 0.5;
             }
 
             .name {
@@ -229,7 +224,7 @@ export default {
                 position: relative;
                 width: 100%;
                 line-height: 40rpx;
-                border-bottom: 1px solid rgba($color: #000000, $alpha: .05);
+                border-bottom: 1px solid rgba($color: #000000, $alpha: 0.05);
                 padding: 20rpx 0;
                 font-size: 30rpx;
                 box-sizing: border-box;
