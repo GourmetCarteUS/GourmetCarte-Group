@@ -2902,11 +2902,6 @@
     estree-walker "^2.0.2"
     picomatch "^2.3.1"
 
-"@sky-serein/js-utils@^0.1.3":
-  version "0.1.3"
-  resolved "https://registry.npmmirror.com/@sky-serein/js-utils/-/js-utils-0.1.3.tgz#30832324d11323736faeaeb47fc477884e6a202c"
-  integrity sha512-DRzKwzuPqz2ZXpuIdMAJ0WM31i3PJ+TiAopu4Ri0nEPuEa9R+/2S6spTehdISPH0oDtcVTHH+tE8be1WgWOEKA==
-
 "@smithy/abort-controller@^2.0.15":
   version "2.0.15"
   resolved "https://registry.yarnpkg.com/@smithy/abort-controller/-/abort-controller-2.0.15.tgz#fcec9193da8b86eef1eedc3e71139a99c061db32"

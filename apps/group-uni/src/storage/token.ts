@@ -1,17 +1,14 @@
-export interface Token {
-    token: string;
-    expires: number;
-}
+import { Authentication } from 'group-common';
 
 class TokenStorageClass {
     private name = 'AUTH_TOKEN';
 
-    getToken(): Token | null {
+    getToken(): Authentication | null {
         const value = uni.getStorageSync(this.name);
         return value ? JSON.parse(value) : '';
     }
 
-    setToken(value: Token) {
+    setToken(value: Authentication) {
         uni.setStorageSync(this.name, JSON.stringify(value));
     }
 
@@ -22,7 +19,7 @@ class TokenStorageClass {
     isTokenExpire(curTime: number) {
         const token = this.getToken();
         if (!token) return null;
-        return token.expires <= curTime;
+        if (token.expires) return token.expires <= curTime;
     }
 }
 
