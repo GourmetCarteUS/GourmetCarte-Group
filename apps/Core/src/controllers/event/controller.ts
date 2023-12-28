@@ -326,7 +326,7 @@ export class EventController extends Controller {
             relations: {
                 participants: true,
             },
-            select: ['id', 'title', 'category', 'participants', 'startAt', 'imageDescription', 'joinCount'],
+            select: ['id', 'title', 'category', 'participants', 'startAt', 'imageDescription', 'joinCount', 'isPublic'],
             where: [
                 // @ts-ignore
                 { participants: user, startAt: where.startAt, isPublic: where.isPublic },

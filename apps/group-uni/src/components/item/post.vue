@@ -1,9 +1,9 @@
 <template>
     <view class="post-container m-20 mb-0 bg-white" @click="onGoPage({ name: 'post-detail', params: { id: data?.id } }, false)">
         <template v-if="data?.imageDescription?.length">
-            <image :src="data.imageDescription[0]" class="max-h-400 w-full" mode="widthFix" />
+            <image :src="data.imageDescription[0]" class="max-h-400 w-full" mode="aspectFill" />
         </template>
-        <image v-else src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png" class="max-h-400 w-full" mode="widthFix" />
+        <image v-else :src="logoUrl" class="max-h-400 w-full" mode="aspectFill" />
         <view class="p-20">
             <view class="flex justify-between center">
                 <text class="font-500 flex-1 mr-10 text-nowrap">{{ data?.title }}</text>
@@ -26,6 +26,7 @@
 import { onGoPage } from '@/utils/business';
 import { EventDetailData } from 'group-common';
 import { startAtFormat } from '@/utils/utils';
+import logoUrl from '@/static/images/logo.png';
 
 defineProps<{ data: EventDetailData }>();
 </script>

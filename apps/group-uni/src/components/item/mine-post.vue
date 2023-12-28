@@ -2,18 +2,19 @@
 import { startAtFormat } from 'group-uni/src/utils/utils';
 import { EventDetailData } from 'group-common';
 import { onGoPage } from '@/utils/business';
+import logoUrl from '@/static/images/logo.png';
 
 defineProps<{ data: EventDetailData }>();
 </script>
 
 <template>
-    <view class="group-item b-rd-20 p-20 pb-0 mt-20" @click="onGoPage({ name: 'post-detail', params: { id: data?.id } }, false)">
+    <view class="b-rd-20 p-20 pb-0 mt-20" :class="data?.isPublic ? 'group-item' : 'group-item-privacy'" @click="onGoPage({ name: 'post-detail', params: { id: data?.id } }, false)">
         <view class="flex mb-10 justify-between">
             <view class="w-150 h-170 b-rd-20">
                 <template v-if="data?.imageDescription?.length">
                     <image :src="data.imageDescription[0]" class="h-full w-full b-rd-20" mode="aspectFill" />
                 </template>
-                <image v-else src="https://img.js.design/assets/img/641803bc0d016e025e84c54a.png" class="h-full w-full b-rd-20" mode="aspectFill" />
+                <image v-else :src="logoUrl" class="h-full w-full b-rd-20" mode="aspectFill" />
             </view>
             <view class="text-24 ml-20 flex-col flex justify-center">
                 <view class="mb-20">
@@ -28,7 +29,9 @@ defineProps<{ data: EventDetailData }>();
                 <view class="flex">
                     <view class="capsule-button solved" v-if="data.status">已结束</view>
                     <view class="capsule-button pending" v-else>未开始</view>
-                    <view class="capsule-button ml-20" :class="data.status ? 'solved' : 'bg-primary-sec'">{{ startAtFormat(data?.startAt) }} </view>
+                    <view class="capsule-button ml-20" :class="data.status ? 'solved' : 'bg-primary-sec'">
+                        {{ startAtFormat(data?.startAt) }}
+                    </view>
                 </view>
             </view>
         </view>
@@ -44,5 +47,9 @@ defineProps<{ data: EventDetailData }>();
 
 .group-item {
     background: linear-gradient(180deg, rgba($uni-color-primary, 0.2) 0%, rgba(243, 250, 231, 0) 100%);
+}
+
+.group-item-privacy {
+    background: linear-gradient(180deg, rgba($uni-color-primary, 0.4) 0%, rgba(243, 250, 231, 0) 100%);
 }
 </style>
