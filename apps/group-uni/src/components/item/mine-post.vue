@@ -7,7 +7,7 @@ defineProps<{ data: EventDetailData }>();
 </script>
 
 <template>
-    <view class="group-item b-rd-20 p-20 mb-20" @click="onGoPage({ name: 'post-detail', params: { id: data?.id } }, false)">
+    <view class="group-item b-rd-20 p-20 pb-0 mt-20" @click="onGoPage({ name: 'post-detail', params: { id: data?.id } }, false)">
         <view class="flex mb-10 justify-between">
             <view class="w-150 h-170 b-rd-20">
                 <template v-if="data?.imageDescription?.length">

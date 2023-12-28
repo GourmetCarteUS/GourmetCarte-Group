@@ -1,7 +1,7 @@
 <template>
     <Layout>
         <template #header>
-            <NavBar title="创建活动" :backgroundColor="scrollTop >= 80 ? 'white' : undefined" />
+            <NavBar :title="`${text}活动`" :backgroundColor="scrollTop >= 80 ? 'white' : undefined" />
         </template>
         <view class="bg-white m-40 p-40 b-rd-50 pb-800">
             <view class="gc-title text-28 font-900 mb-30">发布新活动</view>
@@ -45,7 +45,7 @@
                 <checkbox-group class="gc-item-before pr-20" @change="checkboxChange">
                     <label class="flex justify-between w-full">
                         <view>是否公开</view>
-                        <checkbox color="#7f7eff" checked style="transform: scale(0.8)" />
+                        <checkbox color="#7f7eff" :checked="formData.isPublic" style="transform: scale(0.8)" />
                     </label>
                 </checkbox-group>
             </view>
@@ -81,7 +81,14 @@
             </view>
         </view>
     </Layout>
-    <MultiplePicker title="请选择活动类型" :show="multiplePickerShow" :columns="categoryList" @confirm="confirmMultiple" @cancel="multiplePickerShow = false" />
+    <MultiplePicker
+        title="请选择活动类型"
+        :show="multiplePickerShow"
+        :columns="categoryList"
+        :defaultIndex="formData.categoryIds"
+        @confirm="confirmMultiple"
+        @cancel="multiplePickerShow = false"
+    />
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
@@ -89,11 +96,12 @@ import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import { onLoad, onPageScroll } from '@dcloudio/uni-app';
 import { cityArray, EventCreateForm } from 'group-common';
-import { view_categories, view_event_create } from '@/api/event/evnet';
-import { toast } from '@/utils/uniapi/prompt';
-import { onGoReplace } from '@/utils/business';
+import { view_categories, view_event_create, view_event_detail, view_event_edit } from '@/api/event/evnet';
+import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
+import { onBack, onGoReplace } from '@/utils/business';
 import MultiplePicker from '@/components/multiple-picker/multiple-picker.vue';
 import FilePicker from '@/components/file-picker/file-picker.vue';
+import dayjs from 'dayjs';
 
 const categoryList = ref(),
     formData = reactive<Partial<EventCreateForm>>({
@@ -104,6 +112,7 @@ const categoryList = ref(),
         city: 'San Francisco Bay Area',
     }),
     scrollTop = ref(0),
+    text = ref('创建'),
     multiplePickerShow = ref(false);
 
 function confirmMultiple(e: any) {
@@ -130,14 +139,14 @@ async function getCategories() {
 }
 
 async function createEvent() {
-    const { data } = await view_event_create(formData);
+    const { data } = formData.id ? await view_event_edit(formData) : await view_event_create(formData);
     if (data?.success) {
-        toast('创建成功', {
+        toast(`${text.value}成功`, {
             success: () => setTimeout(() => onGoReplace({ name: 'post-detail', params: { id: data.data!.id } }), 1500),
         });
         return;
     }
-    return toast(data?.errorMessage || '创建失败');
+    return toast(data?.errorMessage || `${text.value}失败`);
 }
 
 function getLocation() {
@@ -151,6 +160,21 @@ function getLocation() {
             console.log('经度：' + res.longitude);
         },
     });
+}
+
+async function getEvent(id: string) {
+    loading();
+    const { data } = await view_event_detail(id);
+    if (data?.errorCode) {
+        toast(data?.errorMessage || '暂无该数据', { complete: () => setTimeout(onBack, 1500) });
+    } else {
+        Object.assign(formData, data!.data);
+        // @ts-ignore
+        formData.startAt = dayjs(formData.startAt).format('YYYY-MM-DD HH:mm:ss').toString();
+        formData.categoryIds = formData.category?.map((item) => item.id);
+        formData.categoryStr = formData.category?.map((item) => item.name);
+    }
+    hideLoading();
 }
 
 onPageScroll((e) => {
@@ -167,7 +191,11 @@ onPageScroll((e) => {
         });
     }
 });
-onLoad(() => {
+onLoad((params) => {
+    if (params?.id) {
+        text.value = '修改';
+        getEvent(params?.id);
+    }
     getCategories();
 });
 </script>

@@ -1,16 +1,25 @@
-import {request} from '@/utils/http';
-import {
-    IEvent,
-    GCJSONResponse,
-    GCJSONArrayResponse,
-    ICategory,
-    IBanner,
-    GCJSONPaginationResponse,
-    EventForm, EventDetailData
-} from 'group-common'
+import { request } from '@/utils/http';
+import { IEvent, GCJSONResponse, GCJSONArrayResponse, ICategory, IBanner, GCJSONPaginationResponse, EventForm, EventDetailData, EventCreateForm } from 'group-common';
 
 export function view_event_create(data: Partial<IEvent>) {
     return request.post<GCJSONResponse<IEvent>>('/event', data);
+}
+
+export function view_event_edit(data: Partial<EventCreateForm>) {
+    return request.put<GCJSONResponse<IEvent>>('/event', {
+        id: data.id,
+        title: data.title,
+        geoLocation: data.geoLocation,
+        location: data.location,
+        description: data.description,
+        startAt: data.startAt,
+        maxParticipants: data.maxParticipants,
+        imageDescription: data.imageDescription,
+        groupQr: data.groupQr,
+        city: data.city,
+        isPublic: data.isPublic,
+        categoryIds: data?.categoryIds,
+    });
 }
 
 export function view_event_detail(id: string) {
@@ -30,17 +39,17 @@ export function view_banner() {
 }
 
 export function view_events(data: Partial<EventForm>) {
-    return request.get<GCJSONPaginationResponse<IEvent>>('/event', {params: data});
+    return request.get<GCJSONPaginationResponse<IEvent>>('/event', { params: data });
 }
 
 export function view_event_join(id: string) {
-    return request.post<GCJSONResponse<IEvent>>(`event/join/${id}`)
+    return request.post<GCJSONResponse<IEvent>>(`event/join/${id}`);
 }
 
 export function view_event_quit(id: string) {
-    return request.post<GCJSONResponse<IEvent>>(`event/quit/${id}`)
+    return request.post<GCJSONResponse<IEvent>>(`event/quit/${id}`);
 }
 
 export function view_event_user(data: Partial<EventForm>) {
-    return request.get<GCJSONResponse<IEvent>>(`event/user/${data.userId}`, {params: data})
+    return request.get<GCJSONResponse<IEvent>>(`event/user/${data.userId}`, { params: data });
 }

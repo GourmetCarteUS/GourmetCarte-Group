@@ -106,15 +106,15 @@ useUserInfoStore().initUserInfo();
             <NavBar :is-back="false" title="我的" :backgroundColor="scrollTop >= 100 ? 'white' : undefined" />
         </template>
 
-        <z-paging ref="pagingRef" @query="queryList" safe-area-inset-bottom use-safe-area-placeholder :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
+        <z-paging ref="pagingRef" safe-area-inset-bottom use-safe-area-placeholder @query="queryList" :show-scrollbar="false" v-model="dataList" @scroll="onScroll">
             <view class="user-info h-230 flex center justify-between pl-40 pr-50" :style="{ 'margin-top': navHeight + 'px' }">
                 <view>
                     <view class="text-40 font-700 ml-30">{{ userInfo?.displayName }}</view>
                     <view class="capsule-button bg-primary-sub text-20 mt-20 text-black">
-                        <text class="pl-20 pr-20">已经连续参加{{ userInfo?.joinCount || 0 }}期 </text>
+                        <text class="pl-20 pr-20">已经连续参加{{ userInfo?.joinCount || 0 }}期</text>
                     </view>
                     <view class="capsule-button bg-primary-sub text-20 mt-20 text-black">
-                        <text class="pl-20 pr-20">已举行20期 </text>
+                        <text class="pl-20 pr-20">已举行20期</text>
                     </view>
                 </view>
                 <view @click="onSetting">
@@ -142,14 +142,14 @@ useUserInfoStore().initUserInfo();
                 </view>
                 <view class="gc-title mt-60 text-28 font-500">我的活动</view>
                 <view class="mt-30">
-                    <view style="z-index: 100" class="sticky pb-20" :class="{ 'bg-white': scrollTop >= 150 }" :style="{ top: navHeight - 5 + 'px' }">
+                    <view style="z-index: 100" class="sticky" :class="{ 'bg-white': scrollTop >= 150 }" :style="{ top: navHeight - 5 + 'px' }">
                         <z-tabs ref="tabsRef" :list="tabList" @change="tabsChange" />
                     </view>
                     <MinePost v-for="item in dataList" :key="item.id" :data="item" />
                 </view>
             </view>
             <template #bottom>
-                <view style="z-index: 99" class="h-150">
+                <view style="z-index: 10" class="">
                     <TabBar :tab-bar-list="tabBarList" />
                 </view>
             </template>
