@@ -103,7 +103,7 @@
 }
 
 .gc-item {
-    height: 94rpx;
+    min-height: 94rpx;
     border-radius: 20rpx;
     background: rgba($uni-color-primary, 0.1);
     display: flex;
@@ -112,7 +112,7 @@
     font-size: 28rpx;
     color: $uni-text-color;
     font-weight: 500;
-    padding-left: 22rpx;
+    padding: 0 22rpx;
     @extend .text-nowrap;
 }
 

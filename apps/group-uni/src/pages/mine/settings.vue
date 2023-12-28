@@ -2,14 +2,13 @@
     <uni-popup ref="popupRef" background-color="#fff" type="bottom" @mask-click="popupRef?.close">
         <view class="pt-70 pl-60 pr-60 pb-30 h-600">
             <view class="btn-close">
-                <uni-icons color="#ccc" size="40rpx" type="closeempty" @click="popupRef?.close"/>
+                <uni-icons color="#ccc" size="40rpx" type="closeempty" @click="popupRef?.close" />
             </view>
             <view class="text-30">获取您的昵称、头像</view>
-            <view class="text-24 text-neutral-400 pt-10"> 获取用户头像、昵称，主要用于向用户提供具有辨识度的用户中心界面
-            </view>
+            <view class="text-24 text-neutral-400 pt-10"> 获取用户头像、昵称，主要用于向用户提供具有辨识度的用户中心界面 </view>
             <view class="avatar-wrapper">
                 <button class="btn relative w-150 h-150 center" open-type="chooseAvatar" @chooseavatar="onChooseAvatar">
-                    <image :src="userForm?.avatar || avatarDefaultUrl" class="w-150 h-150 rd-200"/>
+                    <image :src="userForm?.avatar || avatarDefaultUrl" class="w-150 h-150 rd-200" />
                     <view class="absolute">
                         <uni-icons color="#BCA474" size="70rpx" type="camera-filled"></uni-icons>
                     </view>
@@ -39,15 +38,15 @@
 </template>
 
 <script lang="ts" setup>
-import {computed, reactive, ref} from 'vue';
-import {upload_file} from '@/api/common/common';
-import {useUserInfoStore} from '@/state/modules/user-info';
-import {modify_user_info} from '@/api/user-info/user-info';
-import {FilePathTypeEnum} from '@/api/common/common.types';
-import {loading} from '@/utils/uniapi/prompt';
-import {trim} from '@sky-serein/js-utils';
+import { computed, reactive, ref } from 'vue';
+import { upload_file } from '@/api/common/common';
+import { useUserInfoStore } from '@/state/modules/user-info';
+import { modify_user_info } from '@/api/user-info/user-info';
+import { FilePathTypeEnum } from '@/api/common/common.types';
+import { loading } from '@/utils/uniapi/prompt';
+import { trim } from '@sky-serein/js-utils';
 import avatarDefaultUrl from '@/static/images/logo.png';
-import {sleep} from "@/utils/utils";
+import { sleep } from '@/utils/utils';
 
 const popupRef = ref();
 const userInfo = computed(() => useUserInfoStore().user);
@@ -59,15 +58,15 @@ const userForm = reactive<{
 }>({
     name: userInfo.value?.displayName || '',
     avatar: userInfo.value?.avatarUrl,
-    contact: userInfo.value?.contact || ''
+    contact: userInfo.value?.contact || '',
 });
 
 async function onChooseAvatar(res: any) {
     // #ifdef MP-WEIXIN
     const avatarTempUrl = res.detail.avatarUrl;
     if (!avatarTempUrl) return;
-    const resUpload = await upload_file(avatarTempUrl, FilePathTypeEnum.MailboxAvatar);
-    userForm.avatar = JSON.parse(resUpload.data).data.url;
+    const { data } = await upload_file(avatarTempUrl, FilePathTypeEnum.MailboxAvatar);
+    if (data?.success) userForm.avatar = data.data;
     // #endif
 
     // #ifndef MP-WEIXIN
@@ -77,8 +76,8 @@ async function onChooseAvatar(res: any) {
         sourceType: ['album'],
         success: async (res) => {
             const tempFilePaths = res.tempFilePaths[0];
-            const resUpload = await upload_file(tempFilePaths!, FilePathTypeEnum.MailboxAvatar);
-            userForm.avatar = JSON.parse(resUpload.data).data.url;
+            const { data } = await upload_file(tempFilePaths!, FilePathTypeEnum.MailboxAvatar);
+            if (data?.success) userForm.avatar = data.data;
         },
     });
     // #endif
@@ -90,9 +89,9 @@ async function onSubmit() {
         await modify_user_info({
             displayName: trim(userForm.name.toString()),
             avatarUrl: userForm?.avatar || undefined,
-            contact: userForm.contact
+            contact: userForm.contact,
         });
-        await sleep(1000)
+        await sleep(1000);
         await useUserInfoStore().updateUserInfo();
     } catch (e) {
         uni.hideLoading();
@@ -106,7 +105,7 @@ function handleOpen() {
     popupRef.value?.open();
 }
 
-defineExpose({handleOpen});
+defineExpose({ handleOpen });
 </script>
 
 <style lang="scss" scoped>
