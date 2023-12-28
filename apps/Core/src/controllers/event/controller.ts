@@ -1,4 +1,4 @@
-import { EventCreateForm, EventDetailData, GCJSONArrayResponse, GCJSONResponse, IEvent } from 'group-common';
+import { EventCreateForm, EventDetailData, GCJSONArrayResponse, GCJSONResponse, IEvent, IUser } from 'group-common';
 import { Body, Controller, Get, Path, Post, Put, Request, Route, Security, Tags } from 'tsoa';
 import { Event } from '../../models/Event';
 import { Category } from '../../models/Category';
@@ -297,13 +297,23 @@ export class EventController extends Controller {
      */
     @Get('user/{userId}')
     public async getMyEvents(@Request() request: any, @Path() userId: string): Promise<GCJSONArrayResponse<IEvent>> {
+        let currentUser: IUser | undefined;
+
         const take = request.query?.limit || 10;
         const skip = ((request.query?.page || 1) - 1) * take;
         const user = new User();
         user.id = userId;
-        let where = {};
+        let where = { isPublic: true };
         const status = request.query?.status;
         const now = new Date();
+
+        if (request.isLogin) {
+            currentUser = request.user;
+            if (currentUser.id == userId) {
+                where['isPublic'] = undefined;
+            }
+        }
+
         if (status && status != 'all') {
             if (status == 'pending') {
                 where['startAt'] = MoreThanOrEqual(now);
@@ -319,9 +329,9 @@ export class EventController extends Controller {
             select: ['id', 'title', 'category', 'participants', 'startAt', 'imageDescription', 'joinCount'],
             where: [
                 // @ts-ignore
-                { participants: user, startAt: where.startAt },
+                { participants: user, startAt: where.startAt, isPublic: where.isPublic },
                 // @ts-ignore
-                { creator: user, startAt: where.startAt },
+                { creator: user, startAt: where.startAt, isPublic: where.isPublic },
             ],
             skip,
             take,
