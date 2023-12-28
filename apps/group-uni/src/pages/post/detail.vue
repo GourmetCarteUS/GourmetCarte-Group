@@ -56,6 +56,17 @@ async function quitEvent() {
     }
 }
 
+function openMap() {
+    if (currentData?.geoLocation) {
+        uni.openLocation({
+            latitude: Number(prop?.item?.latitude),
+            longitude: Number(prop?.item?.longitude),
+            address: currentData?.location,
+            name: currentData.location,
+        });
+    }
+}
+
 const scrollTop = ref(0);
 onPageScroll((e) => {
     scrollTop.value = e.scrollTop;
@@ -112,10 +123,10 @@ onShareTimeline(() => {
                 <view>
                     <view class="text-40 font-900 ml-20">{{ currentData?.title }}</view>
                     <view class="flex mt-20">
-                        <view v-if="currentData.isJoin" class="capsule-button processing text-24"> 已报名 </view>
-                        <view v-else-if="currentData?.status" class="capsule-button text-24 solved"> 已结束 </view>
-                        <view v-else class="capsule-button text-24 pending"> 未开始 </view>
-                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时： {{ startAt }} </view>
+                        <view v-if="currentData.isJoin" class="capsule-button processing text-24"> 已报名</view>
+                        <view v-else-if="currentData?.status" class="capsule-button text-24 solved"> 已结束</view>
+                        <view v-else class="capsule-button text-24 pending"> 未开始</view>
+                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时： {{ startAt }}</view>
                     </view>
                 </view>
                 <!--                <view class="w-170 h-170 b-rd-20 mr-30"></view>-->
@@ -133,14 +144,16 @@ onShareTimeline(() => {
                 <view class="mt-30">
                     <view class="text-24 center justify-between">
                         <text class="text-gray">{{ currentData?.joinCount > 0 ? `${currentData?.joinCount}人一起` : `${currentData?.viewCount || 5}人想去` }} </text>
-                        <text class="text-primary">仅剩{{ currentData?.maxParticipants - currentData?.participants?.length || 0 }}个名额 </text>
+                        <text class="text-primary"> 仅剩{{ currentData?.maxParticipants - currentData?.participants?.length || 0 }}个名额 </text>
                     </view>
                     <view class="user-lists mt-20 grid grid-cols-5" v-if="currentData?.participants?.length">
                         <view class="user center flex-col" v-for="participant in currentData?.participants" :key="participant">
                             <view class="avatar w-100 h-100 mb-10">
                                 <image :src="participant?.avatarUrl || LogoUrl" class="h-full w-full b-rd-50" mode="aspectFill" />
                             </view>
-                            <view class="user-name text-gray text-24 text-nowrap w-100 text-center">{{ participant?.displayName || '参与者' }} </view>
+                            <view class="user-name text-gray text-24 text-nowrap w-100 text-center">
+                                {{ participant?.displayName || '参与者' }}
+                            </view>
                         </view>
                     </view>
                 </view>
@@ -167,22 +180,31 @@ onShareTimeline(() => {
                 分享
             </button>
 
-            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center" @click="onGoPage({ name: 'post-create', params: { id: postId } })" v-if="currentData?.isMe">
-                <text class="text-30 font-900">编辑</text>
-            </view>
-
-            <template v-else-if="currentData?.isJoin">
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="quitEvent">
-                    <text class="text-30 font-900">下车</text>
-                </view>
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="onGoPage({ name: 'order-success', params: { id: currentData.id } })">
-                    <text class="text-30 font-900">票据</text>
+            <template v-if="currentData?.status">
+                <view
+                    class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center"
+                    @click="onGoPage({ name: 'post-create', params: { id: postId, type: 'new' } })"
+                    v-if="currentData?.isMe"
+                >
+                    <text class="text-30 font-900">再次发车</text>
                 </view>
             </template>
-
-            <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center" @click="joinEvent" v-else>
-                <text class="text-30 font-900">上车</text>
-            </view>
+            <template v-else>
+                <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center" @click="onGoPage({ name: 'post-create', params: { id: postId } })" v-if="currentData?.isMe">
+                    <text class="text-30 font-900">编辑</text>
+                </view>
+                <template v-else-if="currentData?.isJoin">
+                    <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="quitEvent">
+                        <text class="text-30 font-900">下车</text>
+                    </view>
+                    <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="onGoPage({ name: 'order-success', params: { id: currentData.id } })">
+                        <text class="text-30 font-900">票据</text>
+                    </view>
+                </template>
+                <view class="bg-black text-white b-rd-50 p-20 w-300 ml-30 center" @click="joinEvent" v-else>
+                    <text class="text-30 font-900">上车</text>
+                </view>
+            </template>
         </view>
     </Layout>
 </template>

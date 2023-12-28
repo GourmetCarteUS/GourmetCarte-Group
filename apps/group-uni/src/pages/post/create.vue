@@ -113,6 +113,7 @@ const categoryList = ref(),
     }),
     scrollTop = ref(0),
     text = ref('创建'),
+    isNew = ref(true),
     multiplePickerShow = ref(false);
 
 function confirmMultiple(e: any) {
@@ -139,7 +140,7 @@ async function getCategories() {
 }
 
 async function createEvent() {
-    const { data } = formData.id ? await view_event_edit(formData) : await view_event_create(formData);
+    const { data } = isNew.value ? await view_event_create(formData) : await view_event_edit(formData);
     if (data?.success) {
         toast(`${text.value}成功`, {
             success: () => setTimeout(() => onGoReplace({ name: 'post-detail', params: { id: data.data!.id } }), 1500),
@@ -193,7 +194,10 @@ onPageScroll((e) => {
 });
 onLoad((params) => {
     if (params?.id) {
-        text.value = '修改';
+        if (!params?.type) {
+            isNew.value = false;
+            text.value = '修改';
+        }
         getEvent(params?.id);
     }
     getCategories();

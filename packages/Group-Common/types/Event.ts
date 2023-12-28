@@ -1,6 +1,6 @@
-import {IUser} from './User';
-import {ICategory} from "./Category";
-import {GCPageRequest} from "./Common";
+import { IUser } from './User';
+import { ICategory } from './Category';
+import { GCPageRequest } from './Common';
 
 export interface IEvent {
     id: string;
@@ -12,9 +12,9 @@ export interface IEvent {
     creator: IUser;
     category?: ICategory[];
     maxParticipants: number;
-    imageDescription: string[];
-    disable: boolean;
-    groupQr: string;
+    imageDescription?: string[];
+    disable?: boolean;
+    groupQr?: string;
     viewCount: number;
 
     participants: IUser[];
@@ -33,12 +33,12 @@ export interface EventDetailData extends IEvent {
 }
 
 export interface EventCreateForm extends IEvent {
-    categoryIds: string[];
+    categoryIds?: string[];
     categoryStr?: string[];
     cityIndex?: number;
 }
 
 export interface EventForm extends GCPageRequest {
-    categoryId?: string
-    userId?: string
+    categoryId?: string;
+    userId?: string;
 }
