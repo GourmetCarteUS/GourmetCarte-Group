@@ -1,24 +1,37 @@
 import { request } from '@/utils/http';
 import { IEvent, GCJSONResponse, GCJSONArrayResponse, ICategory, IBanner, GCJSONPaginationResponse, EventForm, EventDetailData, EventCreateForm } from 'group-common';
+import dayjs from 'dayjs';
 
-export function view_event_create(data: Partial<IEvent>) {
-    return request.post<GCJSONResponse<IEvent>>('/event', data);
+export function view_event_create(data: Partial<EventCreateForm>) {
+    return request.post<GCJSONResponse<IEvent>>('/event', {
+        title: data.title || undefined,
+        geoLocation: data.geoLocation || undefined,
+        location: data.location || undefined,
+        description: data.description || undefined,
+        startAt: data.startAt || undefined,
+        maxParticipants: data.maxParticipants || undefined,
+        imageDescription: data.imageDescription || undefined,
+        groupQr: data.groupQr || undefined,
+        city: data.city || undefined,
+        isPublic: data.isPublic || undefined,
+        categoryIds: data?.categoryIds || undefined,
+    });
 }
 
 export function view_event_edit(data: Partial<EventCreateForm>) {
     return request.put<GCJSONResponse<IEvent>>('/event', {
         id: data.id,
-        title: data.title,
-        geoLocation: data.geoLocation,
-        location: data.location,
-        description: data.description,
-        startAt: data.startAt,
-        maxParticipants: data.maxParticipants,
-        imageDescription: data.imageDescription,
-        groupQr: data.groupQr,
-        city: data.city,
-        isPublic: data.isPublic,
-        categoryIds: data?.categoryIds,
+        title: data.title || undefined,
+        geoLocation: data.geoLocation || undefined,
+        location: data.location || undefined,
+        description: data.description || undefined,
+        startAt: data.startAt || undefined,
+        maxParticipants: data.maxParticipants || undefined,
+        imageDescription: data.imageDescription || undefined,
+        groupQr: data.groupQr || undefined,
+        city: data.city || undefined,
+        isPublic: data.isPublic || undefined,
+        categoryIds: data?.categoryIds || undefined,
     });
 }
 

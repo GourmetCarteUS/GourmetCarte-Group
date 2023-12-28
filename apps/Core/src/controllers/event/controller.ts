@@ -139,6 +139,14 @@ export class EventController extends Controller {
     @Post()
     @Security('authorized')
     public async postEvent(@Request() request: any, @Body() value: Partial<EventCreateForm>): Promise<GCJSONResponse<Partial<IEvent>>> {
+        if (dayjs().isAfter(value.startAt)) {
+            return {
+                success: false,
+                errorCode: 200,
+                errorMessage: '活动时间不正确',
+            };
+        }
+
         const category = await Category.findBy({
             id: In(value.categoryIds),
         });
@@ -211,6 +219,14 @@ export class EventController extends Controller {
             where: { id, disable: false },
         });
 
+        if (dayjs().add(5, 'hour').isAfter(event.startAt)) {
+            return {
+                success: false,
+                errorCode: 200,
+                errorMessage: '不是上车时间内',
+            };
+        }
+
         if (request.user.id == event.creator.id) {
             return {
                 success: false,
@@ -245,6 +261,14 @@ export class EventController extends Controller {
             relations: { participants: true, creator: true },
             where: { id },
         });
+
+        if (dayjs().add(5, 'hour').isAfter(event.startAt)) {
+            return {
+                success: false,
+                errorCode: 200,
+                errorMessage: '不是下车时间内',
+            };
+        }
 
         let participants = event.participants;
 

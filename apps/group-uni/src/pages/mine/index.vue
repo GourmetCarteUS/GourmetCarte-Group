@@ -110,11 +110,10 @@ useUserInfoStore().initUserInfo();
             <view class="user-info h-230 flex center justify-between pl-40 pr-50" :style="{ 'margin-top': navHeight + 'px' }">
                 <view>
                     <view class="text-40 font-700 ml-30">{{ userInfo?.displayName }}</view>
-                    <view class="capsule-button bg-primary-sub text-20 mt-20 text-black">
-                        <text class="pl-20 pr-20">已经连续参加{{ userInfo?.joinCount || 0 }}期</text>
-                    </view>
-                    <view class="capsule-button bg-primary-sub text-20 mt-20 text-black">
-                        <text class="pl-20 pr-20">已举行20期</text>
+
+                    <view class="capsule-button bg-primary-sub text-22 mt-20 text-black">
+                        <text class="pl-20">上车{{ userInfo?.joinCount || 0 }}期</text>
+                        <text class="pr-20">，发车{{ userInfo?.createCount || 0 }}期</text>
                     </view>
                 </view>
                 <view @click="onSetting">
