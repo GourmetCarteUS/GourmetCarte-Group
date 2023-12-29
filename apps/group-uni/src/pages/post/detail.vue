@@ -191,7 +191,7 @@ onShareTimeline(() => {
                 <template v-if="currentData?.imageDescription?.length">
                     <view class="gc-title text-28 mt-40 mb-30">详情图片</view>
                     <view class="w-full">
-                        <image class="w-full" :src="img" v-for="img in currentData?.imageDescription" :key="img" />
+                        <image class="w-full" :src="img" v-for="img in currentData?.imageDescription" :key="img" mode="widthFix" />
                     </view>
                 </template>
             </view>
