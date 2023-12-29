@@ -98,12 +98,14 @@ const tabList = ref<ICategory[]>([]),
         data?: string;
         cityIndex: number;
         city?: string;
+        title?: string;
     }>({
         cityIndex: 0,
         city: undefined,
         category: undefined,
         data: undefined,
         dataFormat: undefined,
+        title: undefined,
     });
 
 function tabsChange(index: number) {
@@ -111,22 +113,22 @@ function tabsChange(index: number) {
     pagingRef.value.reload();
 }
 
-function bindPickerChange(e) {
+function bindPickerChange(e: any) {
     filterForm.cityIndex = e.detail.value;
     filterForm.city = _cityArray[filterForm.cityIndex || 0];
     pagingRef.value.reload();
 }
 
-function dateChange(e) {
+function dateChange(e: any) {
     filterForm.data = e.join(',');
     filterForm.dataFormat = e.map((item) => item.slice(5).replace('-', '.')).join('-');
     pagingRef.value.reload();
 }
 
-function searchChange(e) {
-    console.log('searchChange', e);
-    // filterForm.key =
-    // pagingRef.value.reload();
+function searchChange(value?: string) {
+    console.log('searchChange', value);
+    filterForm.title = value;
+    pagingRef.value.reload();
 }
 
 async function getCategories() {

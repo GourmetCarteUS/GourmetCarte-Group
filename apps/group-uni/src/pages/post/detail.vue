@@ -11,10 +11,12 @@ import { EventDetailData } from 'group-common';
 import LogoUrl from '@/static/images/logo.png';
 import { startAtFormat } from '@/utils/utils';
 import { useUserInfoStore } from '@/state/modules/user-info';
+import PopupShare from '@/components/dialog/popup-share.vue';
 
 const startAt = computed(() => startAtFormat(currentData.startAt));
 
 const postId = ref(),
+    shareRef = ref(),
     currentData = reactive<Partial<EventDetailData>>({});
 
 async function getEvent() {
@@ -209,6 +211,7 @@ onShareTimeline(() => {
             </template>
         </view>
     </Layout>
+    <PopupShare ref="shareRef" />
 </template>
 
 <style scoped lang="scss">

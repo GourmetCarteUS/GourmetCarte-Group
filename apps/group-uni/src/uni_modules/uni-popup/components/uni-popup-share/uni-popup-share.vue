@@ -4,7 +4,7 @@
             ><text class="uni-share-title-text">{{ shareTitleText }}</text></view
         >
         <view class="uni-share-content">
-            <view class="uni-share-content-box">
+            <view class="uni-share-content-box justify-between">
                 <view class="uni-share-content-item" v-for="(item, index) in bottomData" :key="index" @click.stop="select(item, index)">
                     <image class="uni-share-image" :src="item.icon" mode="aspectFill"></image>
                     <text class="uni-share-text">{{ item.text }}</text>
@@ -12,7 +12,7 @@
             </view>
         </view>
         <view class="uni-share-button-box">
-            <button class="uni-share-button" @click="close">{{ cancelText }}</button>
+            <button class="uni-share-button bg-primary text-white" @click="close">{{ cancelText }}</button>
         </view>
     </view>
 </template>
@@ -40,24 +40,19 @@ export default {
         return {
             bottomData: [
                 {
-                    text: '微信',
+                    text: '发给好友',
                     icon: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/c2b17470-50be-11eb-b680-7980c8a877b8.png',
                     name: 'wx',
                 },
                 {
-                    text: '支付宝',
+                    text: '生成二维码',
                     icon: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/d684ae40-50be-11eb-8ff1-d5dcf8779628.png',
                     name: 'wx',
                 },
                 {
-                    text: 'QQ',
+                    text: '复制活动信息',
                     icon: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/e7a79520-50be-11eb-b997-9918a5dda011.png',
                     name: 'qq',
-                },
-                {
-                    text: '新浪',
-                    icon: 'https://vkceyugu.cdn.bspapp.com/VKCEYUGU-dc-site/0dacdbe0-50bf-11eb-8ff1-d5dcf8779628.png',
-                    name: 'sina',
                 },
                 // {
                 // 	text: '百度',
@@ -102,7 +97,8 @@ export default {
     },
 };
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
+@import '@/static/styles/common.scss';
 .uni-popup-share {
     background-color: #fff;
     border-top-left-radius: 11px;
@@ -176,7 +172,6 @@ export default {
 .uni-share-button {
     flex: 1;
     border-radius: 50px;
-    color: #666;
     font-size: 16px;
 }
 

@@ -5,18 +5,17 @@
             <view :style="{ height: statusBarHeight + 'px' }"></view>
             <view v-if="title" class="navbar-content relative">
                 <view v-if="isBack" class="absolute">
-                    <uni-icons type="back" @click.stop="onBack"/>
+                    <uni-icons type="back" @click.stop="onBack" />
                 </view>
                 <view class="font-500 text-32 text-center w-full">{{ title }}</view>
             </view>
             <view v-else class="navbar-content" :style="{ height: navBarHeight + 'px', width: windowWidth + 'px' }">
                 <view class="navbar-search" :class="{ border: backgroundColor === 'white' }">
                     <view class="navbar-search_icon">
-                        <uni-icons type="search" size="16" color="#999"/>
+                        <uni-icons type="search" size="16" color="#999" />
                     </view>
                     <view class="navbar-serach">
-                        <input class="navbar-search_text" confirm-type="search" type="text" v-model="val"
-                               placeholder="请输入您要搜索的内容" @confirm="sendConfirm"/>
+                        <input class="navbar-search_text" confirm-type="search" type="text" v-model="val" placeholder="请输入您要搜索的内容" @confirm="sendConfirm" />
                     </view>
                 </view>
             </view>
@@ -27,9 +26,9 @@
 </template>
 
 <script lang="ts" setup>
-import {ref} from 'vue';
+import { ref } from 'vue';
 import UniIcons from '@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue';
-import {onBack} from '@/utils/business';
+import { onBack } from '@/utils/business';
 
 defineProps({
     backgroundColor: {
@@ -51,14 +50,14 @@ const statusBarHeight = ref(20) /* 状态栏高度 */,
     val = ref(''); /* 导航栏搜索框的值 */
 
 function initCom() {
-    const {statusBarHeight_, navBarHeight_, windowWidth_} = uni.getStorageSync('navStyle');
+    const { statusBarHeight_, navBarHeight_, windowWidth_ } = uni.getStorageSync('navStyle');
     statusBarHeight.value = statusBarHeight_;
     navBarHeight.value = navBarHeight_;
     windowWidth.value = windowWidth_;
 }
 
-function sendConfirm(e) {
-    if (e.detail.value) emits("search", e.detail.value)
+function sendConfirm(e: { detail: { value: any } }) {
+    if (e.detail.value) emits('search', e.detail.value);
 }
 
 initCom();
