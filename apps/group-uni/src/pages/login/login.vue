@@ -71,9 +71,9 @@ async function loginSuccess() {
     } else if (redirectTab.value) {
         return router.pushTab(redirectTab.value);
     }
-    if (!userInfo.id || !userInfo.displayName) return router.back();
     uni.navigateBack({
         fail: () => {
+            debugger;
             onGoTab({ name: 'home' });
         },
     });

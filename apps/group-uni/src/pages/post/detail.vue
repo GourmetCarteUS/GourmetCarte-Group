@@ -4,7 +4,7 @@ import NavBar from '@/components/nav-bar/nav-bar.vue';
 import UniIcons from '@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue';
 import { onLoad, onPageScroll, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
 import { computed, reactive, ref } from 'vue';
-import { onBack, onGoPage } from '@/utils/business';
+import { isLogged, onBack, onGoPage } from '@/utils/business';
 import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
 import { view_event_detail, edit_event_join, edit_event_quit } from '@/api/event/evnet';
 import { EventDetailData } from 'group-common';
@@ -30,7 +30,25 @@ async function getEvent() {
     hideLoading();
 }
 
+/**
+ * 订阅
+ * @constructor
+ */
+function Subscribe() {
+    // TODO https://blog.csdn.net/qq_44718932/article/details/126130702
+    return new Promise((resolve, reject) => {
+        uni.requestSubscribeMessage({
+            tmplIds: ['HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY', 'whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0'],
+            complete(res) {
+                resolve(true);
+            },
+        });
+    });
+}
+
 async function joinEvent() {
+    if (!(await isLogged())) return;
+    await Subscribe();
     loading();
     const { data } = await edit_event_join(postId.value);
     hideLoading();

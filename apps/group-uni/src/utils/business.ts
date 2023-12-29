@@ -25,13 +25,9 @@ export function onGoReplace(params: RouteLocationRaw, needLogged = true) {
     return router.replace(params);
 }
 
-export async function isLogged(isGoLogin = true, redirectUrl: string) {
+export async function isLogged() {
     if (!useTokenStorage.getToken() || !(await useUserInfoStore().getUserInfo())) {
-        isGoLogin &&
-            router.replace({
-                name: 'login',
-                params: { redirect: encodeURIComponent(redirectUrl) },
-            });
+        router.push({ name: 'login' });
         return false;
     }
     return true;

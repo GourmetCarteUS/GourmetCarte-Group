@@ -50,6 +50,19 @@ defineProps<{ data: EventDetailData }>();
 }
 
 .group-item-privacy {
-    background: linear-gradient(180deg, rgba($uni-color-primary, 0.4) 0%, rgba(243, 250, 231, 0) 100%);
+    @extend .group-item;
+    position: relative;
+    overflow: hidden;
+
+    &:after {
+        content: 'Private';
+        background: black;
+        position: absolute;
+        color: white;
+        right: 0;
+        top: 0;
+        font-size: 24rpx;
+        padding: 5rpx 15rpx;
+    }
 }
 </style>

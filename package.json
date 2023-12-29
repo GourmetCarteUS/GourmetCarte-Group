@@ -6,7 +6,7 @@
         "dev": "turbo dev",
         "lint": "turbo lint",
         "dev:group-uni": "yarn workspace group-uni run dev",
-        "build:group-uni": "yarn workspace group-uni run build",
+        "build:group-uni": "yarn workspace group-uni run build:mp-weixin",
         "dev:group-core": "yarn workspace grouping-core run serve",
         "format": "prettier --write \"**/*.{ts,tsx,md,vue,nvue}\"",
         "prepare": "husky install"

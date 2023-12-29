@@ -194,6 +194,7 @@ onLoad(() => {
     getCategories();
     getBanners();
     useUserInfoStore().initUserInfo();
+    useUserInfoStore().getLocation();
     uni?.hideTabBar();
 });
 </script>

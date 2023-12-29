@@ -103,7 +103,7 @@ export class EventController extends Controller {
                     event.viewCount += 1;
                 }
 
-                event['isJoin'] = !!participants.find((id) => currentUser.id);
+                event['isJoin'] = !!participants.find((user) => user.id == currentUser.id);
             }
             await event.save();
         }

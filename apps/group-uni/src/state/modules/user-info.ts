@@ -58,11 +58,10 @@ export const useUserInfoStore = defineStore('user-info', {
             if (this.location) return this.location;
             let that = this;
             return await new Promise((resolve, reject) => {
-                uni.getLocation({
-                    isHighAccuracy: true,
-                    altitude: true,
+                uni.getFuzzyLocation({
                     type: 'gcj02',
                     success(res) {
+                        console.log(res);
                         const location = {
                             latitude: res.latitude,
                             longitude: res.longitude,
@@ -71,6 +70,7 @@ export const useUserInfoStore = defineStore('user-info', {
                         resolve(location);
                     },
                     fail(err) {
+                        console.log(err);
                         //用户拒绝
                         if (
                             err.errMsg == 'getLocation:fail auth deny' ||
