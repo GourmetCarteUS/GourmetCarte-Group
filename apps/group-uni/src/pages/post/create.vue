@@ -103,6 +103,7 @@ import { onBack, onGoReplace } from '@/utils/business';
 import MultiplePicker from '@/components/multiple-picker/multiple-picker.vue';
 import FilePicker from '@/components/file-picker/file-picker.vue';
 import dayjs from 'dayjs';
+import { useUserInfoStore } from '@/state/modules/user-info';
 
 const categoryList = ref(),
     formData = reactive<Partial<EventCreateForm>>({
@@ -175,6 +176,7 @@ async function getEvent(id: string) {
         formData.startAt = dayjs(formData.startAt).format('YYYY-MM-DD HH:mm:ss').toString();
         formData.categoryIds = formData.category?.map((item) => item.id);
         formData.categoryStr = formData.category?.map((item) => item.name);
+        formData.cityIndex = cityArray.findIndex((item) => item == formData.city);
     }
     hideLoading();
 }
@@ -200,6 +202,8 @@ onLoad((params) => {
             text.value = '修改';
         }
         getEvent(params?.id);
+    } else {
+        formData.cityIndex = cityArray.findIndex((item) => item == useUserInfoStore().currentCity);
     }
     getCategories();
 });

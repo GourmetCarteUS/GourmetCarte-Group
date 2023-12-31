@@ -80,8 +80,8 @@ async function quitEvent() {
 function openMap() {
     if (currentData?.geoLocation) {
         uni.openLocation({
-            latitude: Number(prop?.item?.latitude),
-            longitude: Number(prop?.item?.longitude),
+            latitude: Number(currentData!.coordinate!.latitude),
+            longitude: Number(currentData!.coordinate!.longitude),
             address: currentData?.location,
             name: currentData.location,
         });
@@ -90,7 +90,7 @@ function openMap() {
 
 const scrollTop = ref(0);
 const userInfo = computed(() => {
-    return useUserInfoStore().user as IUser;
+    return useUserInfoStore().user;
 });
 onPageScroll((e) => {
     scrollTop.value = e.scrollTop;
@@ -114,14 +114,14 @@ onLoad((params) => {
 });
 onShareAppMessage(() => {
     return {
-        title: `${userInfo.value.displayName}邀请您参加 ${currentData?.title} |『咕噜拼』`,
+        title: `${userInfo.value?.displayName}邀请您参加 ${currentData?.title} |『咕噜拼』`,
         path: `/pages/post/detail?id=${postId.value}`,
         imageUrl: currentData?.imageDescription?.[0] || LogoUrl,
     };
 });
 onShareTimeline(() => {
     return {
-        title: `${userInfo.value.displayName}邀请您参加 ${currentData?.title} |『咕噜拼』`,
+        title: `${userInfo.value?.displayName}邀请您参加 ${currentData?.title} |『咕噜拼』`,
         path: `/pages/post/detail?id=${postId.value}`,
         imageUrl: currentData?.imageDescription?.[0] || LogoUrl,
     };
@@ -132,7 +132,7 @@ onShareTimeline(() => {
     <Layout>
         <template #header>
             <view :class="currentData?.imageDescription?.length ? 'absolute' : ''">
-                <NavBar :title="currentData?.title" :backgroundColor="scrollTop >= 80 ? 'white' : undefined" />
+                <NavBar :title="currentData?.title" :backgroundColor="scrollTop >= 80 ? 'white' : ''" />
             </view>
             <swiper circular indicator-dots autoplay indicator-color="#7f7eff" class="h-800" v-if="currentData?.imageDescription?.length">
                 <swiper-item class="w-full h-1000" v-for="item in currentData?.imageDescription" :key="item">
@@ -148,7 +148,7 @@ onShareTimeline(() => {
                         <view v-if="currentData.isJoin" class="capsule-button processing text-24"> 已报名</view>
                         <view v-else-if="currentData?.status" class="capsule-button text-24 solved"> 已结束</view>
                         <view v-else class="capsule-button text-24 pending"> 未开始</view>
-                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时： {{ startAt }}</view>
+                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时间： {{ startAt }}</view>
                     </view>
                 </view>
                 <!--                <view class="w-170 h-170 b-rd-20 mr-30"></view>-->
@@ -156,7 +156,7 @@ onShareTimeline(() => {
             <view class="bg-white p-30 b-rd-30">
                 <view class="mt-30">
                     <view class="gc-item">活动时间：{{ startAt }}</view>
-                    <view class="gc-item" style="white-space: pre-wrap">
+                    <view class="gc-item" style="white-space: pre-wrap" @click="openMap">
                         <!--            <uni-icons type="location-filled" size="20" color="#39393A"/>-->
                         {{ currentData?.location }}
                     </view>

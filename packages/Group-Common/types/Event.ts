@@ -30,6 +30,10 @@ export interface EventDetailData extends IEvent {
     isJoin?: boolean;
     isMe?: boolean;
     status?: boolean;
+    coordinate?: {
+        latitude: number;
+        longitude: number;
+    };
 }
 
 export interface EventCreateForm extends IEvent {
