@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import useTokenStorage from '@/storage/token';
-import { IUser } from 'group-common';
+import { IUser, LOCATIONS, LocationUtils } from 'group-common';
 import { user_info } from '@/api/user-info/user-info';
 import { toast } from '@/utils/uniapi/prompt';
 
@@ -11,6 +11,7 @@ export const useUserInfoStore = defineStore('user-info', {
             latitude: number;
             longitude: number;
         } | null,
+        currentCity: '',
     }),
     actions: {
         async initUserInfo() {
@@ -54,20 +55,39 @@ export const useUserInfoStore = defineStore('user-info', {
             this.removeUserInfo();
             useTokenStorage.removeToken();
         },
-        async getLocation() {
-            if (this.location) return this.location;
+        async getLocation(): Promise<{
+            location: {
+                latitude: number;
+                longitude: number;
+            };
+            currentCity: string;
+        }> {
             let that = this;
+            if (this.location) {
+                return new Promise((resolve) => {
+                    resolve({
+                        location: this.location!,
+                        currentCity: this.currentCity,
+                    });
+                });
+            }
             return await new Promise((resolve, reject) => {
                 uni.getFuzzyLocation({
                     type: 'gcj02',
                     success(res) {
-                        console.log(res);
                         const location = {
                             latitude: res.latitude,
                             longitude: res.longitude,
                         };
+                        let currentCity = '';
+                        LOCATIONS.map((item) => {
+                            if (LocationUtils.isWithin([location.longitude, location.latitude], item.location, 10000)) {
+                                that.currentCity = item.name;
+                                currentCity = item.name;
+                            }
+                        });
                         that.location = location;
-                        resolve(location);
+                        resolve({ location, currentCity });
                     },
                     fail(err) {
                         console.log(err);

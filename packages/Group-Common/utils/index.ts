@@ -1,1 +1,2 @@
-export * from './Dict'
+export * from './Dict';
+export * from './locationUtils';

@@ -69,6 +69,7 @@ export class EventController extends Controller {
             select: [
                 'id',
                 'title',
+                'city',
                 'description',
                 'geoLocation',
                 'viewCount',
@@ -107,6 +108,8 @@ export class EventController extends Controller {
             }
             await event.save();
         }
+
+        event['coordinate'] = await Event.createQueryBuilder().select('st_x(geoLocation) as longitude, st_y(geoLocation) as latitude').where('id=:id', { id }).getRawOne();
 
         const now = dayjs();
         // 活动是否结束，当前时间在开始之间之后就变为已结束

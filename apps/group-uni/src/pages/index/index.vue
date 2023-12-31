@@ -16,8 +16,8 @@
                 <z-tabs ref="tabsRef" :list="tabList" :current="current" @change="tabsChange" />
                 <view class="flex mt-20 ml-20">
                     <view class="capsule-button text-24 bg-white">
-                        <picker :range="_cityArray" @change="bindPickerChange">
-                            <view class="uni-input">{{ _cityArray[filterForm?.cityIndex] }}</view>
+                        <picker :range="cityArray" range-key="name" @change="bindPickerChange">
+                            <view class="uni-input">{{ cityArray[filterForm?.cityIndex].name }}</view>
                         </picker>
                     </view>
                     <view class="capsule-button text-24 bg-white ml-20" @click="datePickerRef?.show">
@@ -42,10 +42,10 @@
 </template>
 
 <script lang="ts" setup>
-import { computed, reactive, ref } from 'vue';
+import { computed, reactive, ref, watch } from 'vue';
 import { hideLoading, loading } from '@/utils/uniapi/prompt';
 import { onLoad, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
-import { cityArray, IBanner, ICategory } from 'group-common';
+import { LOCATIONS, IBanner, ICategory } from 'group-common';
 
 import LogoUrl from '@/static/images/logo.png';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
@@ -62,7 +62,7 @@ const navHeight = computed(() => {
 });
 const datePickerRef = ref();
 
-const _cityArray = ['All', ...cityArray];
+const cityArray = [{ name: 'all', location: undefined }, ...LOCATIONS];
 
 const tabBarList = [
     {
@@ -115,7 +115,7 @@ function tabsChange(index: number) {
 
 function bindPickerChange(e: any) {
     filterForm.cityIndex = e.detail.value;
-    filterForm.city = _cityArray[filterForm.cityIndex || 0];
+    filterForm.city = LOCATIONS[filterForm.cityIndex || 0]?.name;
     pagingRef.value.reload();
 }
 
@@ -150,6 +150,13 @@ async function getBanners() {
 const pagingRef = ref(),
     queryList = async (pageNo?: number, pageSize?: number) => {
         loading();
+        const { currentCity } = await useUserInfoStore().getLocation();
+        console.log('currentCity', currentCity);
+        if (!filterForm.city && currentCity) {
+            filterForm.city = currentCity;
+            filterForm.cityIndex = cityArray.findIndex((city) => city.name === currentCity);
+        }
+
         const { data } = await view_events({
             limit: pageSize,
             page: pageNo,
@@ -194,7 +201,6 @@ onLoad(() => {
     getCategories();
     getBanners();
     useUserInfoStore().initUserInfo();
-    useUserInfoStore().getLocation();
     uni?.hideTabBar();
 });
 </script>
