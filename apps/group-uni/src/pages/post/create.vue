@@ -178,6 +178,7 @@ async function getEvent(id: string) {
         formData.categoryIds = formData.category?.map((item) => item.id);
         formData.categoryStr = formData.category?.map((item) => item.name);
         formData.cityIndex = cityArray.findIndex((item) => item == formData.city);
+        if (formData.cityIndex < 0) formData.cityIndex = 0;
     }
     hideLoading();
 }
@@ -205,6 +206,7 @@ onLoad((params) => {
         getEvent(params?.id);
     } else {
         formData.cityIndex = cityArray.findIndex((item) => item == useUserInfoStore().currentCity);
+        if (formData.cityIndex < 0) formData.cityIndex = 0;
     }
     getCategories();
 });
