@@ -5,6 +5,7 @@ import { Category } from '../../models/Category';
 import { Between, FindOptionsOrder, In, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
 import { User } from '../../models/User';
 import dayjs from 'dayjs';
+import { sendMessage } from '../message/message';
 
 @Tags('Event')
 @Route('event')
@@ -247,6 +248,14 @@ export class EventController extends Controller {
             event.participants = participants;
             event.joinCount += 1;
             await event.save();
+            let messages = {
+                touser: event.creator.id,
+                startAt: event.startAt.toString(),
+                title: event.title,
+                remark: `${request.user.displayName}上车了，目前车上已经有${event.joinCount}人了`,
+            };
+            sendMessage(2, messages);
+
             return {
                 success: true,
                 data: event,
@@ -283,6 +292,13 @@ export class EventController extends Controller {
             event.participants = participants;
             event.joinCount -= 1;
             await event.save();
+            let messages = {
+                touser: event.creator.id,
+                startAt: event.startAt.toString(),
+                title: event.title,
+                remark: `${request.user.displayName}下车了，目前车上还剩${event.joinCount}人了`,
+            };
+            sendMessage(2, messages);
             return {
                 success: true,
                 data: event,

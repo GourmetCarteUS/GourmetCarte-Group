@@ -97,7 +97,7 @@ import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import { onLoad, onPageScroll } from '@dcloudio/uni-app';
 import { cityArray, EventCreateForm } from 'group-common';
-import { view_categories, edit_create_event, view_event_detail, edit_modify_event } from '@/api/event/evnet';
+import { edit_create_event, edit_modify_event, view_categories, view_event_detail } from '@/api/event/evnet';
 import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
 import { onBack, onGoReplace } from '@/utils/business';
 import MultiplePicker from '@/components/multiple-picker/multiple-picker.vue';
@@ -142,6 +142,7 @@ async function getCategories() {
 }
 
 async function createEvent() {
+    await onSubscribe();
     const { data } = isNew.value ? await edit_create_event(formData) : await edit_modify_event(formData);
     if (data?.success) {
         toast(`${text.value}成功`, {
@@ -207,6 +208,18 @@ onLoad((params) => {
     }
     getCategories();
 });
+
+function onSubscribe() {
+    return new Promise((resolve, reject) => {
+        uni.requestSubscribeMessage({
+            tmplIds: ['whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0'],
+            complete(res) {
+                console.log(res);
+                resolve(true);
+            },
+        });
+    });
+}
 </script>
 <style scoped lang="scss">
 @import '@/static/styles/common.scss';

@@ -6,11 +6,11 @@
 
 List 列表组件，包含基本列表样式、可扩展插槽机制、长列表性能优化、多端兼容。
 
-在vue页面里，它默认使用页面级滚动。在app-nvue页面里，它默认使用原生list组件滚动。这样的长列表，在滚动出屏幕外后，系统会回收不可见区域的渲染内存资源，不会造成滚动越长手机越卡的问题。
+在 vue 页面里，它默认使用页面级滚动。在 app-nvue 页面里，它默认使用原生 list 组件滚动。这样的长列表，在滚动出屏幕外后，系统会回收不可见区域的渲染内存资源，不会造成滚动越长手机越卡的问题。
 
-uni-list组件是父容器，里面的核心是uni-list-item子组件，它代表列表中的一个可重复行，子组件可以无限循环。
+uni-list 组件是父容器，里面的核心是 uni-list-item 子组件，它代表列表中的一个可重复行，子组件可以无限循环。
 
-uni-list-item有很多风格，uni-list-item组件通过内置的属性，满足一些常用的场景。当内置属性不满足需求时，可以通过扩展插槽来自定义列表内容。
+uni-list-item 有很多风格，uni-list-item 组件通过内置的属性，满足一些常用的场景。当内置属性不满足需求时，可以通过扩展插槽来自定义列表内容。
 
 内置属性可以覆盖的场景包括：导航列表、设置列表、小图标列表、通信录列表、聊天记录列表。
 
@@ -18,7 +18,7 @@ uni-list-item有很多风格，uni-list-item组件通过内置的属性，满足
 
 下文均有样例给出。
 
-uni-list不包含下拉刷新和上拉翻页。上拉翻页另见组件：[uni-load-more](https://ext.dcloud.net.cn/plugin?id=29)
+uni-list 不包含下拉刷新和上拉翻页。上拉翻页另见组件：[uni-load-more](https://ext.dcloud.net.cn/plugin?id=29)
 
 ### 安装方式
 
@@ -38,7 +38,7 @@ uni-list不包含下拉刷新和上拉翻页。上拉翻页另见组件：[uni-l
 > -   支付宝小程序平台需要在支付宝小程序开发者工具里开启 component2 编译模式，开启方式： 详情 --> 项目配置 --> 启用 component2 编译
 > -   如果需要修改 `switch`、`badge` 样式，请使用插槽自定义
 > -   在 `HBuilderX` 低版本中，可能会出现组件显示 `undefined` 的问题，请升级最新的 `HBuilderX` 或者 `cli`
-> -   如使用过程中有任何问题，或者您对uni-ui有一些好的建议，欢迎加入 uni-ui 交流群：871950839
+> -   如使用过程中有任何问题，或者您对 uni-ui 有一些好的建议，欢迎加入 uni-ui 交流群：871950839
 
 ### 基本用法
 
@@ -113,7 +113,7 @@ uni-list不包含下拉刷新和上拉翻页。上拉翻页另见组件：[uni-l
 -   设置 `link` 属性，会自动开启点击反馈，`link` 的值表示跳转方式，如果不指定，默认为 `navigateTo`
 -   设置 `to` 属性，可以跳转页面
 -   `time` 属性，通常会设置成时间显示，但是这个属性不仅仅可以设置时间，你可以传入任何文本，注意文本长度可能会影响显示
--   `avatar` 和 `avatarList` 属性同时只会有一个生效，同时设置的话，`avatarList` 属性的长度大于1 ，`avatar` 属性将失效
+-   `avatar` 和 `avatarList` 属性同时只会有一个生效，同时设置的话，`avatarList` 属性的长度大于 1 ，`avatar` 属性将失效
 -   可以通过默认插槽自定义列表右侧内容
 
 ```html
@@ -206,7 +206,7 @@ export default {
 }
 ```
 
-## API
+## Api
 
 ### List Props
 
@@ -221,23 +221,23 @@ export default {
 |     title     | String  |     -      |                                                              标题                                                              |
 |     note      | String  |     -      |                                                              描述                                                              |
 |   ellipsis    | Number  |     0      |                          title 是否溢出隐藏，可选值，0:默认; 1:显示一行; 2:显示两行;【nvue 暂不支持】                          |
-|     thumb     | String  |     -      |                                          左侧缩略图，若thumb有值，则不会显示扩展图标                                           |
+|     thumb     | String  |     -      |                                         左侧缩略图，若 thumb 有值，则不会显示扩展图标                                          |
 |   thumbSize   | String  |   medium   |                                       略缩图尺寸，可选值，lg:大图; medium:一般; sm:小图;                                       |
 |   showBadge   | Boolean |   false    |                                                        是否显示数字角标                                                        |
 |   badgeText   | String  |     -      |                                                          数字角标内容                                                          |
 |   badgeType   | String  |     -      |                             数字角标类型，参考[uni-icons](https://ext.dcloud.net.cn/plugin?id=21)                              |
-|  badgeStyle   | Object  |     -      |                                         数字角标样式，使用uni-badge的custom-style参数                                          |
+|  badgeStyle   | Object  |     -      |                                       数字角标样式，使用 uni-badge 的 custom-style 参数                                        |
 |   rightText   | String  |     -      |                                                          右侧文字内容                                                          |
 |   disabled    | Boolean |   false    |                                                            是否禁用                                                            |
 |   showArrow   | Boolean |    true    |                                                        是否显示箭头图标                                                        |
 |     link      | String  | navigateTo |                                                  新页面跳转方式，可选值见下表                                                  |
 |      to       | String  |     -      |                                   新页面跳转地址，如填写此属性，click 会返回页面是否跳转成功                                   |
 |   clickable   | Boolean |   false    |                                                        是否开启点击反馈                                                        |
-|  showSwitch   | Boolean |   false    |                                                         是否显示Switch                                                         |
-| switchChecked | Boolean |   false    |                                                        Switch是否被选中                                                        |
+|  showSwitch   | Boolean |   false    |                                                        是否显示 Switch                                                         |
+| switchChecked | Boolean |   false    |                                                       Switch 是否被选中                                                        |
 | showExtraIcon | Boolean |   false    |                                                      左侧是否显示扩展图标                                                      |
 |   extraIcon   | Object  |     -      | 扩展图标参数，格式为 `{color: '#4cd964',size: '22',type: 'spinner'}`，参考 [uni-icons](https://ext.dcloud.net.cn/plugin?id=28) |
-|   direction   | String  |    row     |                   排版方向，可选值，row:水平排列; column:垂直排列; 3个插槽是水平排还是垂直排，也受此属性控制                   |
+|   direction   | String  |    row     |                  排版方向，可选值，row:水平排列; column:垂直排列; 3 个插槽是水平排还是垂直排，也受此属性控制                   |
 
 #### Link Options
 
@@ -265,12 +265,12 @@ export default {
 
 > **通过插槽扩展**
 > 需要注意的是当使用插槽时，内置样式将会失效，只保留排版样式，此时的样式需要开发者自己实现
-> 如果 `uni-list-item` 组件内置属性样式无法满足需求，可以使用插槽来自定义uni-list-item里的内容。
-> uni-list-item提供了3个可扩展的插槽：`header`、`body`、`footer`
+> 如果 `uni-list-item` 组件内置属性样式无法满足需求，可以使用插槽来自定义 uni-list-item 里的内容。
+> uni-list-item 提供了 3 个可扩展的插槽：`header`、`body`、`footer`
 >
 > -   当 `direction` 属性为 `row` 时表示水平排列，此时 `header` 表示列表的左边部分，`body` 表示列表的中间部分，`footer` 表示列表的右边部分
 > -   当 `direction` 属性为 `column` 时表示垂直排列，此时 `header` 表示列表的上边部分，`body` 表示列表的中间部分，`footer` 表示列表的下边部分
->     开发者可以只用1个插槽，也可以3个一起使用。在插槽中可自主编写view标签，实现自己所需的效果。
+>     开发者可以只用 1 个插槽，也可以 3 个一起使用。在插槽中可自主编写 view 标签，实现自己所需的效果。
 
 **示例**
 
@@ -332,7 +332,7 @@ export default {
 | :------: | :-----------------------: | :------------------------------------------: |
 |  @click  | 点击 uniListChat 触发事件 | {data:{}} ，如有 to 属性，会返回页面跳转信息 |
 
-## 基于uni-list扩展的页面模板
+## 基于 uni-list 扩展的页面模板
 
 通过扩展插槽，可实现多种常见样式的列表
 
