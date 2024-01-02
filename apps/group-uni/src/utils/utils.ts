@@ -5,7 +5,7 @@ dayjs.extend(LocalizedFormat);
 
 export function startAtFormat(dataString?: string) {
     if (!dataString) return;
-    return dayjs(dataString).format('L,LT');
+    return dayjs(dataString).format('L').substring(0, 5) + ',' + dayjs(dataString).format('LT');
 
     // const timer = new Date(Date.parse(dataString));
     // return timer.toLocaleString([], {month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'});
