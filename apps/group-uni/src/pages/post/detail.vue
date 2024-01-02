@@ -6,7 +6,7 @@ import { onLoad, onPageScroll, onShareAppMessage, onShareTimeline } from '@dclou
 import { computed, reactive, ref } from 'vue';
 import { isLogged, onBack, onGoPage } from '@/utils/business';
 import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
-import { view_event_detail, edit_event_join, edit_event_quit } from '@/api/event/evnet';
+import { edit_event_join, edit_event_quit, view_event_detail } from '@/api/event/evnet';
 import { EventDetailData } from 'group-common';
 import LogoUrl from '@/static/images/logo.png';
 import { startAtFormat } from '@/utils/utils';
@@ -34,12 +34,48 @@ async function getEvent() {
  * 订阅
  * @constructor
  */
-function Subscribe() {
+function onSubscribe() {
+    // return new Promise((resolve, reject) => {
+    //     uni.getSetting({
+    //         withSubscriptions: true,
+    //         success(alwaysRes) {
+    //             if (!alwaysRes.subscriptionsSetting.mainSwitch) {
+    //                 //后台封禁了
+    //                 //引导用户打开权限
+    //                 uni.showModal({
+    //                     title: '是否重新授权消息订阅功能',
+    //                     success(res) {
+    //                         if (res.confirm) {
+    //                             uni.openSetting({
+    //                                 success(res) {
+    //                                     if (res.subscriptionsSetting) {
+    //                                         toast('开启权限成功')
+    //                                     }
+    //                                 },
+    //                                 fail() {
+    //                                     toast('开启权限失败')
+    //                                 },
+    //                             })
+    //                         } else if (res.cancel) {
+    //                             toast('拒绝开启开启权限')
+    //                         }
+    //                     },
+    //                 })
+    //             } else {
+    //                 resolve(true)
+    //             }
+    //         },
+    //     })
+    // })
+
     // TODO https://blog.csdn.net/qq_44718932/article/details/126130702
     return new Promise((resolve, reject) => {
         uni.requestSubscribeMessage({
-            tmplIds: ['HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY', 'whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0'],
+            tmplIds: [
+                'HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY', // 活动进度提醒
+            ],
             complete(res) {
+                console.log(res);
                 resolve(true);
             },
         });
@@ -48,7 +84,7 @@ function Subscribe() {
 
 async function joinEvent() {
     if (!(await isLogged())) return;
-    await Subscribe();
+    await onSubscribe();
     loading();
     const { data } = await edit_event_join(postId.value);
     hideLoading();

@@ -45,7 +45,7 @@ export default {
 };
 ```
 
-## API
+## Api
 
 ### Breadcrumb Props
 

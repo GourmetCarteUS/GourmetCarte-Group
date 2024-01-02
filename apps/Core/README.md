@@ -1,6 +1,6 @@
 ## GC-Core
 
-This is the core of the GC-Modding API. It contains all the basic functions and classes that are used by the other packages. It also contains the main class that is used to start the modding API.
+This is the core of the GC-Modding Api. It contains all the basic functions and classes that are used by the other packages. It also contains the main class that is used to start the modding Api.
 
 ### Getting Started - install dependencies and runtime
 

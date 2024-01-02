@@ -56,7 +56,7 @@ export const useUserInfoStore = defineStore('user-info', {
             useTokenStorage.removeToken();
         },
         async getLocation(): Promise<{
-            location: {
+            location?: {
                 latitude: number;
                 longitude: number;
             };
@@ -99,10 +99,7 @@ export const useUserInfoStore = defineStore('user-info', {
                         ) {
                             toast('需要授权位置信息，请删除小程序重新进入');
                             resolve({
-                                location: {
-                                    latitude: undefined,
-                                    longitude: undefined,
-                                },
+                                location: undefined,
                                 currentCity: '',
                             });
                             //未开启手机定位
