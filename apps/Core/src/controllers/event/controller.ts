@@ -339,6 +339,7 @@ export class EventController extends Controller {
                 // @ts-ignore
                 { creator: user, startAt: where.startAt, isPublic: where.isPublic },
             ],
+            order: { startAt: 'desc' },
             skip,
             take,
         });

@@ -93,13 +93,20 @@ export const useUserInfoStore = defineStore('user-info', {
                         console.log(err);
                         //用户拒绝
                         if (
-                            err.errMsg == 'getLocation:fail auth deny' ||
-                            err.errMsg == 'getLocation:fail:auth denied' ||
-                            err.errMsg == 'getLocation:fail system permission denied'
+                            err.errMsg == 'getFuzzyLocation:fail auth deny' ||
+                            err.errMsg == 'getFuzzyLocation:fail:auth denied' ||
+                            err.errMsg == 'getFuzzyLocation:fail system permission denied'
                         ) {
                             toast('需要授权位置信息，请删除小程序重新进入');
+                            resolve({
+                                location: {
+                                    latitude: undefined,
+                                    longitude: undefined,
+                                },
+                                currentCity: '',
+                            });
                             //未开启手机定位
-                        } else if (err.errMsg == 'getLocation:fail:ERROR_NOCELL&WIFI_LOCATIONSWITCHOFF') {
+                        } else if (err.errMsg == 'getFuzzyLocation:fail:ERROR_NOCELL&WIFI_LOCATIONSWITCHOFF') {
                             uni.showModal({
                                 title: '温馨提示',
                                 content: '请打开手机定位',
