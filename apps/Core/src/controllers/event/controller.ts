@@ -234,13 +234,13 @@ export class EventController extends Controller {
             };
         }
 
-        if (request.user.id == event.creator.id) {
-            return {
-                success: false,
-                errorCode: 200,
-                errorMessage: '您就是司机，不用上车！！',
-            };
-        }
+        // if (request.user.id == event.creator.id) {
+        //     return {
+        //         success: false,
+        //         errorCode: 200,
+        //         errorMessage: '您就是司机，不用上车！！',
+        //     };
+        // }
 
         let participants = event.participants;
         if (!event.participants.find((item) => item.id == request.user.id)) {
@@ -249,10 +249,12 @@ export class EventController extends Controller {
             event.joinCount += 1;
             await event.save();
             let messages = {
-                touser: event.creator.id,
-                startAt: event.startAt.toString(),
+                touser: event.creator.openId,
+                startAt: dayjs(event.startAt).format('YYYY-MM-DD HH:mm:ss'),
                 title: event.title,
+                location: event.location,
                 remark: `${request.user.displayName}上车了，目前车上已经有${event.joinCount}人了`,
+                eventId: event.id,
             };
             sendMessage(2, messages);
 
@@ -293,10 +295,12 @@ export class EventController extends Controller {
             event.joinCount -= 1;
             await event.save();
             let messages = {
-                touser: event.creator.id,
-                startAt: event.startAt.toString(),
+                touser: event.creator.openId,
+                startAt: dayjs(event.startAt).format('YYYY-MM-DD HH:mm:ss'),
                 title: event.title,
+                location: event.location,
                 remark: `${request.user.displayName}下车了，目前车上还剩${event.joinCount}人了`,
+                eventId: event.id,
             };
             sendMessage(2, messages);
             return {
