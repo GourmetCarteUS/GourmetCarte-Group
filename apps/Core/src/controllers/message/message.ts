@@ -7,6 +7,7 @@ interface MessageData {
     remark?: string;
     location?: string;
     distance?: string; // 距离开始时间
+    eventId?: string;
 }
 
 // 1. 活动进度提醒 HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY
@@ -15,7 +16,7 @@ export function sendMessage(type: number, data: MessageData) {
     let messages = {
         touser: data.touser, //给某用户推送的openid，这个得你获取到用户的openid，才可以进行推送
         miniprogram_state: 'developer', //developer为开发版；trial为体验版；formal为正式版；默认为正式版
-        page: 'pages/post/detail?id=4ff06c54-a9c5-4e9f-992a-02bae5c78fb1',
+        page: `pages/post/detail?id=${data.eventId}`,
     };
     if (type === 1) {
         messages['template_id'] = 'HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY';
@@ -56,7 +57,7 @@ export function sendMessage(type: number, data: MessageData) {
             console.log(res);
         })
         .catch((err) => {
-            console.log(err);
+            console.log(err, messages);
         });
 
     return {

@@ -248,13 +248,10 @@ onShareTimeline(() => {
                 </view>
             </template>
             <template v-else>
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="joinEvent">
-                    <text class="text-30 font-900">上车</text>
-                </view>
                 <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="onGoPage({ name: 'post-create', params: { id: postId } })" v-if="currentData?.isMe">
                     <text class="text-30 font-900">编辑</text>
                 </view>
-                <template v-else-if="currentData?.isJoin">
+                <template v-if="currentData?.isJoin">
                     <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="quitEvent">
                         <text class="text-30 font-900">下车</text>
                     </view>
@@ -262,6 +259,9 @@ onShareTimeline(() => {
                         <text class="text-30 font-900">票据</text>
                     </view>
                 </template>
+                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center max-w-300" @click="joinEvent" v-else>
+                    <text class="text-30 font-900">上车</text>
+                </view>
             </template>
         </view>
     </Layout>
