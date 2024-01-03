@@ -3,7 +3,7 @@ import LocalizedFormat from 'dayjs/plugin/LocalizedFormat';
 
 dayjs.extend(LocalizedFormat);
 
-export function startAtFormat(dataString?: string) {
+export function startAtFormat(dataString?: string | Date) {
     if (!dataString) return;
     return dayjs(dataString).format('L').substring(0, 5) + ',' + dayjs(dataString).format('LT');
 
