@@ -87,15 +87,18 @@ export default {
         keyword() {
             this.$emit('input', this.keyword);
             this.$emit('update:modelValue', this.keyword);
-            this.textscreen();
         },
         modelValue() {
             this.keyword = this.modelValue;
+        },
+        data() {
+            this.textscreen();
         },
     },
     methods: {
         selectitem(name) {
             this.keyword = name;
+            this.srclist = [];
             this.$emit('trigger', name);
         },
         cashfous(bool) {
