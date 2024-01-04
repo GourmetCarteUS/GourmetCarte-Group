@@ -1,9 +1,9 @@
 import { request } from '@/utils/http';
-import type { Token } from '@/storage/token';
-import { GCJSONResponse } from 'group-common';
+import { GCJSONResponse, Authentication, GCJSONArrayResponse } from 'group-common';
+import { GoogleNormalizedPlace } from 'grouping-core/src/utils/GoogleMap';
 
 export function refresh_token() {
-    return request.post<Token>(
+    return request.post<Authentication>(
         '/mailbox/user/refresh-token',
         {},
         {
@@ -20,4 +20,8 @@ export function upload_file(filePath: string) {
         fileType: 'image', // image, video, audio
         formData: {},
     });
+}
+
+export function location_autocomplete(input: string) {
+    return request.get<GCJSONArrayResponse<GoogleNormalizedPlace>>('/location/autocomplete', { params: { input } });
 }
