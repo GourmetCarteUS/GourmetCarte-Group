@@ -20,7 +20,10 @@
                 </view>
                 <view class="gc-item">
                     <view>活动地址</view>
-                    <view class="ml-20" @click="getLocation">{{ formData.location || '请输入选择活动地址' }}</view>
+                    <!--                    <view class="ml-20" @click="getLocation">{{ formData.location || '请输入选择活动地址' }}</view>-->
+                    <view class="flex-1">
+                        <InputAutocomplete placeholder="请输入活动地址" @input="throttleAutocomplete" :data="InputAutocompleteData" v-model="formData.location" />
+                    </view>
                 </view>
                 <view class="gc-item">
                     <view>活动时间</view>
@@ -39,7 +42,7 @@
                 </view>
                 <view class="gc-item justify-between pr-20" style="overflow: initial">
                     <view>活动类型</view>
-                    <view class="ml-20 w-full" @click="multiplePickerShow = true">
+                    <view class="ml-20 flex-1" @click="multiplePickerShow = true">
                         {{ formData?.categoryStr?.join('，') || '请选择活动类型' }}
                     </view>
                 </view>
@@ -53,7 +56,7 @@
 
             <view class="gc-title text-28 font-900 mb-30 mt-40">活动介绍</view>
             <view class="m-10">
-                <uni-easyinput type="textarea" v-model="formData.description" autoHeight placeholder="请输入内容" />
+                <uni-easyinput type="textarea" :maxlength="-1" v-model="formData.description" autoHeight placeholder="请输入内容" />
             </view>
 
             <view class="gc-title text-28 font-900 mb-20 mt-40">活动图片</view>
@@ -93,6 +96,7 @@
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
+import throttle from 'lodash/throttle';
 import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import { onLoad, onPageScroll } from '@dcloudio/uni-app';
@@ -104,6 +108,8 @@ import MultiplePicker from '@/components/multiple-picker/multiple-picker.vue';
 import FilePicker from '@/components/file-picker/file-picker.vue';
 import dayjs from 'dayjs';
 import { useUserInfoStore } from '@/state/modules/user-info';
+import InputAutocomplete from '@/components/input-autocomplete/input-autocomplete.vue';
+import { location_autocomplete } from '@/api/common/common';
 
 const categoryList = ref(),
     formData = reactive<Partial<EventCreateForm>>({
@@ -111,11 +117,12 @@ const categoryList = ref(),
         categoryStr: [],
         isPublic: true,
         cityIndex: 0,
-        city: 'San Francisco Bay Area',
+        city: 'Bay Area',
     }),
     scrollTop = ref(0),
     text = ref('创建'),
     isNew = ref(true),
+    InputAutocompleteData = ref<string[]>(),
     multiplePickerShow = ref(false);
 
 function confirmMultiple(e: any) {
@@ -127,6 +134,17 @@ function confirmMultiple(e: any) {
 function checkboxChange(e: any) {
     formData.isPublic = Boolean(e.detail.value.length);
 }
+
+async function getAutocomplete(keyword: string) {
+    if (keyword) {
+        const { data } = await location_autocomplete(keyword);
+        if (data?.success) {
+            InputAutocompleteData.value = data.data?.map((item) => item.description);
+        }
+    }
+}
+
+const throttleAutocomplete = throttle(getAutocomplete, 1500);
 
 function bindPickerChange(e: any) {
     formData.cityIndex = e.detail.value;

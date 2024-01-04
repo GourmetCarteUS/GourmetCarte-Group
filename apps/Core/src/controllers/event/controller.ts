@@ -6,6 +6,7 @@ import { Between, FindOptionsOrder, In, LessThanOrEqual, Like, MoreThanOrEqual }
 import { User } from '../../models/User';
 import dayjs from 'dayjs';
 import { sendMessage } from '../message/message';
+import { GoogleMapUtils } from '../../utils/GoogleMap';
 
 @Tags('Event')
 @Route('event')
@@ -160,8 +161,12 @@ export class EventController extends Controller {
 
         const event = new Event();
         event.title = value.title;
-        event.geoLocation = value.geoLocation;
         event.location = value.location;
+        if (value.location) {
+            const data = await GoogleMapUtils.geoCode({ description: value.location });
+            event.geoLocation = `POINT(${data.lng} ${data.lat})`;
+        }
+
         event.description = value.description;
         event.startAt = value.startAt;
         event.category = category;
@@ -199,8 +204,11 @@ export class EventController extends Controller {
         });
 
         event.title = value.title;
-        event.geoLocation = value.geoLocation;
         event.location = value.location;
+        if (value.location) {
+            const data = await GoogleMapUtils.geoCode({ description: value.location });
+            event.geoLocation = `POINT(${data.lng} ${data.lat})`;
+        }
         event.description = value.description;
         event.startAt = value.startAt;
         event.category = category;
