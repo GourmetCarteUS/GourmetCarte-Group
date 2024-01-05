@@ -81,7 +81,7 @@ export const useUserInfoStore = defineStore('user-info', {
                         };
                         let currentCity = '';
                         LOCATIONS.map((item) => {
-                            if (LocationUtils.isWithin([location.longitude, location.latitude], item.location, 10000)) {
+                            if (LocationUtils.isWithin([location.longitude, location.latitude], item.location, 100000)) {
                                 that.currentCity = item.name;
                                 currentCity = item.name;
                             }
