@@ -13,7 +13,7 @@
                 <view class="flex items-center">
                     <view class="capsule-button text-24 pending mr-20">未开始 </view>
                     <view class="capsule-button text-24 bg-primary-sec mr-20">
-                        {{ startAtFormat(data?.startAt) }}
+                        <uni-dateformat :date="data.startAt" format="yyyy/MM/dd" />
                     </view>
                 </view>
                 <view class="capsule-button text-28 bg-black text-white">上车</view>

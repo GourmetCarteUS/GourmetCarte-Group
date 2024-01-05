@@ -184,14 +184,15 @@ onShareTimeline(() => {
                         <view v-if="currentData.isJoin" class="capsule-button processing text-24"> 已报名</view>
                         <view v-else-if="currentData?.status" class="capsule-button text-24 solved"> 已结束</view>
                         <view v-else class="capsule-button text-24 pending"> 未开始</view>
-                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时间： {{ startAt }}</view>
+                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时间： <uni-dateformat :date="currentData?.startAt" /></view>
+                        <view class="bg-primary rounded-full w-33 h-33 p-10 color-white text-center ml-20 text-24" v-if="!currentData?.isPublic">私</view>
                     </view>
                 </view>
                 <!--                <view class="w-170 h-170 b-rd-20 mr-30"></view>-->
             </view>
             <view class="bg-white p-30 b-rd-30">
                 <view class="mt-30">
-                    <view class="gc-item">活动时间：{{ startAt }}</view>
+                    <view class="gc-item">活动时间：<uni-dateformat :date="currentData?.startAt" /></view>
                     <view class="gc-item" style="white-space: pre-wrap" @click="openMap">
                         <!--            <uni-icons type="location-filled" size="20" color="#39393A"/>-->
                         {{ currentData?.location }}
