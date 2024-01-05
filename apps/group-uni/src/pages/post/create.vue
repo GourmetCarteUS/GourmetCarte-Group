@@ -22,7 +22,7 @@
                     <view>活动地址</view>
                     <!--                    <view class="ml-20" @click="getLocation">{{ formData.location || '请输入选择活动地址' }}</view>-->
                     <view class="flex-1">
-                        <InputAutocomplete placeholder="请输入活动地址" @input="throttleAutocomplete" :data="InputAutocompleteData" v-model="formData.location" />
+                        <InputAutocomplete placeholder="请输入活动地址" @input="debounceAutocomplete" :data="InputAutocompleteData" v-model="formData.location" />
                     </view>
                 </view>
                 <view class="gc-item">
@@ -96,7 +96,7 @@
 </template>
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import throttle from 'lodash/throttle';
+import debounce from 'lodash/debounce';
 import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import { onLoad, onPageScroll } from '@dcloudio/uni-app';
@@ -144,7 +144,7 @@ async function getAutocomplete(keyword: string) {
     }
 }
 
-const throttleAutocomplete = throttle(getAutocomplete, 1500);
+const debounceAutocomplete = debounce(getAutocomplete, 1000);
 
 function bindPickerChange(e: any) {
     formData.cityIndex = e.detail.value;
