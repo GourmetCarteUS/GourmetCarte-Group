@@ -114,8 +114,8 @@ function tabsChange(index: number) {
 }
 
 function bindPickerChange(e: any) {
-    filterForm.cityIndex = e.detail.value;
-    filterForm.city = LOCATIONS[filterForm.cityIndex || 0]?.name;
+    filterForm.cityIndex = Number(e.detail.value);
+    filterForm.city = cityArray[filterForm.cityIndex == 0 ? 0 : filterForm.cityIndex - 1 || 0]?.name;
     pagingRef.value.reload();
 }
 
@@ -150,11 +150,10 @@ async function getBanners() {
 const pagingRef = ref(),
     queryList = async (pageNo?: number, pageSize?: number) => {
         loading();
-        const { currentCity } = await useUserInfoStore().getLocation();
-        console.log('currentCity', currentCity);
-        if (!filterForm.city && currentCity) {
-            filterForm.city = currentCity;
+        if (!filterForm.city) {
+            const { currentCity } = await useUserInfoStore().getLocation();
             filterForm.cityIndex = cityArray.findIndex((city) => city.name === currentCity);
+            filterForm.city = currentCity;
         }
 
         const { data } = await view_events({

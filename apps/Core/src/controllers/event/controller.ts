@@ -33,7 +33,7 @@ export class EventController extends Controller {
                 where['category'] = category;
             }
         }
-        if (request.query?.city && request.query?.city != 'All') {
+        if (request.query?.city && request.query?.city != 'all') {
             where['city'] = request.query.city;
         }
         if (request.query?.title) {
