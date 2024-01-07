@@ -98,8 +98,8 @@ export default {
     /* #endif */
     flex-direction: row;
     align-items: center;
-    padding-left: 15px;
-    height: 40px;
+    //height: 40px;
+    padding: 20rpx 30rpx;
     background-color: #eee;
     font-weight: normal;
     color: #666;

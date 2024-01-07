@@ -64,9 +64,15 @@
                 <FilePicker title="最多选择9张图片" limit="9" v-model="formData.imageDescription" />
             </view>
 
-            <view class="gc-title text-28 font-900 mb-20 mt-40 justify-between">
-                <text>群二维码</text>
-                <text class="text-gray-3 text-24">用户上车之后才会显示</text>
+            <view class="gc-title text-28 font-900 mb-20 mt-40 justify-between" @click="onGoPage({ name: 'help-create-group' }, false)">
+                <view class="center"
+                    >群二维码
+                    <uni-icons color="#7f7eff" type="help" size="20" />
+                </view>
+                <view>
+                    <text class="text-gray-3 text-24">用户上车之后才会显示</text>
+                    <text class="text-red">（必填）</text>
+                </view>
             </view>
             <view class="m-20">
                 <FilePicker limit="1" v-model="formData.groupQr" />
@@ -103,13 +109,14 @@ import { onLoad, onPageScroll } from '@dcloudio/uni-app';
 import { cityArray, EventCreateForm } from 'group-common';
 import { edit_create_event, edit_modify_event, view_categories, view_event_detail } from '@/api/event/evnet';
 import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
-import { onBack, onGoReplace } from '@/utils/business';
+import { onBack, onGoPage, onGoReplace } from '@/utils/business';
 import MultiplePicker from '@/components/multiple-picker/multiple-picker.vue';
 import FilePicker from '@/components/file-picker/file-picker.vue';
 import dayjs from 'dayjs';
 import { useUserInfoStore } from '@/state/modules/user-info';
 import InputAutocomplete from '@/components/input-autocomplete/input-autocomplete.vue';
 import { location_autocomplete } from '@/api/common/common';
+import UniIcons from '@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue';
 
 const categoryList = ref(),
     formData = reactive<Partial<EventCreateForm>>({
@@ -161,6 +168,9 @@ async function getCategories() {
 
 async function createEvent() {
     await onSubscribe();
+    if (!formData?.groupQr) {
+        return toast('请上传群二维码');
+    }
     const { data } = isNew.value ? await edit_create_event(formData) : await edit_modify_event(formData);
     if (data?.success) {
         toast(`${text.value}成功`, {
