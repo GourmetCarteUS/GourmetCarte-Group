@@ -56,6 +56,14 @@
             "style": {
                 "navigationBarTitleText": "报名成功"
             }
+        },
+        {
+            "name": "help-create-group",
+            "path": "pages/help/create-group",
+            "style": {
+                "navigationBarTitleText": "微信建群说明",
+                "navigationStyle": "default"
+            }
         }
     ],
     "tabBar": {
@@ -74,10 +82,10 @@
         ]
     },
     "globalStyle": {
-        "navigationBarTextStyle": "white",
+        "navigationBarTextStyle": "black",
         "navigationBarTitleText": "拼团小程序",
         "navigationStyle": "custom",
-        "navigationBarBackgroundColor": "#DCF156",
+        "navigationBarBackgroundColor": "#FFFFFF",
         "enablePullDownRefresh": false
     },
     "easycom": {
