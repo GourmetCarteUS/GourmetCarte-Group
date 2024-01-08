@@ -174,7 +174,7 @@ async function createEvent() {
     const { data } = isNew.value ? await edit_create_event(formData) : await edit_modify_event(formData);
     if (data?.success) {
         toast(`${text.value}成功`, {
-            success: () => setTimeout(() => onGoReplace({ name: 'post-detail', params: { id: data.data!.id } }), 1500),
+            success: () => setTimeout(() => onGoReplace({ name: 'post-detail', params: { id: data.data!.id } }), 500),
         });
         return;
     }

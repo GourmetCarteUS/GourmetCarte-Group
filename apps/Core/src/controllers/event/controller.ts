@@ -52,11 +52,21 @@ export class EventController extends Controller {
 
         const events = await Event.find({
             where,
-            select: ['id', 'title', 'category', 'startAt', 'imageDescription', 'joinCount', 'maxParticipants', 'viewCount'],
+            select: ['id', 'title', 'category', 'startAt', 'imageDescription', 'joinCount', 'maxParticipants', 'viewCount', 'participants'],
             order,
             skip,
             take,
+            relations: {
+                participants: true,
+            },
         });
+
+        if (request?.isLogin) {
+            const currentUser = request.user;
+            events.map((event) => {
+                event['isJoin'] = !!event.participants.find((user) => user.id == currentUser.id);
+            });
+        }
 
         return {
             success: true,

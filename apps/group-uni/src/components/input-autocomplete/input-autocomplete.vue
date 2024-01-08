@@ -139,28 +139,29 @@ export default {
             }
             try {
                 list.forEach((item) => {
-                    if (item.toLowerCase().indexOf(that.keyword.toLowerCase()) > -1) {
-                        let obj = { html: '', name: item };
-                        let arr = item.split('');
-                        arr.forEach((emt, index) => {
-                            if (that.keyword.toLowerCase().indexOf(emt.toLowerCase()) > -1) {
-                                if (that.keyword.length > 1) {
-                                    if (arr[index - 1] && that.keyword.toLowerCase().indexOf(arr[index - 1]) > -1) {
-                                        obj.html += '<span style="color:red;">' + emt + '</span>';
-                                    } else if (arr[index + 1] && that.keyword.toLowerCase().indexOf(arr[index + 1]) > -1) {
-                                        obj.html += '<span style="color:red;">' + emt + '</span>';
-                                    } else {
-                                        obj.html += '<span>' + emt + '</span>';
-                                    }
-                                } else {
+                    // debugger
+                    // if (item.toLowerCase().indexOf(that.keyword.toLowerCase()) > -1) {
+                    let obj = { html: '', name: item };
+                    let arr = item.split('');
+                    arr.forEach((emt, index) => {
+                        if (that.keyword.toLowerCase().indexOf(emt.toLowerCase()) > -1) {
+                            if (that.keyword.length > 1) {
+                                if (arr[index - 1] && that.keyword.toLowerCase().indexOf(arr[index - 1]) > -1) {
                                     obj.html += '<span style="color:red;">' + emt + '</span>';
+                                } else if (arr[index + 1] && that.keyword.toLowerCase().indexOf(arr[index + 1]) > -1) {
+                                    obj.html += '<span style="color:red;">' + emt + '</span>';
+                                } else {
+                                    obj.html += '<span>' + emt + '</span>';
                                 }
                             } else {
-                                obj.html += '<span>' + emt + '</span>';
+                                obj.html += '<span style="color:red;">' + emt + '</span>';
                             }
-                        });
-                        that.srclist.push(obj);
-                    }
+                        } else {
+                            obj.html += '<span>' + emt + '</span>';
+                        }
+                    });
+                    that.srclist.push(obj);
+                    // }
                 });
             } catch {}
         },
