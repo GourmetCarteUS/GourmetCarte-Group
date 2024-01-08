@@ -10,7 +10,7 @@
                     @click="onClick(tabItem)"
                 >
                     <view class="tabBar-item-icon">
-                        <uni-icons :type="tabItem.icon" :size="tabItem?.float ? 48 : 28" :color="tabItem?.float ? 'white' : tabItem?.active ? '#7F7EFF' : ''" />
+                        <uni-icons :type="tabItem.icon" :size="tabItem?.float ? 38 : 28" :color="tabItem?.float ? 'white' : tabItem?.active ? '#7F7EFF' : ''" />
                     </view>
                     <view class="tab-bar-text" :class="{ 'text-primary': tabItem?.active }">{{ tabItem.title }}</view>
                 </view>
@@ -94,14 +94,14 @@ function onClick(tabItem: TabItemType) {
             justify-content: space-between;
 
             .tabBar-item-icon {
-                width: 100rpx;
-                height: 100rpx;
+                width: 90rpx;
+                height: 90rpx;
                 border-radius: 20px;
                 background-color: $uni-color-primary;
                 display: flex;
                 align-items: center;
                 border: 14rpx solid white;
-                margin-top: -50%;
+                //margin-top: -50%;
                 //box-shadow: rgba(0, 0, 0, 0.15) 0 0 3.2px;
             }
         }

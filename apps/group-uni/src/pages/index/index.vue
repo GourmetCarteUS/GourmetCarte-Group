@@ -26,9 +26,12 @@
                 </view>
             </view>
 
-            <view class="item" v-for="item in dataList" :key="item.id">
-                <PostItem :data="item" />
+            <view class="mb-100">
+                <view class="item" v-for="item in dataList" :key="item.id">
+                    <PostItem :data="item" />
+                </view>
             </view>
+
             <template #bottom>
                 <view style="z-index: 10" class="">
                     <TabBar :tab-bar-list="tabBarList" />
