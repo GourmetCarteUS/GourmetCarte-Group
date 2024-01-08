@@ -28,7 +28,7 @@ export function sendMessage(type: number, data: MessageData) {
                 value: data.startAt,
             },
             thing4: {
-                value: '距离活动开始还有7天',
+                value: data.distance,
             },
             thing5: {
                 value: '活动即将开始，请确保准时参加。',
