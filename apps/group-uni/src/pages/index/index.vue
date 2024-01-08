@@ -17,7 +17,7 @@
                 <view class="flex mt-20 ml-20">
                     <view class="capsule-button text-24 bg-white">
                         <picker :range="cityArray" range-key="name" @change="bindPickerChange">
-                            <view class="uni-input">{{ cityArray[filterForm?.cityIndex].name }}</view>
+                            <view class="uni-input">{{ cityArray[filterForm?.cityIndex]?.name || 'all' }}</view>
                         </picker>
                     </view>
                     <view class="capsule-button text-24 bg-white ml-20" @click="datePickerRef?.show">
@@ -115,7 +115,7 @@ function tabsChange(index: number) {
 
 function bindPickerChange(e: any) {
     filterForm.cityIndex = Number(e.detail.value);
-    filterForm.city = cityArray[filterForm.cityIndex == 0 ? 0 : filterForm.cityIndex - 1 || 0]?.name;
+    filterForm.city = cityArray[filterForm.cityIndex]?.name;
     pagingRef.value.reload();
 }
 
