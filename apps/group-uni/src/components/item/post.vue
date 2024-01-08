@@ -16,7 +16,7 @@
                         <uni-dateformat :date="data.startAt" format="yyyy/MM/dd" />
                     </view>
                 </view>
-                <view class="capsule-button text-28 bg-black text-white">上车</view>
+                <view class="capsule-button text-28 bg-black text-white">{{ data.isJoin ? '下车' : '上车' }}</view>
             </view>
         </view>
     </view>
