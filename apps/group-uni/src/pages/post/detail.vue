@@ -72,7 +72,8 @@ function onSubscribe() {
     return new Promise((resolve, reject) => {
         uni.requestSubscribeMessage({
             tmplIds: [
-                'HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY', // 活动进度提醒
+                'HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY',
+                'whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0', // 活动进度提醒
             ],
             complete(res) {
                 console.log(res);

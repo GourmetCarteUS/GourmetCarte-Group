@@ -273,8 +273,9 @@ export class EventController extends Controller {
                 location: event.location,
                 remark: `${request.user.displayName}上车了，目前车上已经有${event.joinCount}人了`,
                 eventId: event.id,
+                type: 2,
             };
-            sendMessage(2, messages);
+            sendMessage(messages);
 
             return {
                 success: true,
@@ -319,8 +320,9 @@ export class EventController extends Controller {
                 location: event.location,
                 remark: `${request.user.displayName}下车了，目前车上还剩${event.joinCount}人了`,
                 eventId: event.id,
+                type: 2,
             };
-            sendMessage(2, messages);
+            sendMessage(messages);
             return {
                 success: true,
                 data: event,
