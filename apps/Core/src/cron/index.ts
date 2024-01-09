@@ -1,3 +1,5 @@
-import { testJob } from './test';
+import { noticeCreatorJob } from './notice-creator';
+import { updateGroupQrJob } from './update-group-qr';
 
-testJob.start();
+noticeCreatorJob.start();
+updateGroupQrJob.start();

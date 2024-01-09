@@ -4,4 +4,5 @@ export * from './Event';
 export * from './Authentication';
 export * from './Category';
 export * from './Banner';
+export * from './Cache';
 export const types = 'types';

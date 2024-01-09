@@ -242,7 +242,7 @@ onLoad((params) => {
 function onSubscribe() {
     return new Promise((resolve, reject) => {
         uni.requestSubscribeMessage({
-            tmplIds: ['whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0'],
+            tmplIds: ['HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY', 'whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0'],
             complete(res) {
                 console.log(res);
                 resolve(true);
