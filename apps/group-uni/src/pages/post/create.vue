@@ -82,11 +82,11 @@
         <view class="flex center w-full justify-between bg-primary fixed bottom-0 p-40 pt-30 pb-50" style="box-sizing: border-box; z-index: 9">
             <view class="flex-1">
                 <label class="center">
-                    <checkbox value="cb" checked="true" />
+                    <checkbox value="cb" checked />
                     <view class="text-24"> 已阅读《即时设计须知》并知悉参与活动的要求请在规定时间内上传~</view>
                 </label>
             </view>
-            <view class="bg-black text-white p-20 b-rd-50 pl-60 pr-60" @click="createEvent">
+            <view class="bg-black text-white p-20 b-rd-50 pl-60 pr-60" @click="debounceCreateEvent">
                 <text class="text-32">提交</text>
             </view>
         </view>
@@ -132,6 +132,9 @@ const categoryList = ref(),
     InputAutocompleteData = ref<string[]>(),
     multiplePickerShow = ref(false);
 
+const debounceAutocomplete = debounce(getAutocomplete, 1000);
+const debounceCreateEvent = debounce(createEvent, 500);
+
 function confirmMultiple(e: any) {
     e.selected.map((item: { label: string }) => formData.categoryStr?.push(item?.label));
     formData.categoryIds = e.value;
@@ -150,8 +153,6 @@ async function getAutocomplete(keyword: string) {
         }
     }
 }
-
-const debounceAutocomplete = debounce(getAutocomplete, 1000);
 
 function bindPickerChange(e: any) {
     formData.cityIndex = e.detail.value;
