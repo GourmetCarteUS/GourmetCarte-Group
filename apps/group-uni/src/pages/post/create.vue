@@ -30,7 +30,7 @@
                     <view class="ml-20">
                         <uni-datetime-picker :border="false" v-model="formData.startAt" return-type="date">
                             <uni-dateformat v-if="formData.startAt" :date="formData.startAt"></uni-dateformat>
-                            <span v-else>请选择活动开始时间</span>
+                            <text v-else style="color: #999">请选择活动开始时间</text>
                         </uni-datetime-picker>
                     </view>
                 </view>
@@ -43,7 +43,10 @@
                 <view class="gc-item justify-between pr-20" style="overflow: initial">
                     <view>活动类型</view>
                     <view class="ml-20 flex-1" @click="multiplePickerShow = true">
-                        {{ formData?.categoryStr?.join('，') || '请选择活动类型' }}
+                        <text v-if="formData?.categoryStr?.join('，')">
+                            {{ formData?.categoryStr?.join('，') }}
+                        </text>
+                        <text v-else style="color: #999">请选择活动类型</text>
                     </view>
                 </view>
                 <checkbox-group class="gc-item pr-20" @change="checkboxChange">
@@ -81,10 +84,10 @@
 
         <view class="flex center w-full justify-between bg-primary fixed bottom-0 p-40 pt-30 pb-50" style="box-sizing: border-box; z-index: 9">
             <view class="flex-1">
-                <label class="center">
-                    <checkbox value="cb" checked />
-                    <view class="text-24"> 已阅读《即时设计须知》并知悉参与活动的要求请在规定时间内上传~</view>
-                </label>
+                <!--                <label class="center">-->
+                <!--                    <checkbox value="cb" checked />-->
+                <!--                    <view class="text-24"> 已阅读《即时设计须知》并知悉参与活动的要求请在规定时间内上传~</view>-->
+                <!--                </label>-->
             </view>
             <view class="bg-black text-white p-20 b-rd-50 pl-60 pr-60" @click="debounceCreateEvent">
                 <text class="text-32">提交</text>
