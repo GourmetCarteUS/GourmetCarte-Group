@@ -15,10 +15,14 @@ interface MessageData {
 // 1. 活动进度提醒 HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY
 // 2. 活动参加人数 whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0
 // 3. 活动更新提醒
+
+const miniprogram_state = process.env.ENV_VERSION == 'develop' ? 'developer' : process.env.ENV_VERSION == 'trial' ? 'trial' : 'formal';
+
 export function sendMessage(data: MessageData) {
     let messages = {
         touser: data.touser, //给某用户推送的openid，这个得你获取到用户的openid，才可以进行推送
-        miniprogram_state: 'developer', //developer为开发版；trial为体验版；formal为正式版；默认为正式版
+        // develop，trial体验版 release正式版
+        miniprogram_state, //developer为开发版；trial为体验版；formal为正式版；默认为正式版
         page: `pages/post/detail?id=${data.eventId}`,
     };
     if (data.type === 1) {
@@ -54,22 +58,21 @@ export function sendMessage(data: MessageData) {
             },
         };
     } else if (data.type === 3) {
-        console.log('消息订阅3', messages);
-        // messages['template_id'] = 'whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0';
-        // messages['data'] = {
-        //     thing1: {
-        //         value: data.title,
-        //     },
-        //     time3: {
-        //         value: data.startAt,
-        //     },
-        //     thing2: {
-        //         value: data.location,
-        //     },
-        //     thing4: {
-        //         value: data?.remark,
-        //     },
-        // };
+        messages['template_id'] = '7V7vb2dVYBhLefYm_ohSSJXtJ4adONn8P0INXxglexA';
+        messages['data'] = {
+            thing1: {
+                value: data.title,
+            },
+            thing2: {
+                value: data.location,
+            },
+            time3: {
+                value: data.startAt,
+            },
+            thing4: {
+                value: data?.remark,
+            },
+        };
     }
 
     wechat['sendSubscribeMessage'](messages)
