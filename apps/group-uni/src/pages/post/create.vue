@@ -108,7 +108,7 @@ import { reactive, ref } from 'vue';
 import debounce from 'lodash/debounce';
 import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
-import { onLoad, onPageScroll } from '@dcloudio/uni-app';
+import { onHide, onLoad, onPageScroll, onShow } from '@dcloudio/uni-app';
 import { cityArray, EventCreateForm } from 'group-common';
 import { edit_create_event, edit_modify_event, view_categories, view_event_detail } from '@/api/event/evnet';
 import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
@@ -180,6 +180,7 @@ async function createEvent() {
         toast(`${text.value}成功`, {
             success: () => setTimeout(() => onGoReplace({ name: 'post-detail', params: { id: data.data!.id } }), 500),
         });
+        uni.removeStorageSync('createEvent');
         return;
     }
     return toast(data?.errorMessage || `${text.value}失败`);
@@ -215,6 +216,18 @@ async function getEvent(id: string) {
     hideLoading();
 }
 
+function onSubscribe() {
+    return new Promise((resolve, reject) => {
+        uni.requestSubscribeMessage({
+            tmplIds: ['HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY', 'whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0', '7V7vb2dVYBhLefYm_ohSSJXtJ4adONn8P0INXxglexA'],
+            complete(res) {
+                console.log(res);
+                resolve(true);
+            },
+        });
+    });
+}
+
 onPageScroll((e) => {
     scrollTop.value = e.scrollTop;
     if (scrollTop.value > 80) {
@@ -243,17 +256,11 @@ onLoad((params) => {
     getCategories();
 });
 
-function onSubscribe() {
-    return new Promise((resolve, reject) => {
-        uni.requestSubscribeMessage({
-            tmplIds: ['HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY', 'whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0'],
-            complete(res) {
-                console.log(res);
-                resolve(true);
-            },
-        });
-    });
-}
+onHide(() => uni.setStorageSync('createEvent', formData));
+onShow(() => {
+    const event = uni.getStorageSync('createEvent');
+    Object.assign(formData, event);
+});
 </script>
 <style scoped lang="scss">
 @import '@/static/styles/common.scss';

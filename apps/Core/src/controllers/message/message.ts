@@ -14,7 +14,7 @@ interface MessageData {
 
 // 1. 活动进度提醒 HtYFXDb6S8yLYOG1r4oGQGdjMiYOPVeFKuZISGNU7zY
 // 2. 活动参加人数 whvZi7swOrbC1TqXmz4Yr3zh9JhmbH-ruDkc3CAlrU0
-// 3. 活动更新提醒
+// 3. 活动更新提醒 7V7vb2dVYBhLefYm_ohSSJXtJ4adONn8P0INXxglexA
 
 const miniprogram_state = process.env.ENV_VERSION == 'develop' ? 'developer' : process.env.ENV_VERSION == 'trial' ? 'trial' : 'formal';
 
