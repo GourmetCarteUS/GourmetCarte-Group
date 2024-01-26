@@ -232,6 +232,13 @@ onShareTimeline(() => {
                         <image class="w-full" :src="img" v-for="img in currentData?.imageDescription" :key="img" mode="widthFix" />
                     </view>
                 </template>
+
+                <template v-if="currentData?.isJoin && currentData?.groupQr">
+                    <view class="gc-title text-28 mt-40 mb-30">群二维码</view>
+                    <view class="w-full">
+                        <image class="w-full" :src="currentData?.groupQr" mode="widthFix" />
+                    </view>
+                </template>
             </view>
         </view>
         <view class="flex center w-full justify-between bg-primary fixed bottom-0 p-40 pt-30 pb-50" style="box-sizing: border-box">

@@ -73,11 +73,13 @@
                     <uni-icons color="#7f7eff" type="help" size="20" />
                 </view>
                 <view>
-                    <text class="text-gray-3 text-24">用户上车之后才会显示</text>
+                    <!--                    <text class="">用户上车之后才会显示</text>-->
+                    <text class="text-24 text-primary mt-20">📖 查看建群教程</text>
                     <text class="text-red">（必填）</text>
                 </view>
             </view>
             <view class="m-20">
+                <view class="text-gray-3 text-24 mb-10">用户上车之后才会显示</view>
                 <FilePicker limit="1" v-model="formData.groupQr" />
             </view>
         </view>
@@ -119,7 +121,6 @@ import dayjs from 'dayjs';
 import { useUserInfoStore } from '@/state/modules/user-info';
 import InputAutocomplete from '@/components/input-autocomplete/input-autocomplete.vue';
 import { location_autocomplete } from '@/api/common/common';
-import UniIcons from '@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue';
 
 const categoryList = ref(),
     formData = reactive<Partial<EventCreateForm>>({
@@ -171,16 +172,18 @@ async function getCategories() {
 }
 
 async function createEvent() {
-    await onSubscribe();
     if (!formData?.groupQr) {
         return toast('请上传群二维码');
     }
+    await onSubscribe();
+    loading();
     const { data } = isNew.value ? await edit_create_event(formData) : await edit_modify_event(formData);
+    hideLoading();
     if (data?.success) {
+        uni.removeStorageSync('createEvent');
         toast(`${text.value}成功`, {
             success: () => setTimeout(() => onGoReplace({ name: 'post-detail', params: { id: data.data!.id } }), 500),
         });
-        uni.removeStorageSync('createEvent');
         return;
     }
     return toast(data?.errorMessage || `${text.value}失败`);
