@@ -2,7 +2,7 @@ import { EventCreateForm, EventDetailData, GCJSONArrayResponse, GCJSONResponse, 
 import { Body, Controller, Get, Path, Post, Put, Request, Route, Security, Tags } from 'tsoa';
 import { Event } from '../../models/Event';
 import { Category } from '../../models/Category';
-import { Between, FindOptionsOrder, In, LessThanOrEqual, Like, MoreThanOrEqual } from 'typeorm';
+import { Between, FindOptionsOrder, In, LessThanOrEqual, ILike, MoreThanOrEqual } from 'typeorm';
 import { User } from '../../models/User';
 import dayjs from 'dayjs';
 import { sendMessage } from '../message/message';
@@ -37,7 +37,7 @@ export class EventController extends Controller {
             where['city'] = request.query.city;
         }
         if (request.query?.title) {
-            where['title'] = Like(request.query?.title);
+            where['title'] = ILike(`%${request.query?.title}%`);
         }
 
         if (request.query?.data) {

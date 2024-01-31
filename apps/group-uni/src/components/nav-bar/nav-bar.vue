@@ -57,7 +57,7 @@ function initCom() {
 }
 
 function sendConfirm(e: { detail: { value: any } }) {
-    if (e.detail.value) emits('search', e.detail.value);
+    emits('search', e.detail.value);
 }
 
 initCom();
