@@ -38,6 +38,9 @@ export class Event extends BaseModel implements IEvent {
     @Column({ default: false })
     disable: boolean;
 
+    @Column({ default: false })
+    isCancel: boolean;
+
     @ManyToMany((type) => Category, (category) => category.events)
     @JoinTable()
     category: Relation<Category>[];

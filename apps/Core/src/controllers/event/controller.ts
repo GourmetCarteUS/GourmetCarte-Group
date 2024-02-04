@@ -2,7 +2,7 @@ import { EventCreateForm, EventDetailData, GCJSONArrayResponse, GCJSONResponse, 
 import { Body, Controller, Get, Path, Post, Put, Request, Route, Security, Tags } from 'tsoa';
 import { Event } from '../../models/Event';
 import { Category } from '../../models/Category';
-import { Between, FindOptionsOrder, In, LessThanOrEqual, ILike, MoreThanOrEqual } from 'typeorm';
+import { Between, FindOptionsOrder, ILike, In, LessThanOrEqual, MoreThanOrEqual } from 'typeorm';
 import { User } from '../../models/User';
 import dayjs from 'dayjs';
 import { sendMessage } from '../message/message';
@@ -21,6 +21,7 @@ export class EventController extends Controller {
         };
         let where = {
             disable: false,
+            isCancel: false,
             isPublic: true,
         };
         if (request.query?.category) {
@@ -194,6 +195,50 @@ export class EventController extends Controller {
         };
     }
 
+    @Post('cancel/:id')
+    @Security('authorized')
+    public async postEventCancel(@Request() request: any, id: string) {
+        const user = new User();
+        user.id = request.user.id;
+        const event = await Event.findOne({
+            // @ts-ignore
+            where: { id: id, creator: user, disable: false, isCancel: false },
+            relations: { participants: true },
+        });
+        if (!event) {
+            return {
+                success: false,
+                errorCode: 400,
+                errorMessage: '数据不存在',
+            };
+        }
+
+        if (dayjs().add(5, 'hour').isAfter(event.startAt)) {
+            return {
+                success: false,
+                errorCode: 200,
+                errorMessage: '活动即将开始，取消失败',
+            };
+        }
+
+        event.isCancel = true;
+        await event.save();
+        event.participants?.map((item) => {
+            sendMessage({
+                touser: item.openId,
+                startAt: dayjs(event.startAt).format('YYYY-MM-DD HH:mm:ss'),
+                title: event.title,
+                eventId: event.id,
+                remark: `非常抱歉，活动已被发起人取消，请悉知！！`,
+                type: 3,
+            });
+        });
+        return {
+            success: true,
+            data: '取消成功',
+        };
+    }
+
     @Put()
     @Security('authorized')
     public async putEvent(@Request() request: any, @Body() value: Partial<EventCreateForm>): Promise<GCJSONResponse<Partial<IEvent>>> {
@@ -241,7 +286,7 @@ export class EventController extends Controller {
     public async joinEvent(@Request() request: any, @Path() id: string): Promise<GCJSONResponse<IEvent>> {
         const event = await Event.findOne({
             relations: { participants: true, creator: true },
-            where: { id, disable: false },
+            where: { id, disable: false, isCancel: false },
         });
 
         if (dayjs().add(5, 'hour').isAfter(event.startAt)) {
