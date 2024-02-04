@@ -68,18 +68,14 @@
             </view>
 
             <view class="gc-title text-28 font-900 mb-20 mt-40 justify-between" @click="onGoPage({ name: 'help-create-group' }, false)">
-                <view class="center"
-                    >群二维码
-                    <uni-icons color="#7f7eff" type="help" size="20" />
-                </view>
+                <view class="center">群二维码 <text class="text-red text-24">（必填）</text> </view>
                 <view>
                     <!--                    <text class="">用户上车之后才会显示</text>-->
                     <text class="text-24 text-primary mt-20">📖 查看建群教程</text>
-                    <text class="text-red">（必填）</text>
                 </view>
             </view>
             <view class="m-20">
-                <view class="text-gray-3 text-24 mb-10">用户上车之后才会显示</view>
+                <view class="text-gray-3 text-24 mb-10">用户上车之后才会显示，退出小程序建群并重新进入小程序，您之前填写的信息将在15分钟内保留</view>
                 <FilePicker limit="1" v-model="formData.groupQr" />
             </view>
         </view>
