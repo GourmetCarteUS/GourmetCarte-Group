@@ -94,6 +94,7 @@ export class EventController extends Controller {
                 'imageDescription',
                 'joinCount',
                 'isPublic',
+                'isCancel',
                 'groupQr',
                 'category',
             ],
@@ -125,8 +126,10 @@ export class EventController extends Controller {
         event['coordinate'] = await Event.createQueryBuilder().select('st_x(geoLocation) as longitude, st_y(geoLocation) as latitude').where('id=:id', { id }).getRawOne();
 
         const now = dayjs();
+        // 活动是否取消
+        if (event.isCancel) event['status'] = true;
         // 活动是否结束，当前时间在开始之间之后就变为已结束
-        event['status'] = now.isAfter(event.startAt);
+        else event['status'] = now.isAfter(event.startAt);
 
         return {
             success: true,
@@ -217,7 +220,7 @@ export class EventController extends Controller {
             return {
                 success: false,
                 errorCode: 200,
-                errorMessage: '活动即将开始，取消失败',
+                errorMessage: '距离开车时间不足五小时，取消失败',
             };
         }
 
@@ -417,7 +420,7 @@ export class EventController extends Controller {
             relations: {
                 participants: true,
             },
-            select: ['id', 'title', 'category', 'participants', 'startAt', 'imageDescription', 'joinCount', 'isPublic'],
+            select: ['id', 'title', 'category', 'participants', 'startAt', 'imageDescription', 'joinCount', 'isPublic', 'isCancel'],
             where: [
                 // @ts-ignore
                 { participants: user, startAt: where.startAt, isPublic: where.isPublic },
@@ -432,7 +435,8 @@ export class EventController extends Controller {
         // 活动是否结束，当前时间在开始之间之后就变为已结束
         events.map((event) => {
             // true 是已结束， false 未开始
-            event['status'] = dayjs().isAfter(event.startAt);
+            if (event.isCancel) event['status'] = true;
+            else event['status'] = dayjs().isAfter(event.startAt);
         });
 
         return {

@@ -27,7 +27,8 @@ defineProps<{ data: EventDetailData }>();
                     <view class="text-gray text-nowrap w-400">{{ data?.location }}</view>
                 </view>
                 <view class="flex">
-                    <view class="capsule-button solved" v-if="data.status">已结束</view>
+                    <view class="capsule-button solved" v-if="data.isCancel">已取消</view>
+                    <view class="capsule-button solved" v-else-if="data.status">已结束</view>
                     <view class="capsule-button pending" v-else>未开始</view>
                     <view class="capsule-button ml-20" :class="data.status ? 'solved' : 'bg-primary-sec'">
                         <uni-dateformat :date="data.startAt" format="yyyy/MM/dd" />

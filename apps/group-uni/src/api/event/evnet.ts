@@ -19,8 +19,10 @@ export function edit_create_event(data: Partial<EventCreateForm>) {
 }
 
 export function edit_modify_event(data: Partial<EventCreateForm>) {
+    console.log('data', data);
     return request.put<GCJSONResponse<IEvent>>('/event', {
         id: data.id,
+        isPublic: data?.isPublic,
         title: data.title || undefined,
         geoLocation: data.geoLocation || undefined,
         location: data.location || undefined,
@@ -30,7 +32,6 @@ export function edit_modify_event(data: Partial<EventCreateForm>) {
         imageDescription: data.imageDescription || undefined,
         groupQr: data.groupQr || undefined,
         city: data.city || undefined,
-        isPublic: data.isPublic || undefined,
         categoryIds: data?.categoryIds || undefined,
     });
 }
@@ -65,4 +66,8 @@ export function edit_event_quit(id: string) {
 
 export function view_event_user(data: Partial<EventForm>) {
     return request.get<GCJSONResponse<IEvent>>(`event/user/${data.userId}`, { params: data });
+}
+
+export function edit_event_cancel(id: string) {
+    return request.post<GCJSONResponse<Boolean>>(`event/cancel/${id}`);
 }
