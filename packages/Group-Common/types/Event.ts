@@ -23,6 +23,7 @@ export interface IEvent {
     updatedAt: Date;
     joinCount: number;
     isPublic: boolean;
+    isCancel: boolean;
     city: string;
 }
 

@@ -5,13 +5,14 @@ import UniIcons from '@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue
 import { onLoad, onPageScroll, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
 import { computed, reactive, ref } from 'vue';
 import { isLogged, onBack, onGoPage } from '@/utils/business';
-import { hideLoading, loading, toast } from '@/utils/uniapi/prompt';
-import { edit_event_join, edit_event_quit, view_event_detail } from '@/api/event/evnet';
+import { hideLoading, loading, modal, toast } from '@/utils/uniapi/prompt';
+import { edit_event_cancel, edit_event_join, edit_event_quit, view_event_detail } from '@/api/event/evnet';
 import { EventDetailData } from 'group-common';
 import LogoUrl from '@/static/images/logo.png';
 import { startAtFormat } from '@/utils/utils';
 import { useUserInfoStore } from '@/state/modules/user-info';
 import PopupShare from '@/components/dialog/popup-share.vue';
+import dayjs from 'dayjs';
 
 const startAt = computed(() => startAtFormat(currentData.startAt));
 
@@ -101,6 +102,23 @@ async function joinEvent() {
     }
 }
 
+async function cancelEvent() {
+    if (dayjs().add(5, 'hour').isAfter(currentData.startAt)) {
+        return toast('距离开车时间不足五小时，取消失败');
+    }
+    const modalRes = await modal({ title: '取消活动', content: '确定取消活动吗' });
+    if (modalRes?.confirm && currentData.id) {
+        const { data } = await edit_event_cancel(currentData.id);
+        if (!data?.success) {
+            toast(data?.errorMessage || '取消失败');
+        } else {
+            toast('取消成功', {
+                success: getEvent,
+            });
+        }
+    }
+}
+
 async function quitEvent() {
     loading();
     const { data } = await edit_event_quit(postId.value);
@@ -185,15 +203,21 @@ onShareTimeline(() => {
                         <view v-if="currentData.isJoin" class="capsule-button processing text-24"> 已报名</view>
                         <view v-else-if="currentData?.status" class="capsule-button text-24 solved"> 已结束</view>
                         <view v-else class="capsule-button text-24 pending"> 未开始</view>
-                        <view class="capsule-button bg-primary-sec text-24 ml-20">活动时间： <uni-dateformat :date="currentData?.startAt" /></view>
-                        <view class="bg-primary rounded-full w-33 h-33 p-10 color-white text-center ml-20 text-24" v-if="!currentData?.isPublic">私</view>
+                        <view class="capsule-button bg-primary-sec text-24 ml-20"
+                            >活动时间：
+                            <uni-dateformat :date="currentData?.startAt" />
+                        </view>
+                        <view class="bg-primary rounded-full w-33 h-33 p-10 color-white text-center ml-20 text-24" v-if="!currentData?.isPublic">私 </view>
                     </view>
                 </view>
                 <!--                <view class="w-170 h-170 b-rd-20 mr-30"></view>-->
             </view>
             <view class="bg-white p-30 b-rd-30">
                 <view class="mt-30">
-                    <view class="gc-item">活动时间：<uni-dateformat :date="currentData?.startAt" /></view>
+                    <view class="gc-item"
+                        >活动时间：
+                        <uni-dateformat :date="currentData?.startAt" />
+                    </view>
                     <view class="gc-item" style="white-space: pre-wrap" @click="openMap">
                         <!--            <uni-icons type="location-filled" size="20" color="#39393A"/>-->
                         {{ currentData?.location }}
@@ -260,9 +284,6 @@ onShareTimeline(() => {
                 <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="onGoPage({ name: 'post-create', params: { id: postId } })" v-if="currentData?.isMe">
                     <text class="text-30 font-900">编辑</text>
                 </view>
-                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="toast('功能开发中')" v-if="currentData?.isMe">
-                    <text class="text-30 font-900">取消</text>
-                </view>
                 <template v-if="currentData?.isJoin">
                     <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="quitEvent">
                         <text class="text-30 font-900">下车</text>
@@ -273,6 +294,9 @@ onShareTimeline(() => {
                 </template>
                 <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center max-w-300" @click="joinEvent" v-else>
                     <text class="text-30 font-900">上车</text>
+                </view>
+                <view class="bg-black text-white b-rd-50 p-20 flex-1 ml-30 center" @click="cancelEvent" v-if="currentData?.isMe">
+                    <text class="text-30 font-900">取消</text>
                 </view>
             </template>
         </view>
