@@ -51,7 +51,7 @@
                 </view>
                 <checkbox-group class="gc-item pr-20" @change="checkboxChange">
                     <label class="flex justify-between w-full">
-                        <view>是否公开</view>
+                        <view>公开</view>
                         <checkbox color="#7f7eff" :checked="formData.isPublic" style="transform: scale(0.8)" />
                     </label>
                 </checkbox-group>
@@ -172,9 +172,20 @@ async function getCategories() {
 }
 
 async function createEvent() {
-    if (!formData?.groupQr) {
+    if (!formData?.title) {
+        return toast('请填写活动名称');
+    } else if (!formData?.location) {
+        return toast('请填写活动地址');
+    } else if (!formData.startAt) {
+        return toast('请选择活动开始时间');
+    } else if (!formData?.categoryStr?.length) {
+        return toast('请选择活动类型');
+    } else if (!formData?.description) {
+        return toast('请填写活动介绍');
+    } else if (!formData?.groupQr) {
         return toast('请上传群二维码');
     }
+
     await onSubscribe();
     loading();
     const { data } = isNew.value ? await edit_create_event(formData) : await edit_modify_event(formData);

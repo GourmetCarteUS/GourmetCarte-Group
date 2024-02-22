@@ -2,8 +2,8 @@
 import Layout from '@/components/layout/layout.vue';
 import NavBar from '@/components/nav-bar/nav-bar.vue';
 import UniIcons from '@/uni_modules/uni-icons/components/uni-icons/uni-icons.vue';
-import { onLoad, onPageScroll, onShareAppMessage, onShareTimeline } from '@dcloudio/uni-app';
-import { computed, reactive, ref } from 'vue';
+import { onLoad, onPageScroll, onShareAppMessage, onShareTimeline, onShow } from '@dcloudio/uni-app';
+import { computed, onUpdated, reactive, ref } from 'vue';
 import { isLogged, onBack, onGoPage } from '@/utils/business';
 import { hideLoading, loading, modal, toast } from '@/utils/uniapi/prompt';
 import { edit_event_cancel, edit_event_join, edit_event_quit, view_event_detail } from '@/api/event/evnet';
@@ -96,6 +96,7 @@ async function joinEvent() {
         toast('上车成功', {
             success: () =>
                 setTimeout(() => {
+                    getEvent();
                     onGoPage({ name: 'order-success', params: { id: postId.value } });
                 }, 1500),
         });
@@ -167,6 +168,7 @@ onLoad((params) => {
         getEvent();
     }
 });
+
 onShareAppMessage(() => {
     return {
         title: `${userInfo.value?.displayName}邀请您参加 ${currentData?.title} |『咕噜拼』`,
@@ -260,7 +262,7 @@ onShareTimeline(() => {
                 <template v-if="currentData?.isJoin && currentData?.groupQr">
                     <view class="gc-title text-28 mt-40 mb-30">群二维码</view>
                     <view class="w-full">
-                        <image class="w-full" :src="currentData?.groupQr" mode="widthFix" />
+                        <image class="w-full" show-menu-by-longpress :src="currentData?.groupQr" mode="widthFix" />
                     </view>
                 </template>
             </view>
