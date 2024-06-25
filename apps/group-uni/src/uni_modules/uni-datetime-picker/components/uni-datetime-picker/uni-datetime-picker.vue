@@ -297,7 +297,7 @@ export default {
         },
         hideSecond: {
             type: [Boolean],
-            default: false,
+            default: true,
         },
         defaultValue: {
             type: [String, Object, Array],
@@ -670,7 +670,7 @@ export default {
                 let { before, after } = e.range;
 
                 if (!before || !after) {
-                    after = before
+                    after = before;
                     // return;
                 }
 
