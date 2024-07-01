@@ -177,8 +177,10 @@ export class EventController extends Controller {
         event.title = value.title;
         event.location = value.location;
         if (value.location) {
+            console.log('[GEO Location] => ', value.location);
             const data = await GoogleMapUtils.geoCode({ description: value.location });
             event.geoLocation = `POINT(${data.lng} ${data.lat})`;
+            console.log('[GEO Location Got] => ', event.geoLocation);
         }
 
         event.description = value.description;
