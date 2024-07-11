@@ -6,8 +6,8 @@ export interface IEvent {
     id: string;
     title: string;
     description: string;
-    location: string;
-    placeId: string;
+    location?: string;
+    placeId?: string;
     geoLocation: string;
     startAt: Date;
     creator: IUser;
