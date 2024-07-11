@@ -5,6 +5,7 @@ import dayjs from 'dayjs';
 export function edit_create_event(data: Partial<EventCreateForm>) {
     return request.post<GCJSONResponse<IEvent>>('/event', {
         title: data.title || undefined,
+        placeId: data.placeId || undefined,
         geoLocation: data.geoLocation || undefined,
         location: data.location || undefined,
         description: data.description || undefined,
