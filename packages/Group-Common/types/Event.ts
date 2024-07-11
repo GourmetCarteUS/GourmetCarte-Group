@@ -7,6 +7,7 @@ export interface IEvent {
     title: string;
     description: string;
     location: string;
+    placeId: string;
     geoLocation: string;
     startAt: Date;
     creator: IUser;

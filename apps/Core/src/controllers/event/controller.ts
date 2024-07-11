@@ -176,12 +176,16 @@ export class EventController extends Controller {
         const event = new Event();
         event.title = value.title;
         event.location = value.location;
-        if (value.location) {
-            console.log('[GEO Location] => ', value.location);
+        console.log('[GEO Location] => ', value.location);
+		if (value.placeId) {
+            const data = await GoogleMapUtils.geoCode({ place_id: value.placeId });
+            event.geoLocation = `POINT(${data.lng} ${data.lat})`;
+        } else if (value.location) {
             const data = await GoogleMapUtils.geoCode({ description: value.location });
             event.geoLocation = `POINT(${data.lng} ${data.lat})`;
-            console.log('[GEO Location Got] => ', event.geoLocation);
         }
+		console.log('[GEO Location Got] => ', event.geoLocation);
+
 
         event.description = value.description;
         event.startAt = value.startAt;

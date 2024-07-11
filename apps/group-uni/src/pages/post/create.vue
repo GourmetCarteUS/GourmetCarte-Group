@@ -22,7 +22,13 @@
                     <view>活动地址</view>
                     <!--                    <view class="ml-20" @click="getLocation">{{ formData.location || '请输入选择活动地址' }}</view>-->
                     <view class="flex-1">
-                        <InputAutocomplete placeholder="请输入活动地址" @input="debounceAutocomplete" :data="InputAutocompleteData" v-model="formData.location" />
+                        <InputAutocomplete
+                            placeholder="请输入活动地址"
+                            @trigger="onTrigger"
+                            @input="debounceAutocomplete"
+                            :data="InputAutocompleteData"
+                            v-model="formData.location"
+                        />
                     </view>
                 </view>
                 <view class="gc-item">
@@ -126,6 +132,7 @@ const categoryList = ref(),
     formData = reactive<Partial<EventCreateForm>>({
         categoryIds: [],
         categoryStr: [],
+        placeId: '',
         isPublic: true,
         cityIndex: 0,
         city: 'Bay Area',
@@ -133,7 +140,7 @@ const categoryList = ref(),
     scrollTop = ref(0),
     text = ref('创建'),
     isNew = ref(true),
-    InputAutocompleteData = ref<string[]>(),
+    InputAutocompleteData = ref<any[]>(),
     multiplePickerShow = ref(false);
 
 const debounceAutocomplete = debounce(getAutocomplete, 1000);
@@ -149,11 +156,15 @@ function checkboxChange(e: any) {
     formData.isPublic = Boolean(e.detail.value.length);
 }
 
+function onTrigger(item: any) {
+    formData.placeId = item.id;
+}
+
 async function getAutocomplete(keyword: string) {
     if (keyword) {
         const { data } = await location_autocomplete(keyword);
         if (data?.success) {
-            InputAutocompleteData.value = data.data?.map((item) => item.description);
+            InputAutocompleteData.value = data.data;
         }
     }
 }

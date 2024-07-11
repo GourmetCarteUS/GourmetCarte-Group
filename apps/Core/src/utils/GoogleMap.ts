@@ -1,7 +1,7 @@
 import { Client, LatLngLiteral } from '@googlemaps/google-maps-services-js';
 
 export interface GoogleNormalizedPlace {
-    description: string;
+    description?: string;
     place_id?: string;
 }
 const client = new Client({});

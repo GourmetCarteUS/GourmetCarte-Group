@@ -17,7 +17,7 @@
                     :key="index"
                     :class="index > 0 ? 'pc_topsbor' : ''"
                     v-html="item.html"
-                    @click.stop="selectitem(item.name)"
+                    @click.stop="selectitem(item)"
                 ></view>
             </view>
         </view>
@@ -96,10 +96,10 @@ export default {
         },
     },
     methods: {
-        selectitem(name) {
-            this.keyword = name;
+        selectitem(item) {
+            this.keyword = item.name;
             this.srclist = [];
-            this.$emit('trigger', name);
+            this.$emit('trigger', item);
         },
         cashfous(bool) {
             if (bool) {
@@ -132,17 +132,15 @@ export default {
         },
         textscreen() {
             let that = this;
-            let list = JSON.parse(JSON.stringify(that.data));
+            let list = that.data;
             that.srclist = [];
             if (!that.keyword) {
                 return;
             }
             try {
                 list.forEach((item) => {
-                    // debugger
-                    // if (item.toLowerCase().indexOf(that.keyword.toLowerCase()) > -1) {
-                    let obj = { html: '', name: item };
-                    let arr = item.split('');
+                    let obj = { html: '', name: item.description, id: item?.place_id || '' };
+                    let arr = item.description.split('');
                     arr.forEach((emt, index) => {
                         if (that.keyword.toLowerCase().indexOf(emt.toLowerCase()) > -1) {
                             if (that.keyword.length > 1) {
