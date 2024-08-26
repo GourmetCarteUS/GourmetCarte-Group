@@ -114,6 +114,13 @@
     font-weight: 500;
     padding: 0 22rpx;
     //@extend .text-nowrap;
+
+    &.required {
+        &:before {
+            content: '*';
+            color: red;
+        }
+    }
 }
 
 .gc-title {

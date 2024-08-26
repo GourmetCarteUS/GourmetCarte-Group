@@ -55,14 +55,14 @@ const tabBarList = [
 ];
 
 async function queryList(pageNo: number, pageSize: number) {
-    loading();
+    // loading();
     const { data } = await view_event_user({
         page: pageNo,
         limit: pageSize,
         userId: userInfo.value?.id,
         ...filterForm,
     });
-    hideLoading();
+    // hideLoading();
     if (data?.success) return pagingRef.value.complete(data.data);
 }
 

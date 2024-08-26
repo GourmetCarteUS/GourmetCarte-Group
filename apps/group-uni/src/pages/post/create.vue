@@ -6,11 +6,11 @@
         <view class="bg-white m-40 p-40 b-rd-50 pb-800">
             <view class="gc-title text-28 font-900 mb-30">发布新活动</view>
             <view class="mt-20">
-                <view class="gc-item">
+                <view class="gc-item required">
                     <view>活动名称</view>
-                    <view class="ml-20"><input type="text" v-model="formData.title" placeholder="请输入活动名称" /> </view>
+                    <view class="ml-20"><input type="text" v-model="formData.title" placeholder="请输入活动名称" /></view>
                 </view>
-                <view class="gc-item">
+                <view class="gc-item required">
                     <view>举办城市</view>
                     <view class="ml-20">
                         <picker :range="cityArray" @change="bindPickerChange">
@@ -18,7 +18,7 @@
                         </picker>
                     </view>
                 </view>
-                <view class="gc-item">
+                <view class="gc-item required">
                     <view>活动地址</view>
                     <!--                    <view class="ml-20" @click="getLocation">{{ formData.location || '请输入选择活动地址' }}</view>-->
                     <view class="flex-1">
@@ -31,7 +31,7 @@
                         />
                     </view>
                 </view>
-                <view class="gc-item">
+                <view class="gc-item required">
                     <view>活动时间</view>
                     <view class="ml-20">
                         <uni-datetime-picker :border="false" v-model="formData.startAt" return-type="date">
@@ -40,13 +40,13 @@
                         </uni-datetime-picker>
                     </view>
                 </view>
-                <view class="gc-item justify-between pr-20">
+                <view class="gc-item pr-20 required">
                     <view>活动人数</view>
-                    <view class="ml-20">
+                    <view class="ml-20 flex-1 flex justify-end">
                         <uni-number-box :min="2" v-model="formData.maxParticipants" />
                     </view>
                 </view>
-                <view class="gc-item justify-between pr-20" style="overflow: initial">
+                <view class="gc-item justify-between pr-20 required" style="overflow: initial">
                     <view>活动类型</view>
                     <view class="ml-20 flex-1" @click="multiplePickerShow = true">
                         <text v-if="formData?.categoryStr?.join('，')">
@@ -55,22 +55,17 @@
                         <text v-else style="color: #999">请选择活动类型</text>
                     </view>
                 </view>
-                <checkbox-group class="gc-item pr-20" @change="checkboxChange">
-                    <label class="flex justify-between w-full">
-                        <view>公开</view>
-                        <checkbox color="#7f7eff" :checked="formData.isPublic" style="transform: scale(0.8)" />
+                <view class="gc-item pr-20">
+                    <label class="flex justify-between w-full items-center">
+                        <view>是否公开</view>
+                        <switch :checked="formData.isPublic" @change="checkboxChange" color="#7f7eff" style="transform: scale(0.8)" />
                     </label>
-                </checkbox-group>
+                </view>
             </view>
 
-            <view class="gc-title text-28 font-900 mb-30 mt-40">活动介绍</view>
+            <view class="gc-title text-28 font-900 mb-30 mt-40">活动介绍<text class="text-red text-24">（必填）</text></view>
             <view class="m-10">
                 <uni-easyinput type="textarea" :maxlength="-1" v-model="formData.description" autoHeight placeholder="请输入内容" />
-            </view>
-
-            <view class="gc-title text-28 font-900 mb-20 mt-40">活动图片</view>
-            <view class="m-20">
-                <FilePicker title="最多选择9张图片" limit="9" v-model="formData.imageDescription" />
             </view>
 
             <view class="gc-title text-28 font-900 mb-20 mt-40 justify-between" @click="onGoPage({ name: 'help-create-group' }, false)">
@@ -86,6 +81,11 @@
             <view class="m-20">
                 <view class="text-gray-3 text-24 mb-10"> 用户上车之后才会显示，退出小程序建群并重新进入小程序，您之前填写的信息将在15分钟内保留 </view>
                 <FilePicker limit="1" v-model="formData.groupQr" />
+            </view>
+
+            <view class="gc-title text-28 font-900 mb-20 mt-40">活动图片</view>
+            <view class="m-20">
+                <FilePicker title="最多选择9张图片" limit="9" v-model="formData.imageDescription" />
             </view>
         </view>
 
@@ -153,7 +153,7 @@ function confirmMultiple(e: any) {
 }
 
 function checkboxChange(e: any) {
-    formData.isPublic = Boolean(e.detail.value.length);
+    formData.isPublic = e.detail.value;
 }
 
 function onTrigger(item: any) {

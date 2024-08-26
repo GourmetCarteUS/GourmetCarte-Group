@@ -152,7 +152,7 @@ async function getBanners() {
 
 const pagingRef = ref(),
     queryList = async (pageNo?: number, pageSize?: number) => {
-        loading();
+        // loading();
         if (!filterForm.city) {
             const { currentCity } = await useUserInfoStore().getLocation();
             filterForm.cityIndex = cityArray.findIndex((city) => city.name === currentCity);
@@ -165,7 +165,7 @@ const pagingRef = ref(),
             ...filterForm,
         });
         if (data?.success) pagingRef.value.complete(data.data);
-        hideLoading();
+        // hideLoading();
     };
 
 function onScroll(env: Event) {
