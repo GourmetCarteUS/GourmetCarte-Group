@@ -63,7 +63,7 @@
                 </view>
             </view>
 
-            <view class="gc-title text-28 font-900 mb-30 mt-40">活动介绍<text class="text-red text-24">（必填）</text></view>
+            <view class="gc-title text-28 font-900 mb-30 mt-40">活动介绍</view>
             <view class="m-10">
                 <uni-easyinput type="textarea" :maxlength="-1" v-model="formData.description" autoHeight placeholder="请输入内容" />
             </view>
@@ -191,8 +191,6 @@ async function createEvent() {
         return toast('请选择活动开始时间');
     } else if (!formData?.categoryStr?.length) {
         return toast('请选择活动类型');
-    } else if (!formData?.description) {
-        return toast('请填写活动介绍');
     } else if (!formData?.groupQr) {
         return toast('请上传群二维码');
     }
